@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 var SecretKey = os.Getenv("SECRET_KEY")

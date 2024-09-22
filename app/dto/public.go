@@ -1,15 +1,10 @@
 package dto
 
-type SuccessResponse struct {
+type Response struct {
 	Status  int         `json:"status"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
-}
-
-type ErrorResponse struct {
-	Status  int         `json:"status"`
-	Message string      `json:"message"`
-	Error   interface{} `json:"error"`
+	Error   string      `json:"error"`
 }
 
 type FindParameter struct {

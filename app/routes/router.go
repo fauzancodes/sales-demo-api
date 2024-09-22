@@ -16,5 +16,6 @@ func RouteInit(app *echo.Echo) {
 	auth := api.Group("/auth")
 	{
 		auth.POST("/register", controllers.Register)
+		auth.POST("/login", controllers.Login)
 	}
 }

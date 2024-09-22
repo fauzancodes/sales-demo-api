@@ -14,7 +14,7 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 		token := c.Request().Header.Get("Authorization")
 
 		if token == "" {
-			return c.JSON(http.StatusUnauthorized, dto.ErrorResponse{
+			return c.JSON(http.StatusUnauthorized, dto.Response{
 				Status:  http.StatusBadRequest,
 				Message: "No jwt token provided",
 			})
@@ -24,7 +24,7 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 		claims, err := jwt.DecodeToken(token)
 
 		if err != nil {
-			return c.JSON(http.StatusUnauthorized, dto.ErrorResponse{
+			return c.JSON(http.StatusUnauthorized, dto.Response{
 				Status:  http.StatusUnauthorized,
 				Message: "Failed to decode jwt token",
 			})
