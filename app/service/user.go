@@ -86,10 +86,23 @@ func GetUsers(firstName, lastName, email string, param utils.PagingRequest, buil
 	return
 }
 
-func UpdateUser(id string) (response models.SDAUser, err error) {
+func UpdateUser(id string, request dto.UserRequest) (response models.SDAUser, err error) {
 	data, err := repository.GetUserByID(id)
 	if err != nil {
 		return
+	}
+
+	if request.FirstName != "" {
+		data.FirstName = request.FirstName
+	}
+	if request.LastName != "" {
+		data.LastName = request.LastName
+	}
+	if request.Email != "" {
+		data.Email = request.Email
+	}
+	if request.Password != "" {
+		data.Password = bcrypt.HashPassword(request.Password)
 	}
 
 	response, err = repository.UpdateUser(data)

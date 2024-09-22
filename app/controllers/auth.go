@@ -71,7 +71,7 @@ func Register(c echo.Context) error {
 		dto.Response{
 			Status:  200,
 			Message: "Success to register",
-			Data:    result,
+			Data:    service.BuildUserResponse(result),
 		},
 	)
 }
@@ -155,13 +155,13 @@ func GetCurrentUser(c echo.Context) error {
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
-	user, _, err := service.GetUserByID(userID, true)
+	data, _, err := service.GetUserByID(userID, true)
 	if err != nil {
 		return c.JSON(
 			http.StatusNotFound,
 			dto.Response{
 				Status:  404,
-				Message: "User not found",
+				Message: "Data not found",
 				Error:   err.Error(),
 			},
 		)
@@ -171,8 +171,46 @@ func GetCurrentUser(c echo.Context) error {
 		http.StatusOK,
 		dto.Response{
 			Status:  200,
-			Message: "Success to get current user",
-			Data:    user,
+			Message: "Success to get data",
+			Data:    data,
+		},
+	)
+}
+
+func UpdateProfile(c echo.Context) error {
+	var request dto.UserRequest
+	if err := c.Bind(&request); err != nil {
+		return c.JSON(
+			http.StatusUnprocessableEntity,
+			dto.Response{
+				Status:  422,
+				Message: "Invalid request body",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
+	log.Printf("Current user ID: %v", userID)
+
+	data, err := service.UpdateUser(userID, request)
+	if err != nil {
+		return c.JSON(
+			http.StatusInternalServerError,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to update data",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Success to update data",
+			Data:    data,
 		},
 	)
 }
