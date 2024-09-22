@@ -6,16 +6,8 @@ import (
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/fauzancodes/sales-demo-api/pkg/bcrypt"
 	"github.com/fauzancodes/sales-demo-api/pkg/utils"
+	"github.com/google/uuid"
 )
-
-func BuildUserResponse(data models.SDAUser) (response dto.UserResponse) {
-	response.ID = data.ID.UUID.String()
-	response.FirstName = data.FirstName
-	response.LastName = data.LastName
-	response.Email = data.Email
-
-	return
-}
 
 func CreateUser(request dto.UserRequest) (response models.SDAUser, err error) {
 	data := models.SDAUser{
@@ -30,17 +22,17 @@ func CreateUser(request dto.UserRequest) (response models.SDAUser, err error) {
 	return
 }
 
-func GetUserByID(id string, buildResponse bool) (response dto.UserResponse, data models.SDAUser, err error) {
-	data, err = repository.GetUserByID(id)
-
-	if buildResponse {
-		response = BuildUserResponse(data)
+func GetUserByID(id string) (data models.SDAUser, err error) {
+	parsedUUID, err := uuid.Parse(id)
+	if err != nil {
+		return
 	}
+	data, err = repository.GetUserByID(parsedUUID)
 
 	return
 }
 
-func GetUsers(firstName, lastName, email string, param utils.PagingRequest, buildResponse bool) (response utils.PagingResponse, data []models.SDAUser, err error) {
+func GetUsers(firstName, lastName, email string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAUser, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
 
@@ -68,26 +60,17 @@ func GetUsers(firstName, lastName, email string, param utils.PagingRequest, buil
 		return
 	}
 
-	var responses []dto.UserResponse
-	if buildResponse {
-		if len(data) > 0 {
-			for _, item := range data {
-				responses = append(responses, BuildUserResponse(item))
-			}
-
-			response = utils.PopulateResPaging(&param, responses, total, totalFiltered)
-
-			return
-		}
-	}
-
 	response = utils.PopulateResPaging(&param, data, total, totalFiltered)
 
 	return
 }
 
 func UpdateUser(id string, request dto.UserRequest) (response models.SDAUser, err error) {
-	data, err := repository.GetUserByID(id)
+	parsedUUID, err := uuid.Parse(id)
+	if err != nil {
+		return
+	}
+	data, err := repository.GetUserByID(parsedUUID)
 	if err != nil {
 		return
 	}
@@ -110,13 +93,18 @@ func UpdateUser(id string, request dto.UserRequest) (response models.SDAUser, er
 	return
 }
 
-func DeleteUser(id string) (response models.SDAUser, err error) {
-	data, err := repository.GetUserByID(id)
+func DeleteUser(id string) (err error) {
+	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
 		return
 	}
 
-	response, err = repository.DeleteUser(data)
+	data, err := repository.GetUserByID(parsedUUID)
+	if err != nil {
+		return
+	}
+
+	err = repository.DeleteUser(data)
 
 	return
 }

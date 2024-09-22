@@ -1,7 +1,5 @@
 package dto
 
-import "time"
-
 type Response struct {
 	Status  int         `json:"status"`
 	Message string      `json:"message"`
@@ -15,10 +13,4 @@ type FindParameter struct {
 	Order      string
 	Limit      int
 	Offset     int
-}
-
-type CustomGormModel struct {
-	ID        string    `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
 }

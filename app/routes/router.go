@@ -19,5 +19,6 @@ func RouteInit(app *echo.Echo) {
 		auth.POST("/login", controllers.Login)
 		auth.GET("/user", controllers.GetCurrentUser, middlewares.Auth)
 		auth.PATCH("/update-profile", controllers.UpdateProfile, middlewares.Auth)
+		auth.DELETE("/remove-account", controllers.RemoveAccount, middlewares.Auth)
 	}
 }

@@ -39,7 +39,7 @@ func Register(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, check, _ := service.GetUsers("", "", request.Email, param, false)
+	_, check, _ := service.GetUsers("", "", request.Email, param)
 	if len(check) > 0 {
 		return c.JSON(
 			http.StatusBadRequest,
@@ -71,7 +71,7 @@ func Register(c echo.Context) error {
 		dto.Response{
 			Status:  200,
 			Message: "Success to register",
-			Data:    service.BuildUserResponse(result),
+			Data:    result,
 		},
 	)
 }
@@ -101,7 +101,7 @@ func Login(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, user, err := service.GetUsers("", "", request.Email, param, false)
+	_, user, err := service.GetUsers("", "", request.Email, param)
 	if len(user) == 0 {
 		return c.JSON(
 			http.StatusNotFound,
@@ -126,7 +126,7 @@ func Login(c echo.Context) error {
 	}
 
 	claims := jwt.MapClaims{}
-	claims["id"] = user[0].ID.UUID.String()
+	claims["id"] = user[0].ID
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	token, err := webToken.GenerateToken(&claims)
@@ -155,7 +155,7 @@ func GetCurrentUser(c echo.Context) error {
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
-	data, _, err := service.GetUserByID(userID, true)
+	data, err := service.GetUserByID(userID)
 	if err != nil {
 		return c.JSON(
 			http.StatusNotFound,
@@ -211,6 +211,31 @@ func UpdateProfile(c echo.Context) error {
 			Status:  200,
 			Message: "Success to update data",
 			Data:    data,
+		},
+	)
+}
+
+func RemoveAccount(c echo.Context) error {
+	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
+	log.Printf("Current user ID: %v", userID)
+
+	err := service.DeleteUser(userID)
+	if err != nil {
+		return c.JSON(
+			http.StatusInternalServerError,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to delete data",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Success to delete data",
 		},
 	)
 }
