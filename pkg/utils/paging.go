@@ -4,41 +4,36 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/guregu/null"
 	"github.com/labstack/echo/v4"
 )
 
-type ReqPaging struct {
+type PagingRequest struct {
 	Page   int         `default:"1"`
 	Search string      `default:""`
 	Limit  int         `default:"10"`
 	Offset int         `default:"0"`
-	Sort   string      `default:"ASC"`
 	Order  string      `default:"id"`
 	Custom interface{} `default:""`
 }
 
-type ResPaging struct {
-	TotalData       int         `json:"recordsTotal"`
-	RecordsFiltered int         `json:"recordsFiltered"`
-	Error           string      `json:"error"`
-	Status          int         `default:"200" json:"status"`
-	Messages        string      `default:"Success" json:"message"`
-	Data            interface{} `default:"[]" json:"data"`
-	Search          string      `default:"" json:"search"`
-	Next            bool        `default:"false" json:"next"`
-	Back            bool        `default:"false" json:"back"`
-	Limit           int         `default:"10" json:"limit"`
-	Offset          int         `default:"0" json:"offset"`
-	TotalPage       int         `default:"0" json:"total_page"`
-	CurrentPage     int         `default:"1" json:"current_page"`
-	Sort            string      `default:"ASC" json:"sort"`
-	Order           string      `default:"id" json:"order"`
-	Summary         interface{} `json:"summary,omitempty"`
-	LastUpdated     null.Time   `json:"last_updated"`
+type PagingResponse struct {
+	Total         int         `json:"total"`
+	TotalFiltered int         `json:"total_filtered"`
+	Error         string      `json:"error"`
+	Status        int         `default:"200" json:"status"`
+	Messages      string      `default:"Success" json:"message"`
+	Data          interface{} `default:"[]" json:"data"`
+	Search        string      `default:"" json:"search"`
+	Next          bool        `default:"false" json:"next"`
+	Back          bool        `default:"false" json:"back"`
+	Limit         int         `default:"10" json:"limit"`
+	Offset        int         `default:"0" json:"offset"`
+	TotalPage     int         `default:"0" json:"total_page"`
+	CurrentPage   int         `default:"1" json:"current_page"`
+	Order         string      `default:"id" json:"order"`
 }
 
-func PopulatePaging(c echo.Context, custom string) (param ReqPaging) {
+func PopulatePaging(c echo.Context, custom string) (param PagingRequest) {
 	customval := c.QueryParam(custom)
 	limit, _ := strconv.Atoi(c.QueryParam("limit"))
 	if limit == 0 {
@@ -57,29 +52,29 @@ func PopulatePaging(c echo.Context, custom string) (param ReqPaging) {
 	if draw == 0 {
 		draw = 1
 	}
-	order := c.QueryParam("sort")
-	if strings.ToLower(order) == "asc" {
-		order = "ASC"
+	sort := c.QueryParam("sort")
+	if strings.ToLower(sort) == "asc" {
+		sort = "ASC"
 	} else {
-		order = "DESC"
+		sort = "DESC"
 	}
-	sort := c.QueryParam("order")
-	if sort == "" {
-		sort = "created_at " + order
+	order := c.QueryParam("order")
+	if order == "" {
+		order = "created_at " + order
 	} else {
-		sort = sort + " " + order + ", created_at " + order
+		order = order + " " + sort + ", created_at " + sort
 	}
-	param = ReqPaging{
+	param = PagingRequest{
 		Search: c.QueryParam("search"),
 		Limit:  limit,
 		Offset: offset,
-		Sort:   sort,
+		Order:  order,
 		Custom: customval,
 		Page:   page}
 	return
 }
 
-func PopulateResPaging(param *ReqPaging, data interface{}, totalResult int64, totalFiltered int64, lastUpdated null.Time) (output ResPaging) {
+func PopulateResPaging(param *PagingRequest, data interface{}, totalResult int64, totalFiltered int64) (output PagingResponse) {
 	totalPages := int(totalFiltered) / param.Limit
 	if int(totalFiltered)%param.Limit > 0 {
 		totalPages++
@@ -95,21 +90,19 @@ func PopulateResPaging(param *ReqPaging, data interface{}, totalResult int64, to
 		back = true
 	}
 
-	output = ResPaging{
-		Status:          200,
-		Data:            data,
-		Search:          param.Search,
-		Order:           param.Order,
-		Limit:           param.Limit,
-		Offset:          param.Offset,
-		Sort:            param.Sort,
-		Next:            next,
-		Back:            back,
-		TotalData:       int(totalResult),
-		RecordsFiltered: int(totalFiltered),
-		CurrentPage:     currentPage,
-		TotalPage:       totalPages,
-		LastUpdated:     lastUpdated,
+	output = PagingResponse{
+		Status:        200,
+		Data:          data,
+		Search:        param.Search,
+		Order:         param.Order,
+		Limit:         param.Limit,
+		Offset:        param.Offset,
+		Next:          next,
+		Back:          back,
+		Total:         int(totalResult),
+		TotalFiltered: int(totalFiltered),
+		CurrentPage:   currentPage,
+		TotalPage:     totalPages,
 	}
 	return
 }

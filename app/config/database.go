@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/fauzancodes/sales-demo-api/app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -21,19 +22,19 @@ func Database() *gorm.DB {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s", host, user, password, name, port)
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Print("Failed to connect to database: ", err.Error())
+		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
 	if LoadConfig().EnableDatabaseAutomigration {
 		err = DB.AutoMigrate(
-		//database models
+			&models.SDAUser{},
 		)
 		if err != nil {
-			log.Print("Failed to migrate database: ", err.Error())
+			log.Fatalf("Failed to migrate database: %v", err)
 		}
 	}
 
-	log.Print("Connected to Database: " + name)
+	log.Printf("Connected to Database: %v", name)
 
 	return DB
 }
