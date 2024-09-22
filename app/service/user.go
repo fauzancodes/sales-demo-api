@@ -1,15 +1,21 @@
 package service
 
 import (
-	"log"
-
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/fauzancodes/sales-demo-api/pkg/bcrypt"
 	"github.com/fauzancodes/sales-demo-api/pkg/utils"
-	"github.com/google/uuid"
 )
+
+func BuildUserResponse(data models.SDAUser) (response dto.UserResponse) {
+	response.ID = data.ID.UUID.String()
+	response.FirstName = data.FirstName
+	response.LastName = data.LastName
+	response.Email = data.Email
+
+	return
+}
 
 func CreateUser(request dto.UserRequest) (response models.SDAUser, err error) {
 	data := models.SDAUser{
@@ -24,19 +30,17 @@ func CreateUser(request dto.UserRequest) (response models.SDAUser, err error) {
 	return
 }
 
-func GetUserByID(id string) (response models.SDAUser, err error) {
-	parsedUUID, err := uuid.Parse(id)
-	if err != nil {
-		log.Printf("Failed to parse UUID: %v", err)
-		return
-	}
+func GetUserByID(id string, buildResponse bool) (response dto.UserResponse, data models.SDAUser, err error) {
+	data, err = repository.GetUserByID(id)
 
-	response, err = repository.GetUserByID(parsedUUID)
+	if buildResponse {
+		response = BuildUserResponse(data)
+	}
 
 	return
 }
 
-func GetUsers(firstName, lastName, email string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAUser, err error) {
+func GetUsers(firstName, lastName, email string, param utils.PagingRequest, buildResponse bool) (response utils.PagingResponse, data []models.SDAUser, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
 
@@ -64,19 +68,26 @@ func GetUsers(firstName, lastName, email string, param utils.PagingRequest) (res
 		return
 	}
 
+	var responses []dto.UserResponse
+	if buildResponse {
+		if len(data) > 0 {
+			for _, item := range data {
+				responses = append(responses, BuildUserResponse(item))
+			}
+
+			response = utils.PopulateResPaging(&param, responses, total, totalFiltered)
+
+			return
+		}
+	}
+
 	response = utils.PopulateResPaging(&param, data, total, totalFiltered)
 
 	return
 }
 
 func UpdateUser(id string) (response models.SDAUser, err error) {
-	parsedUUID, err := uuid.Parse(id)
-	if err != nil {
-		log.Printf("Failed to parse UUID: %v", err)
-		return
-	}
-
-	data, err := repository.GetUserByID(parsedUUID)
+	data, err := repository.GetUserByID(id)
 	if err != nil {
 		return
 	}
@@ -87,13 +98,7 @@ func UpdateUser(id string) (response models.SDAUser, err error) {
 }
 
 func DeleteUser(id string) (response models.SDAUser, err error) {
-	parsedUUID, err := uuid.Parse(id)
-	if err != nil {
-		log.Printf("Failed to parse UUID: %v", err)
-		return
-	}
-
-	data, err := repository.GetUserByID(parsedUUID)
+	data, err := repository.GetUserByID(id)
 	if err != nil {
 		return
 	}

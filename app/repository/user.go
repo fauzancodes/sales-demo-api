@@ -6,7 +6,6 @@ import (
 	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
-	"github.com/google/uuid"
 )
 
 func CreateUser(data models.SDAUser) (models.SDAUser, error) {
@@ -18,8 +17,8 @@ func CreateUser(data models.SDAUser) (models.SDAUser, error) {
 	return data, err
 }
 
-func GetUserByID(id uuid.UUID) (response models.SDAUser, err error) {
-	err = config.DB.First(&response, id).Error
+func GetUserByID(id string) (response models.SDAUser, err error) {
+	err = config.DB.Where("id = ?", id).First(&response).Error
 	if err != nil {
 		log.Printf("Failed to get data from database: %v", err)
 	}

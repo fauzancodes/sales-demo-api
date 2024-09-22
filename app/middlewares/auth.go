@@ -30,7 +30,7 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 			})
 		}
 
-		c.Set("userLogin", claims)
+		c.Set("currentUser", claims)
 		return next(c)
 	}
 }

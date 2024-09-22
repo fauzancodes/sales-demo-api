@@ -17,5 +17,6 @@ func RouteInit(app *echo.Echo) {
 	{
 		auth.POST("/register", controllers.Register)
 		auth.POST("/login", controllers.Login)
+		auth.GET("/user", controllers.GetCurrentUser, middlewares.Auth)
 	}
 }

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -38,7 +39,7 @@ func Register(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, check, _ := service.GetUsers("", "", request.Email, param)
+	_, check, _ := service.GetUsers("", "", request.Email, param, false)
 	if len(check) > 0 {
 		return c.JSON(
 			http.StatusBadRequest,
@@ -100,12 +101,12 @@ func Login(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, user, err := service.GetUsers("", "", request.Email, param)
+	_, user, err := service.GetUsers("", "", request.Email, param, false)
 	if len(user) == 0 {
 		return c.JSON(
-			http.StatusBadRequest,
+			http.StatusNotFound,
 			dto.Response{
-				Status:  400,
+				Status:  404,
 				Message: "Email not found",
 				Error:   err.Error(),
 			},
@@ -125,7 +126,7 @@ func Login(c echo.Context) error {
 	}
 
 	claims := jwt.MapClaims{}
-	claims["id"] = user[0].ID
+	claims["id"] = user[0].ID.UUID.String()
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	token, err := webToken.GenerateToken(&claims)
@@ -146,6 +147,32 @@ func Login(c echo.Context) error {
 			Status:  200,
 			Message: "Success to login",
 			Data:    token,
+		},
+	)
+}
+
+func GetCurrentUser(c echo.Context) error {
+	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
+	log.Printf("Current user ID: %v", userID)
+
+	user, _, err := service.GetUserByID(userID, true)
+	if err != nil {
+		return c.JSON(
+			http.StatusNotFound,
+			dto.Response{
+				Status:  404,
+				Message: "User not found",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Success to get current user",
+			Data:    user,
 		},
 	)
 }
