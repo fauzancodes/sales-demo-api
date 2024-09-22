@@ -4,6 +4,7 @@ go 1.21.6
 
 require (
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/grokify/html-strip-tags-go v0.1.0
 	github.com/guregu/null v4.0.0+incompatible
 	github.com/joho/godotenv v1.5.1
@@ -14,7 +15,6 @@ require (
 )
 
 require (
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
