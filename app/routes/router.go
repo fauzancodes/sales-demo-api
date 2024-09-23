@@ -8,6 +8,7 @@ import (
 
 func RouteInit(app *echo.Echo) {
 	app.Static("/assets", "assets")
+	app.Static("/docs", "docs")
 
 	app.GET("/", controllers.Index)
 
@@ -20,5 +21,17 @@ func RouteInit(app *echo.Echo) {
 		auth.GET("/user", controllers.GetCurrentUser, middlewares.Auth)
 		auth.PATCH("/update-profile", controllers.UpdateProfile, middlewares.Auth)
 		auth.DELETE("/remove-account", controllers.RemoveAccount, middlewares.Auth)
+	}
+
+	product := api.Group("/product", middlewares.Auth)
+	{
+		category := product.Group("/category")
+		{
+			category.POST("", controllers.CreateProductCategory)
+			category.GET("", controllers.GetProductCategories)
+			category.GET("/:id", controllers.GetProductCategoryByID)
+			category.PATCH("/:id", controllers.UpdateProductCategory)
+			category.DELETE("/:id", controllers.DeleteProductCategory)
+		}
 	}
 }

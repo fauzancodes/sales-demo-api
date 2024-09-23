@@ -12,7 +12,7 @@ type PagingRequest struct {
 	Search string      `default:""`
 	Limit  int         `default:"10"`
 	Offset int         `default:"0"`
-	Order  string      `default:"id"`
+	Order  string      `default:"created_at DESC"`
 	Custom interface{} `default:""`
 }
 
@@ -30,7 +30,7 @@ type PagingResponse struct {
 	Offset        int         `default:"0" json:"offset"`
 	TotalPage     int         `default:"0" json:"total_page"`
 	CurrentPage   int         `default:"1" json:"current_page"`
-	Order         string      `default:"id" json:"order"`
+	Order         string      `default:"created_at DESC" json:"order"`
 }
 
 func PopulatePaging(c echo.Context, custom string) (param PagingRequest) {
@@ -60,7 +60,7 @@ func PopulatePaging(c echo.Context, custom string) (param PagingRequest) {
 	}
 	order := c.QueryParam("order")
 	if order == "" {
-		order = "created_at " + order
+		order = "created_at " + sort
 	} else {
 		order = order + " " + sort + ", created_at " + sort
 	}
@@ -103,6 +103,7 @@ func PopulateResPaging(param *PagingRequest, data interface{}, totalResult int64
 		TotalFiltered: int(totalFiltered),
 		CurrentPage:   currentPage,
 		TotalPage:     totalPages,
+		Messages:      "Success to get data",
 	}
 	return
 }
