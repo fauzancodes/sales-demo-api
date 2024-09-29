@@ -225,7 +225,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
 									"type": "string"
 								}
 							]
@@ -404,6 +404,281 @@
 								{
 									"key": "id",
 									"value": "303c67ee-ba01-411d-9f3c-4ed562684ee0",
+									"description": "id of product category"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Nordic Sword\",\r\n    \"description\":\"A sword made by a nord blacksmith\",\r\n    \"price\": 5000,\r\n    \"status\": true,\r\n    \"category_id\": \"58c1d7d7-07f8-4e90-94b9-5acb6ac05833\",\r\n    \"image\": [\r\n        \"https://res.cloudinary.com/fauzancodes/image/upload/v1727595911/sales-demo-api/622c3169-8bd2-46af-909a-def56450ee94/bxoszn4yaiql6gcznq6k.webp\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/v1/product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Product Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/ASUS/Downloads/Picture/NordicSword.webp"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/v1/product/upload-image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"product",
+								"upload-image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/v1/product?name=&page&search=&limit=&offset&order=&sort=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"product"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "",
+									"description": "Category Name"
+								},
+								{
+									"key": "page",
+									"value": null,
+									"description": "Page, default: 1"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name and description"
+								},
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Number of data returned, default: 10"
+								},
+								{
+									"key": "offset",
+									"value": null,
+									"description": "Number of data to be skipped, default: 0"
+								},
+								{
+									"key": "order",
+									"value": "",
+									"description": "Data will be ordered respectively, default: created_at"
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"description": "Data will be sorted respectively, default: DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/v1/product/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+									"description": "id of product category"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\":\"Weapon made by best nord blacksmith\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/v1/product/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+									"description": "id of product category"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/v1/product/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
 									"description": "id of product category"
 								}
 							]
