@@ -6,12 +6,11 @@ import (
 )
 
 type Config struct {
-	Port                        string
+	IndexPort                   string
+	AuthPort                    string
+	ProductPort                 string
+	CustomerPort                string
 	BaseURL                     string
-	CacheURL                    string
-	CachePassword               string
-	LoggerLevel                 string
-	ContextTimeout              int
 	DatabaseUsername            string
 	DatabasePassword            string
 	DatabaseHost                string
@@ -25,11 +24,10 @@ type Config struct {
 }
 
 func LoadConfig() (config *Config) {
-	cacheURL := os.Getenv("CACHE_URL")
-	cachePassword := os.Getenv("CACHE_PASSWORD")
-	loggerLevel := os.Getenv("LOGGER_LEVEL")
-	contextTimeout, _ := strconv.Atoi(os.Getenv("CONTEXT_TIMEOUT"))
-	port := os.Getenv("PORT")
+	indexPort := os.Getenv("INDEX_PORT")
+	authPort := os.Getenv("AUTH_PORT")
+	productPort := os.Getenv("PRODUCT_PORT")
+	customerPort := os.Getenv("CUSTOMER_PORT")
 	baseUrl := os.Getenv("BASE_URL")
 	databaseUsername := os.Getenv("DATABASE_USERNAME")
 	databasePassword := os.Getenv("DATABASE_PASSWORD")
@@ -43,11 +41,6 @@ func LoadConfig() (config *Config) {
 	cLoudinaryAPISecret := os.Getenv("CLOUDINARY_API_SECRET")
 
 	return &Config{
-		CacheURL:                    cacheURL,
-		CachePassword:               cachePassword,
-		Port:                        port,
-		LoggerLevel:                 loggerLevel,
-		ContextTimeout:              contextTimeout,
 		DatabaseUsername:            databaseUsername,
 		DatabasePassword:            databasePassword,
 		DatabaseHost:                databaseHost,
@@ -59,5 +52,9 @@ func LoadConfig() (config *Config) {
 		CloudinaryCloudName:         cloudinaryCloudName,
 		CloudinaryAPIKey:            cloudinaryAPIKey,
 		CLoudinaryAPISecret:         cLoudinaryAPISecret,
+		IndexPort:                   indexPort,
+		AuthPort:                    authPort,
+		ProductPort:                 productPort,
+		CustomerPort:                customerPort,
 	}
 }

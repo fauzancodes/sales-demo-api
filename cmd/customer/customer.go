@@ -13,8 +13,10 @@ func main() {
 	app := echo.New()
 
 	config.Database()
-	routes.RouteInit(app)
+	routes.CustomerRoute(app)
 
-	log.Printf("Server: " + config.LoadConfig().BaseURL + ":" + config.LoadConfig().Port)
-	app.Logger.Fatal(app.Start(":" + config.LoadConfig().Port))
+	port := config.LoadConfig().CustomerPort
+
+	log.Printf("Server: " + config.LoadConfig().BaseURL + ":" + port)
+	app.Logger.Fatal(app.Start(":" + port))
 }

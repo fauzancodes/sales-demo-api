@@ -6,24 +6,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func RouteInit(app *echo.Echo) {
-	app.Static("/assets", "assets")
-	app.Static("/docs", "docs")
-
-	app.GET("/", controllers.Index)
-
-	api := app.Group("/v1", middlewares.StripHTMLMiddleware)
-
-	auth := api.Group("/auth")
-	{
-		auth.POST("/register", controllers.Register)
-		auth.POST("/login", controllers.Login)
-		auth.GET("/user", controllers.GetCurrentUser, middlewares.Auth)
-		auth.PATCH("/update-profile", controllers.UpdateProfile, middlewares.Auth)
-		auth.DELETE("/remove-account", controllers.RemoveAccount, middlewares.Auth)
-	}
-
-	product := api.Group("/product", middlewares.Auth)
+func ProductRoute(app *echo.Echo) {
+	product := app.Group("/product", middlewares.Auth, middlewares.StripHTMLMiddleware)
 	{
 		category := product.Group("/category")
 		{
@@ -46,14 +30,5 @@ func RouteInit(app *echo.Echo) {
 			stock.POST("", controllers.CreateProductStock)
 			stock.GET("", controllers.GetProductStocks)
 		}
-	}
-
-	customer := api.Group("/customer", middlewares.Auth)
-	{
-		customer.POST("", controllers.CreateCustomer)
-		customer.GET("", controllers.GetCustomers)
-		customer.GET("/:id", controllers.GetCustomerByID)
-		customer.PATCH("/:id", controllers.UpdateCustomer)
-		customer.DELETE("/:id", controllers.DeleteCustomer)
 	}
 }

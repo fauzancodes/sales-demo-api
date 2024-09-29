@@ -25,14 +25,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/auth/register",
+							"raw": "http://localhost:8001/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8001",
 							"path": [
-								"v1",
 								"auth",
 								"register"
 							]
@@ -55,14 +54,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/auth/login",
+							"raw": "http://localhost:8001/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8001",
 							"path": [
-								"v1",
 								"auth",
 								"login"
 							]
@@ -86,14 +84,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/auth/user",
+							"raw": "http://localhost:8001/auth/user",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8001",
 							"path": [
-								"v1",
 								"auth",
 								"user"
 							]
@@ -117,14 +114,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/auth/remove-account",
+							"raw": "http://localhost:8001/auth/remove-account",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8001",
 							"path": [
-								"v1",
 								"auth",
 								"remove-account"
 							]
@@ -157,14 +153,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/auth/update-profile",
+							"raw": "http://localhost:8001/auth/update-profile",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8001",
 							"path": [
-								"v1",
 								"auth",
 								"update-profile"
 							]
@@ -175,252 +170,353 @@
 			]
 		},
 		{
-			"name": "Product Category",
-			"item": [
-				{
-					"name": "Create Product Category",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Steal Weapon\",\r\n    \"description\":\"Weapon made from steal\",\r\n    \"status\":true\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8000/v1/product/category",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"v1",
-								"product",
-								"category"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Product Categories",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/v1/product/category?name=&page&search=&limit=&offset&order=&sort=&status",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"v1",
-								"product",
-								"category"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "",
-									"description": "Category Name"
-								},
-								{
-									"key": "page",
-									"value": null,
-									"description": "Page, default: 1"
-								},
-								{
-									"key": "search",
-									"value": "",
-									"description": "Search by name and description"
-								},
-								{
-									"key": "limit",
-									"value": "",
-									"description": "Number of data returned, default: 10"
-								},
-								{
-									"key": "offset",
-									"value": null,
-									"description": "Number of data to be skipped, default: 0"
-								},
-								{
-									"key": "order",
-									"value": "",
-									"description": "Data will be ordered respectively, default: created_at"
-								},
-								{
-									"key": "sort",
-									"value": "",
-									"description": "Data will be sorted respectively, default: DESC"
-								},
-								{
-									"key": "status",
-									"value": null,
-									"description": "Status of data (true = active, false = inactive)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Product Category",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/v1/product/category/:id",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"v1",
-								"product",
-								"category",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "58c1d7d7-07f8-4e90-94b9-5acb6ac05833",
-									"description": "id of product category"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Product Category",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Dragon Bone Weapon\",\r\n    \"description\":\"Weapon made from the bone of the dragon\",\r\n    \"status\":true\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8000/v1/product/category/:id",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"v1",
-								"product",
-								"category",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "bcc6f9f7-4a5d-4aff-b7d6-2b7f91477d04",
-									"description": "id of product category"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Product Category",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/v1/product/category/:id",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"v1",
-								"product",
-								"category",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "303c67ee-ba01-411d-9f3c-4ed562684ee0",
-									"description": "id of product category"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Product",
 			"item": [
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "Create Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Steal Weapon\",\r\n    \"description\":\"Weapon made from steal\",\r\n    \"status\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8002/product/category",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"product",
+										"category"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Categories",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/product/category?name=&page&search=&limit=&offset&order=&sort=&status",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"product",
+										"category"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "",
+											"description": "Category Name"
+										},
+										{
+											"key": "page",
+											"value": null,
+											"description": "Page, default: 1"
+										},
+										{
+											"key": "search",
+											"value": "",
+											"description": "Search by name and description"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "Number of data returned, default: 10"
+										},
+										{
+											"key": "offset",
+											"value": null,
+											"description": "Number of data to be skipped, default: 0"
+										},
+										{
+											"key": "order",
+											"value": "",
+											"description": "Data will be ordered respectively, default: created_at"
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"description": "Data will be sorted respectively, default: DESC"
+										},
+										{
+											"key": "status",
+											"value": null,
+											"description": "Status of data (true = active, false = inactive)"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/product/category/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"product",
+										"category",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "58c1d7d7-07f8-4e90-94b9-5acb6ac05833",
+											"description": "id of product category"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Dragon Bone Weapon\",\r\n    \"description\":\"Weapon made from the bone of the dragon\",\r\n    \"status\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8002/product/category/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"product",
+										"category",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "bcc6f9f7-4a5d-4aff-b7d6-2b7f91477d04",
+											"description": "id of product category"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/product/category/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"product",
+										"category",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "303c67ee-ba01-411d-9f3c-4ed562684ee0",
+											"description": "id of product category"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Stock",
+					"item": [
+						{
+							"name": "Create Stock",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 2,\r\n    \"description\": \"Reduce stock\",\r\n    \"product_id\": \"4c057ef7-24ed-4cb3-a3a4-316780e62c21\",\r\n    \"action\": \"reduce\" //\"add\" or \"reduce\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8002/product/stock",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"product",
+										"stock"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Stocks",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"product",
+										"stock"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": null,
+											"description": "Page, default: 1"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "Number of data returned, default: 10"
+										},
+										{
+											"key": "offset",
+											"value": null,
+											"description": "Number of data to be skipped, default: 0"
+										},
+										{
+											"key": "order",
+											"value": "",
+											"description": "Data will be ordered respectively, default: created_at"
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"description": "Data will be sorted respectively, default: DESC"
+										},
+										{
+											"key": "product_id",
+											"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+											"description": "ID of product"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
 				{
 					"name": "Create Product",
 					"request": {
@@ -446,14 +542,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/product",
+							"raw": "http://localhost:8002/product",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8002",
 							"path": [
-								"v1",
 								"product"
 							]
 						}
@@ -486,14 +581,13 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/product/upload-image",
+							"raw": "http://localhost:8002/product/upload-image",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8002",
 							"path": [
-								"v1",
 								"product",
 								"upload-image"
 							]
@@ -517,14 +611,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status",
+							"raw": "http://localhost:8002/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8002",
 							"path": [
-								"v1",
 								"product"
 							],
 							"query": [
@@ -594,14 +687,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/product/:id",
+							"raw": "http://localhost:8002/product/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8002",
 							"path": [
-								"v1",
 								"product",
 								":id"
 							],
@@ -641,14 +733,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/product/:id",
+							"raw": "http://localhost:8002/product/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8002",
 							"path": [
-								"v1",
 								"product",
 								":id"
 							],
@@ -679,14 +770,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/product/:id",
+							"raw": "http://localhost:8002/product/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8002",
 							"path": [
-								"v1",
 								"product",
 								":id"
 							],
@@ -695,114 +785,6 @@
 									"key": "id",
 									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
 									"description": "id of product category"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Product Stock",
-			"item": [
-				{
-					"name": "Create Product",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"amount\": 2,\r\n    \"description\": \"Reduce stock\",\r\n    \"product_id\": \"4c057ef7-24ed-4cb3-a3a4-316780e62c21\",\r\n    \"action\": \"reduce\" //\"add\" or \"reduce\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8000/v1/product/stock",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"v1",
-								"product",
-								"stock"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Products",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/v1/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"v1",
-								"product",
-								"stock"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": null,
-									"description": "Page, default: 1"
-								},
-								{
-									"key": "limit",
-									"value": "",
-									"description": "Number of data returned, default: 10"
-								},
-								{
-									"key": "offset",
-									"value": null,
-									"description": "Number of data to be skipped, default: 0"
-								},
-								{
-									"key": "order",
-									"value": "",
-									"description": "Data will be ordered respectively, default: created_at"
-								},
-								{
-									"key": "sort",
-									"value": "",
-									"description": "Data will be sorted respectively, default: DESC"
-								},
-								{
-									"key": "product_id",
-									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
-									"description": "ID of product"
 								}
 							]
 						}
@@ -839,14 +821,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/customer",
+							"raw": "http://localhost:8003/customer",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8003",
 							"path": [
-								"v1",
 								"customer"
 							]
 						}
@@ -869,14 +850,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status",
+							"raw": "http://localhost:8003/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8003",
 							"path": [
-								"v1",
 								"customer"
 							],
 							"query": [
@@ -946,14 +926,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/customer/:id",
+							"raw": "http://localhost:8003/customer/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8003",
 							"path": [
-								"v1",
 								"customer",
 								":id"
 							],
@@ -993,14 +972,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/customer/:id",
+							"raw": "http://localhost:8003/customer/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8003",
 							"path": [
-								"v1",
 								"customer",
 								":id"
 							],
@@ -1031,14 +1009,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/customer/:id",
+							"raw": "http://localhost:8003/customer/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "8003",
 							"path": [
-								"v1",
 								"customer",
 								":id"
 							],

@@ -5,5 +5,5 @@ import (
 )
 
 func Index(c echo.Context) error {
-	return c.File("index.html")
+	return c.File("/assets/html/index.html")
 }
