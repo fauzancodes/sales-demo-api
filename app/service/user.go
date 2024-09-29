@@ -3,9 +3,9 @@ package service
 import (
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/bcrypt"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
-	"github.com/fauzancodes/sales-demo-api/pkg/bcrypt"
-	"github.com/fauzancodes/sales-demo-api/pkg/utils"
 	"github.com/google/uuid"
 )
 

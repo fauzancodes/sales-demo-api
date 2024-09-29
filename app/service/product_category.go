@@ -3,8 +3,8 @@ package service
 import (
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
-	"github.com/fauzancodes/sales-demo-api/pkg/utils"
 	"github.com/google/uuid"
 )
 
@@ -74,7 +74,7 @@ func UpdateProductCategory(id string, request dto.ProductCategoryRequest) (respo
 	if err != nil {
 		return
 	}
-	
+
 	data, err := repository.GetProductCategoryByID(parsedUUID)
 	if err != nil {
 		return

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
-	"github.com/fauzancodes/sales-demo-api/pkg/jwt"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/jwt"
 	"github.com/labstack/echo/v4"
 )
 
