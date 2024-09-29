@@ -29,6 +29,7 @@ func Database() *gorm.DB {
 		err = DB.AutoMigrate(
 			&models.SDAUser{},
 			&models.SDAProductCategory{},
+			&models.SDAProduct{},
 		)
 		if err != nil {
 			log.Fatalf("Failed to migrate database: %v", err)

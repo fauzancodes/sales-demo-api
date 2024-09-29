@@ -13,7 +13,6 @@ func main() {
 	app := echo.New()
 
 	config.Database()
-	config.Redis()
 	routes.RouteInit(app)
 
 	log.Printf("Server: " + config.LoadConfig().BaseURL + ":" + config.LoadConfig().Port)

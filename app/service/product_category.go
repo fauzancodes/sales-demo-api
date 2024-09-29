@@ -36,7 +36,7 @@ func GetProductCategoryByID(id string) (data models.SDAProductCategory, err erro
 	return
 }
 
-func GetProductCategories(name string, userID string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAProductCategory, err error) {
+func GetProductCategories(name, userID string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAProductCategory, err error) {
 	baseFilter := "deleted_at IS NULL"
 	if userID != "" {
 		baseFilter += " AND user_id = '" + userID + "'"
@@ -74,6 +74,7 @@ func UpdateProductCategory(id string, request dto.ProductCategoryRequest) (respo
 	if err != nil {
 		return
 	}
+	
 	data, err := repository.GetProductCategoryByID(parsedUUID)
 	if err != nil {
 		return

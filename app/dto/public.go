@@ -1,5 +1,7 @@
 package dto
 
+import "github.com/google/uuid"
+
 type Response struct {
 	Status  int         `json:"status"`
 	Message string      `json:"message"`
@@ -13,4 +15,9 @@ type FindParameter struct {
 	Order      string
 	Limit      int
 	Offset     int
+}
+
+type GlobalIDNameResponse struct {
+	ID   uuid.UUID `json:"id"`
+	Name string    `json:"name"`
 }

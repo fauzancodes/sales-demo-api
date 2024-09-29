@@ -33,5 +33,12 @@ func RouteInit(app *echo.Echo) {
 			category.PATCH("/:id", controllers.UpdateProductCategory)
 			category.DELETE("/:id", controllers.DeleteProductCategory)
 		}
+
+		product.POST("/upload-image", controllers.UploadFile)
+		product.POST("", controllers.CreateProduct)
+		product.GET("", controllers.GetProducts)
+		product.GET("/:id", controllers.GetProductByID)
+		product.PATCH("/:id", controllers.UpdateProduct)
+		product.DELETE("/:id", controllers.DeleteProduct)
 	}
 }
