@@ -233,7 +233,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/product/category?name=&page&search=&limit=&offset&order=&sort=",
+							"raw": "http://localhost:8000/v1/product/category?name=&page&search=&limit=&offset&order=&sort=&status",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -279,6 +279,11 @@
 									"key": "sort",
 									"value": "",
 									"description": "Data will be sorted respectively, default: DESC"
+								},
+								{
+									"key": "status",
+									"value": null,
+									"description": "Status of data (true = active, false = inactive)"
 								}
 							]
 						}
@@ -512,7 +517,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/product?name=&page&search=&limit=&offset&order=&sort=&category_id",
+							"raw": "http://localhost:8000/v1/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -562,6 +567,11 @@
 									"key": "category_id",
 									"value": null,
 									"description": "ID of product category"
+								},
+								{
+									"key": "status",
+									"value": null,
+									"description": "Status of data (true = active, false = inactive)"
 								}
 							]
 						}
@@ -752,7 +762,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/product/stock?page&search=&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+							"raw": "http://localhost:8000/v1/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -764,6 +774,122 @@
 								"stock"
 							],
 							"query": [
+								{
+									"key": "page",
+									"value": null,
+									"description": "Page, default: 1"
+								},
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Number of data returned, default: 10"
+								},
+								{
+									"key": "offset",
+									"value": null,
+									"description": "Number of data to be skipped, default: 0"
+								},
+								{
+									"key": "order",
+									"value": "",
+									"description": "Data will be ordered respectively, default: created_at"
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"description": "Data will be sorted respectively, default: DESC"
+								},
+								{
+									"key": "product_id",
+									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+									"description": "ID of product"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Create Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODY3NzEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.eJzh3Kmd9KbW3Lb0YGpJPcRQ5f-xx2Gik0IdD5rSn2s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"Eorlund\",\r\n    \"last_name\":\"The Whitemane\",\r\n    \"email\": \"eorlund@whiterun.com\",\r\n    \"phone\": \"089977665544\",\r\n    \"status\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/v1/customer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/v1/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"customer"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "",
+									"description": "Customer email"
+								},
+								{
+									"key": "phone",
+									"value": null,
+									"description": "Customer phone"
+								},
 								{
 									"key": "page",
 									"value": null,
@@ -795,9 +921,132 @@
 									"description": "Data will be sorted respectively, default: DESC"
 								},
 								{
-									"key": "product_id",
-									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
-									"description": "ID of product"
+									"key": "status",
+									"value": null,
+									"description": "Status of data (true = active, false = inactive)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/v1/customer/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a72271b3-33ce-4c1a-9954-cd6e7dae7b8e",
+									"description": "id of product cutomer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"Eorlund\",\r\n    \"last_name\":\"The Whitemane\",\r\n    \"email\": \"eorlund@whiterun.skyrim\",\r\n    \"phone\": \"089977665544\",\r\n    \"status\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/v1/customer/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a72271b3-33ce-4c1a-9954-cd6e7dae7b8e",
+									"description": "id of product customer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/v1/customer/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a72271b3-33ce-4c1a-9954-cd6e7dae7b8e",
+									"description": "id of product customer"
 								}
 							]
 						}

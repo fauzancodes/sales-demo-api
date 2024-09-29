@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func CreateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
+func CreateProductCategory(data models.SDAProductCategory) (models.SDAProductCategory, error) {
 	err := config.DB.Create(&data).Error
 	if err != nil {
 		log.Printf("Failed to insert data to database: %v", err)
@@ -18,7 +18,7 @@ func CreateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
 	return data, err
 }
 
-func GetCustomerByID(id uuid.UUID) (response models.SDACustomer, err error) {
+func GetProductCategoryByID(id uuid.UUID) (response models.SDAProductCategory, err error) {
 	err = config.DB.Where("id = ?", id).First(&response).Error
 	if err != nil {
 		log.Printf("Failed to get data from database: %v", err)
@@ -27,7 +27,7 @@ func GetCustomerByID(id uuid.UUID) (response models.SDACustomer, err error) {
 	return
 }
 
-func GetCustomers(param dto.FindParameter) (responses []models.SDACustomer, total int64, totalFiltered int64, err error) {
+func GetProductCategories(param dto.FindParameter) (responses []models.SDAProductCategory, total int64, totalFiltered int64, err error) {
 	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
 	if err != nil {
 		log.Printf("Failed to count data from database: %v", err)
@@ -52,7 +52,7 @@ func GetCustomers(param dto.FindParameter) (responses []models.SDACustomer, tota
 	return
 }
 
-func UpdateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
+func UpdateProductCategory(data models.SDAProductCategory) (models.SDAProductCategory, error) {
 	err := config.DB.Save(&data).Error
 	if err != nil {
 		log.Printf("Failed to update data in database: %v", err)
@@ -61,7 +61,7 @@ func UpdateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
 	return data, err
 }
 
-func DeleteCustomer(data models.SDACustomer) error {
+func DeleteProductCategory(data models.SDAProductCategory) error {
 	err := config.DB.Delete(&data).Error
 	if err != nil {
 		log.Printf("Failed to delete data in from database: %v", err)

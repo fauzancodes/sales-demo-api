@@ -47,4 +47,13 @@ func RouteInit(app *echo.Echo) {
 			stock.GET("", controllers.GetProductStocks)
 		}
 	}
+
+	customer := api.Group("/customer", middlewares.Auth)
+	{
+		customer.POST("", controllers.CreateCustomer)
+		customer.GET("", controllers.GetCustomers)
+		customer.GET("/:id", controllers.GetCustomerByID)
+		customer.PATCH("/:id", controllers.UpdateCustomer)
+		customer.DELETE("/:id", controllers.DeleteCustomer)
+	}
 }

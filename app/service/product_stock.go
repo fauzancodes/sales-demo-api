@@ -52,12 +52,6 @@ func GetProductStocks(productID, userID string, param utils.PagingRequest) (resp
 	if productID != "" {
 		filter += " AND product_id = '" + productID + "'"
 	}
-	if param.Custom.(string) != "" {
-		filter += " AND status = " + param.Custom.(string)
-	}
-	if param.Search != "" {
-		filter += " AND (name ILIKE '%" + param.Search + "%' OR description ILIKE '%" + param.Search + "%')"
-	}
 
 	data, total, totalFiltered, err := repository.GetProductStocks(dto.FindParameter{
 		BaseFilter: baseFilter,
