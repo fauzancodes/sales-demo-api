@@ -40,5 +40,11 @@ func RouteInit(app *echo.Echo) {
 		product.GET("/:id", controllers.GetProductByID)
 		product.PATCH("/:id", controllers.UpdateProduct)
 		product.DELETE("/:id", controllers.DeleteProduct)
+
+		stock := product.Group("/stock")
+		{
+			stock.POST("", controllers.CreateProductStock)
+			stock.GET("", controllers.GetProductStocks)
+		}
 	}
 }

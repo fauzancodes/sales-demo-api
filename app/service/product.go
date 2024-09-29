@@ -29,6 +29,9 @@ func BuildProductResponse(data models.SDAProduct) (response dto.ProductResponse,
 	response.Category.ID = category.ID
 	response.Category.Name = category.Name
 
+	lastProductStock, _ := repository.GetLastProductStock(data.ID)
+	response.Stock = lastProductStock.Current
+
 	return
 }
 

@@ -28,5 +28,6 @@ type ProductResponse struct {
 	Status      bool                 `json:"status"`
 	Image       []string             `json:"image"`
 	Price       float64              `json:"price"`
+	Stock       int                  `json:"stock"`
 	Category    GlobalIDNameResponse `json:"category"`
 }
