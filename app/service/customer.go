@@ -28,17 +28,17 @@ func CreateCustomer(userID string, request dto.CustomerRequest) (response models
 	return
 }
 
-func GetCustomerByID(id string) (data models.SDACustomer, err error) {
+func GetCustomerByID(id string, preloadFields []string) (data models.SDACustomer, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
 		return
 	}
-	data, err = repository.GetCustomerByID(parsedUUID)
+	data, err = repository.GetCustomerByID(parsedUUID, preloadFields)
 
 	return
 }
 
-func GetCustomers(email, phone, userID string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDACustomer, err error) {
+func GetCustomers(email, phone, userID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDACustomer, err error) {
 	baseFilter := "deleted_at IS NULL"
 	if userID != "" {
 		baseFilter += " AND user_id = '" + userID + "'"
@@ -64,7 +64,7 @@ func GetCustomers(email, phone, userID string, param utils.PagingRequest) (respo
 		Limit:      param.Limit,
 		Order:      param.Order,
 		Offset:     param.Offset,
-	})
+	}, preloadFields)
 	if err != nil {
 		return
 	}
@@ -80,7 +80,7 @@ func UpdateCustomer(id string, request dto.CustomerRequest) (response models.SDA
 		return
 	}
 
-	data, err := repository.GetCustomerByID(parsedUUID)
+	data, err := repository.GetCustomerByID(parsedUUID, []string{})
 	if err != nil {
 		return
 	}
@@ -110,7 +110,7 @@ func DeleteCustomer(id string) (err error) {
 		return
 	}
 
-	data, err := repository.GetCustomerByID(parsedUUID)
+	data, err := repository.GetCustomerByID(parsedUUID, []string{})
 	if err != nil {
 		return
 	}

@@ -23,11 +23,17 @@ func (request ProductRequest) Validate() error {
 
 type ProductResponse struct {
 	models.CustomGormModel
-	Name        string               `json:"name"`
-	Description string               `json:"description"`
-	Status      bool                 `json:"status"`
-	Image       []string             `json:"image"`
-	Price       float64              `json:"price"`
-	Stock       int                  `json:"stock"`
-	Category    GlobalIDNameResponse `json:"category"`
+	Name        string                         `json:"name"`
+	Description string                         `json:"description"`
+	Status      bool                           `json:"status"`
+	Image       []string                       `json:"image"`
+	Price       float64                        `json:"price"`
+	Stock       int                            `json:"stock"`
+	Category    models.ProductCategoryRelation `json:"category"`
+}
+
+type ProductPreloadParameter struct {
+	LoadCategory bool
+	LoadUser     bool
+	LoadStocks   bool
 }

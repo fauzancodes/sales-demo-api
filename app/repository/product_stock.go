@@ -6,11 +6,12 @@ import (
 	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/google/uuid"
 )
 
 func CreateProductStock(data models.SDAProductStock) (models.SDAProductStock, error) {
-	err := config.DB.Create(&data).Error
+	err := config.DB.Preload("User").Preload("Product").Create(&data).Error
 	if err != nil {
 		log.Printf("Failed to insert data to database: %v", err)
 	}
@@ -18,7 +19,7 @@ func CreateProductStock(data models.SDAProductStock) (models.SDAProductStock, er
 	return data, err
 }
 
-func GetProductStocks(param dto.FindParameter) (responses []models.SDAProductStock, total int64, totalFiltered int64, err error) {
+func GetProductStocks(param dto.FindParameter, preloadFields []string) (responses []models.SDAProductStock, total int64, totalFiltered int64, err error) {
 	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
 	if err != nil {
 		log.Printf("Failed to count data from database: %v", err)
@@ -31,10 +32,11 @@ func GetProductStocks(param dto.FindParameter) (responses []models.SDAProductSto
 		return
 	}
 
+	db := utils.BuildPreload(config.DB, preloadFields)
 	if param.Limit == 0 {
-		err = config.DB.Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
+		err = db.Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	} else {
-		err = config.DB.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
+		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	}
 	if err != nil {
 		log.Printf("Failed to get data list from database: %v", err)
@@ -43,8 +45,9 @@ func GetProductStocks(param dto.FindParameter) (responses []models.SDAProductSto
 	return
 }
 
-func GetLastProductStock(id uuid.UUID) (response models.SDAProductStock, err error) {
-	err = config.DB.Where("product_id = ?", id).Order("created_at DESC").First(&response).Error
+func GetLastProductStock(id uuid.UUID, preloadFields []string) (response models.SDAProductStock, err error) {
+	db := utils.BuildPreload(config.DB, preloadFields)
+	err = db.Where("product_id = ?", id).Order("created_at DESC").First(&response).Error
 	if err != nil {
 		log.Printf("Failed to get data from database: %v", err)
 	}

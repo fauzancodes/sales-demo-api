@@ -65,9 +65,10 @@ func GetProductCategories(c echo.Context) error {
 	log.Printf("Current user ID: %v", userID)
 
 	name := c.QueryParam("name")
+	preloadFields := utils.GetBuildPreloadFields(c)
 
 	param := utils.PopulatePaging(c, "status")
-	data, _, err := service.GetProductCategories(name, userID, param)
+	data, _, err := service.GetProductCategories(name, userID, param, preloadFields)
 	if err != nil {
 		return c.JSON(
 			http.StatusNotFound,
@@ -84,8 +85,9 @@ func GetProductCategories(c echo.Context) error {
 
 func GetProductCategoryByID(c echo.Context) error {
 	id := c.Param("id")
+	preloadFields := utils.GetBuildPreloadFields(c)
 
-	data, err := service.GetProductCategoryByID(id)
+	data, err := service.GetProductCategoryByID(id, preloadFields)
 	if err != nil {
 		return c.JSON(
 			http.StatusNotFound,

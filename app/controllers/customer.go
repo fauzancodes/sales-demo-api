@@ -66,9 +66,10 @@ func GetCustomers(c echo.Context) error {
 
 	email := c.QueryParam("email")
 	phone := c.QueryParam("phone")
+	preloadFields := utils.GetBuildPreloadFields(c)
 
 	param := utils.PopulatePaging(c, "status")
-	data, _, err := service.GetCustomers(email, phone, userID, param)
+	data, _, err := service.GetCustomers(email, phone, userID, param, preloadFields)
 	if err != nil {
 		return c.JSON(
 			http.StatusNotFound,
@@ -85,8 +86,9 @@ func GetCustomers(c echo.Context) error {
 
 func GetCustomerByID(c echo.Context) error {
 	id := c.Param("id")
+	preloadFields := utils.GetBuildPreloadFields(c)
 
-	data, err := service.GetCustomerByID(id)
+	data, err := service.GetCustomerByID(id, preloadFields)
 	if err != nil {
 		return c.JSON(
 			http.StatusNotFound,

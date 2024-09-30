@@ -21,7 +21,7 @@ func CreateProductStock(userID string, request dto.ProductStockRequest) (respons
 		return
 	}
 
-	lastStock, _ := repository.GetLastProductStock(parsedProductUUID)
+	lastStock, _ := repository.GetLastProductStock(parsedProductUUID, []string{})
 
 	data := models.SDAProductStock{
 		ProductID:   parsedProductUUID,
@@ -42,7 +42,7 @@ func CreateProductStock(userID string, request dto.ProductStockRequest) (respons
 	return
 }
 
-func GetProductStocks(productID, userID string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAProductStock, err error) {
+func GetProductStocks(productID, userID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAProductStock, err error) {
 	baseFilter := "deleted_at IS NULL"
 	if userID != "" {
 		baseFilter += " AND user_id = '" + userID + "'"
@@ -59,7 +59,7 @@ func GetProductStocks(productID, userID string, param utils.PagingRequest) (resp
 		Limit:      param.Limit,
 		Order:      param.Order,
 		Offset:     param.Offset,
-	})
+	}, preloadFields)
 	if err != nil {
 		return
 	}

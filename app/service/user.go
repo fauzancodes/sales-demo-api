@@ -22,17 +22,17 @@ func CreateUser(request dto.UserRequest) (response models.SDAUser, err error) {
 	return
 }
 
-func GetUserByID(id string) (data models.SDAUser, err error) {
+func GetUserByID(id string, preloadFields []string) (data models.SDAUser, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
 		return
 	}
-	data, err = repository.GetUserByID(parsedUUID)
+	data, err = repository.GetUserByID(parsedUUID, preloadFields)
 
 	return
 }
 
-func GetUsers(firstName, lastName, email string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAUser, err error) {
+func GetUsers(firstName, lastName, email string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAUser, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
 
@@ -55,7 +55,7 @@ func GetUsers(firstName, lastName, email string, param utils.PagingRequest) (res
 		Limit:      param.Limit,
 		Order:      param.Order,
 		Offset:     param.Offset,
-	})
+	}, preloadFields)
 	if err != nil {
 		return
 	}
@@ -70,7 +70,7 @@ func UpdateUser(id string, request dto.UserRequest) (response models.SDAUser, er
 	if err != nil {
 		return
 	}
-	data, err := repository.GetUserByID(parsedUUID)
+	data, err := repository.GetUserByID(parsedUUID, []string{})
 	if err != nil {
 		return
 	}
@@ -99,7 +99,7 @@ func DeleteUser(id string) (err error) {
 		return
 	}
 
-	data, err := repository.GetUserByID(parsedUUID)
+	data, err := repository.GetUserByID(parsedUUID, []string{})
 	if err != nil {
 		return
 	}

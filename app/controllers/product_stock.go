@@ -65,9 +65,10 @@ func GetProductStocks(c echo.Context) error {
 	log.Printf("Current user ID: %v", userID)
 
 	productID := c.QueryParam("product_id")
+	preloadFields := utils.GetBuildPreloadFields(c)
 
 	param := utils.PopulatePaging(c, "status")
-	data, _, err := service.GetProductStocks(productID, userID, param)
+	data, _, err := service.GetProductStocks(productID, userID, param, preloadFields)
 	if err != nil {
 		return c.JSON(
 			http.StatusNotFound,

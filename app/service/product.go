@@ -16,20 +16,14 @@ func BuildProductResponse(data models.SDAProduct) (response dto.ProductResponse,
 	response.Description = data.Description
 	response.Status = data.Status
 	response.Price = data.Price
+	response.Category = data.Category
 
 	err = json.Unmarshal([]byte(data.Image), &response.Image)
 	if err != nil {
 		return
 	}
 
-	category, err := repository.GetProductCategoryByID(data.CategoryID)
-	if err != nil {
-		return
-	}
-	response.Category.ID = category.ID
-	response.Category.Name = category.Name
-
-	lastProductStock, _ := repository.GetLastProductStock(data.ID)
+	lastProductStock, _ := repository.GetLastProductStock(data.ID, []string{})
 	response.Stock = lastProductStock.Current
 
 	return
@@ -66,13 +60,13 @@ func CreateProduct(userID string, request dto.ProductRequest) (response models.S
 	return
 }
 
-func GetProductByID(id string) (response dto.ProductResponse, err error) {
+func GetProductByID(id string, preloadFields []string) (response dto.ProductResponse, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
 		return
 	}
 
-	data, err := repository.GetProductByID(parsedUUID)
+	data, err := repository.GetProductByID(parsedUUID, preloadFields)
 	if err != nil {
 		return
 	}
@@ -85,7 +79,7 @@ func GetProductByID(id string) (response dto.ProductResponse, err error) {
 	return
 }
 
-func GetProducts(name, userID, categoryID string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAProduct, err error) {
+func GetProducts(name, userID, categoryID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAProduct, err error) {
 	baseFilter := "deleted_at IS NULL"
 	if userID != "" {
 		baseFilter += " AND user_id = '" + userID + "'"
@@ -111,7 +105,7 @@ func GetProducts(name, userID, categoryID string, param utils.PagingRequest) (re
 		Limit:      param.Limit,
 		Order:      param.Order,
 		Offset:     param.Offset,
-	})
+	}, preloadFields)
 	if err != nil {
 		return
 	}
@@ -138,7 +132,7 @@ func UpdateProduct(id string, request dto.ProductRequest) (response models.SDAPr
 		return
 	}
 
-	data, err := repository.GetProductByID(parsedUUID)
+	data, err := repository.GetProductByID(parsedUUID, []string{})
 	if err != nil {
 		return
 	}
@@ -185,7 +179,7 @@ func DeleteProduct(id string) (err error) {
 		return
 	}
 
-	data, err := repository.GetProductByID(parsedUUID)
+	data, err := repository.GetProductByID(parsedUUID, []string{})
 	if err != nil {
 		return
 	}

@@ -25,12 +25,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8001/auth/register",
+							"raw": "http://localhost:8000/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8001",
+							"port": "8000",
 							"path": [
 								"auth",
 								"register"
@@ -54,12 +54,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8001/auth/login",
+							"raw": "http://localhost:8000/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8001",
+							"port": "8000",
 							"path": [
 								"auth",
 								"login"
@@ -76,7 +76,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "c",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc3ODY4MzAsImlkIjoiYWRjMDc2MWYtMjVlMy00MjA1LTkwMDktZDE1MGVkZTM1Y2ZkIn0.Q41gOUVp-4iYR-2AWyn2V0IHz39M7uNHhRR0d0m_LuQ",
 									"type": "string"
 								}
 							]
@@ -84,12 +84,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8001/auth/user",
+							"raw": "http://localhost:8000/auth/user",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8001",
+							"port": "8000",
 							"path": [
 								"auth",
 								"user"
@@ -230,7 +230,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8002/product/category?name=&page&search=&limit=&offset&order=&sort=&status",
+									"raw": "http://localhost:8002/product/category?name=&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Products",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -280,6 +280,11 @@
 											"key": "status",
 											"value": null,
 											"description": "Status of data (true = active, false = inactive)"
+										},
+										{
+											"key": "preload_fields",
+											"value": "User,Products",
+											"description": "Accepted Value (seperated by comma): User, Products"
 										}
 									]
 								}
@@ -302,7 +307,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8002/product/category/:id",
+									"raw": "http://localhost:8002/product/category/:id?preload_fields=User,Products",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -312,6 +317,13 @@
 										"product",
 										"category",
 										":id"
+									],
+									"query": [
+										{
+											"key": "preload_fields",
+											"value": "User,Products",
+											"description": "Accepted Value (seperated by comma): User, Products"
+										}
 									],
 									"variable": [
 										{
@@ -469,7 +481,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8002/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+									"raw": "http://localhost:8002/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21&preload_fields=Category,User,Stocks",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -509,6 +521,11 @@
 											"key": "product_id",
 											"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
 											"description": "ID of product"
+										},
+										{
+											"key": "preload_fields",
+											"value": "Category,User,Stocks",
+											"description": "Accepted Value (seperated by comma): Category, User, Stocks"
 										}
 									]
 								}
@@ -611,7 +628,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8002/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status",
+							"raw": "http://localhost:8002/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status&preload_fields=Category,User,Stocks",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -665,6 +682,11 @@
 									"key": "status",
 									"value": null,
 									"description": "Status of data (true = active, false = inactive)"
+								},
+								{
+									"key": "preload_fields",
+									"value": "Category,User,Stocks",
+									"description": "Accepted Value (seperated by comma): Category, User, Stocks"
 								}
 							]
 						}
@@ -687,7 +709,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8002/product/:id",
+							"raw": "http://localhost:8002/product/:id?preload_fields=Category,User,Stocks",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -696,6 +718,13 @@
 							"path": [
 								"product",
 								":id"
+							],
+							"query": [
+								{
+									"key": "preload_fields",
+									"value": "Category,User,Stocks",
+									"description": "Accepted Value (seperated by comma): Category, User, Stocks"
+								}
 							],
 							"variable": [
 								{
@@ -804,7 +833,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODY3NzEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.eJzh3Kmd9KbW3Lb0YGpJPcRQ5f-xx2Gik0IdD5rSn2s",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc3ODY4MzAsImlkIjoiYWRjMDc2MWYtMjVlMy00MjA1LTkwMDktZDE1MGVkZTM1Y2ZkIn0.Q41gOUVp-4iYR-2AWyn2V0IHz39M7uNHhRR0d0m_LuQ",
 									"type": "string"
 								}
 							]
@@ -821,12 +850,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8003/customer",
+							"raw": "http://localhost:8000/customer",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8003",
+							"port": "8000",
 							"path": [
 								"customer"
 							]
@@ -850,7 +879,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8003/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status",
+							"raw": "http://localhost:8003/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status&preload_fields=User",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -904,6 +933,11 @@
 									"key": "status",
 									"value": null,
 									"description": "Status of data (true = active, false = inactive)"
+								},
+								{
+									"key": "preload_fields",
+									"value": "User",
+									"description": "Accepted Value (seperated by comma): User"
 								}
 							]
 						}
@@ -926,7 +960,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8003/customer/:id",
+							"raw": "http://localhost:8003/customer/:id?preload_fields=User",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -935,6 +969,13 @@
 							"path": [
 								"customer",
 								":id"
+							],
+							"query": [
+								{
+									"key": "preload_fields",
+									"value": "User",
+									"description": "Accepted Value (seperated by comma): User"
+								}
 							],
 							"variable": [
 								{

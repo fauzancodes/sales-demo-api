@@ -39,7 +39,7 @@ func Register(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, check, _ := service.GetUsers("", "", request.Email, param)
+	_, check, _ := service.GetUsers("", "", request.Email, param, []string{})
 	if len(check) > 0 {
 		return c.JSON(
 			http.StatusBadRequest,
@@ -101,7 +101,7 @@ func Login(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, user, err := service.GetUsers("", "", request.Email, param)
+	_, user, err := service.GetUsers("", "", request.Email, param, []string{})
 	if len(user) == 0 {
 		return c.JSON(
 			http.StatusNotFound,
@@ -155,7 +155,12 @@ func GetCurrentUser(c echo.Context) error {
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
-	data, err := service.GetUserByID(userID)
+	data, err := service.GetUserByID(userID, []string{
+		"Products",
+		"ProductCategories",
+		"ProductStocks",
+		"Customers",
+	})
 	if err != nil {
 		return c.JSON(
 			http.StatusNotFound,

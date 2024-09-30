@@ -6,11 +6,12 @@ import (
 	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/google/uuid"
 )
 
 func CreateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
-	err := config.DB.Create(&data).Error
+	err := config.DB.Preload("User").Create(&data).Error
 	if err != nil {
 		log.Printf("Failed to insert data to database: %v", err)
 	}
@@ -18,8 +19,9 @@ func CreateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
 	return data, err
 }
 
-func GetCustomerByID(id uuid.UUID) (response models.SDACustomer, err error) {
-	err = config.DB.Where("id = ?", id).First(&response).Error
+func GetCustomerByID(id uuid.UUID, preloadFields []string) (response models.SDACustomer, err error) {
+	db := utils.BuildPreload(config.DB, preloadFields)
+	err = db.Where("id = ?", id).First(&response).Error
 	if err != nil {
 		log.Printf("Failed to get data from database: %v", err)
 	}
@@ -27,7 +29,7 @@ func GetCustomerByID(id uuid.UUID) (response models.SDACustomer, err error) {
 	return
 }
 
-func GetCustomers(param dto.FindParameter) (responses []models.SDACustomer, total int64, totalFiltered int64, err error) {
+func GetCustomers(param dto.FindParameter, preloadFields []string) (responses []models.SDACustomer, total int64, totalFiltered int64, err error) {
 	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
 	if err != nil {
 		log.Printf("Failed to count data from database: %v", err)
@@ -40,10 +42,11 @@ func GetCustomers(param dto.FindParameter) (responses []models.SDACustomer, tota
 		return
 	}
 
+	db := utils.BuildPreload(config.DB, preloadFields)
 	if param.Limit == 0 {
-		err = config.DB.Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
+		err = db.Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	} else {
-		err = config.DB.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
+		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	}
 	if err != nil {
 		log.Printf("Failed to get data list from database: %v", err)
@@ -53,7 +56,7 @@ func GetCustomers(param dto.FindParameter) (responses []models.SDACustomer, tota
 }
 
 func UpdateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
-	err := config.DB.Save(&data).Error
+	err := config.DB.Preload("User").Save(&data).Error
 	if err != nil {
 		log.Printf("Failed to update data in database: %v", err)
 	}
