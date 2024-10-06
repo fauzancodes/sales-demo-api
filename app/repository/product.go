@@ -21,6 +21,7 @@ func CreateProduct(data models.SDAProduct) (models.SDAProduct, error) {
 
 func GetProductByID(id uuid.UUID, preloadFields []string) (response models.SDAProduct, err error) {
 	db := utils.BuildPreload(config.DB, preloadFields)
+
 	err = db.Where("id = ?", id).First(&response).Error
 	if err != nil {
 		log.Printf("Failed to get data from database: %v", err)
@@ -43,6 +44,7 @@ func GetProducts(param dto.FindParameter, preloadFields []string) (responses []m
 	}
 
 	db := utils.BuildPreload(config.DB, preloadFields)
+
 	if param.Limit == 0 {
 		err = db.Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	} else {

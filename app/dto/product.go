@@ -31,9 +31,3 @@ type ProductResponse struct {
 	Stock       int                            `json:"stock"`
 	Category    models.ProductCategoryRelation `json:"category"`
 }
-
-type ProductPreloadParameter struct {
-	LoadCategory bool
-	LoadUser     bool
-	LoadStocks   bool
-}

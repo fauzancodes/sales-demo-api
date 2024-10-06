@@ -32,6 +32,8 @@ func Database() *gorm.DB {
 			&models.SDAProduct{},
 			&models.SDAProductStock{},
 			&models.SDACustomer{},
+			&models.SDASale{},
+			&models.SDASaleDetail{},
 		)
 		if err != nil {
 			log.Fatalf("Failed to migrate database: %v", err)

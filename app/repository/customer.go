@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func CreateProductCategory(data models.SDAProductCategory) (models.SDAProductCategory, error) {
+func CreateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
 	err := config.DB.Preload("User").Create(&data).Error
 	if err != nil {
 		log.Printf("Failed to insert data to database: %v", err)
@@ -19,8 +19,9 @@ func CreateProductCategory(data models.SDAProductCategory) (models.SDAProductCat
 	return data, err
 }
 
-func GetProductCategoryByID(id uuid.UUID, preloadFields []string) (response models.SDAProductCategory, err error) {
+func GetCustomerByID(id uuid.UUID, preloadFields []string) (response models.SDACustomer, err error) {
 	db := utils.BuildPreload(config.DB, preloadFields)
+
 	err = db.Where("id = ?", id).First(&response).Error
 	if err != nil {
 		log.Printf("Failed to get data from database: %v", err)
@@ -29,7 +30,7 @@ func GetProductCategoryByID(id uuid.UUID, preloadFields []string) (response mode
 	return
 }
 
-func GetProductCategories(param dto.FindParameter, preloadFields []string) (responses []models.SDAProductCategory, total int64, totalFiltered int64, err error) {
+func GetCustomers(param dto.FindParameter, preloadFields []string) (responses []models.SDACustomer, total int64, totalFiltered int64, err error) {
 	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
 	if err != nil {
 		log.Printf("Failed to count data from database: %v", err)
@@ -43,6 +44,7 @@ func GetProductCategories(param dto.FindParameter, preloadFields []string) (resp
 	}
 
 	db := utils.BuildPreload(config.DB, preloadFields)
+
 	if param.Limit == 0 {
 		err = db.Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	} else {
@@ -55,8 +57,8 @@ func GetProductCategories(param dto.FindParameter, preloadFields []string) (resp
 	return
 }
 
-func UpdateProductCategory(data models.SDAProductCategory) (models.SDAProductCategory, error) {
-	err := config.DB.Preload("User").Preload("Products").Save(&data).Error
+func UpdateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
+	err := config.DB.Preload("User").Save(&data).Error
 	if err != nil {
 		log.Printf("Failed to update data in database: %v", err)
 	}
@@ -64,7 +66,7 @@ func UpdateProductCategory(data models.SDAProductCategory) (models.SDAProductCat
 	return data, err
 }
 
-func DeleteProductCategory(data models.SDAProductCategory) error {
+func DeleteCustomer(data models.SDACustomer) error {
 	err := config.DB.Delete(&data).Error
 	if err != nil {
 		log.Printf("Failed to delete data in from database: %v", err)

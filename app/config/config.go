@@ -10,6 +10,7 @@ type Config struct {
 	AuthPort                    string
 	ProductPort                 string
 	CustomerPort                string
+	SalePort                    string
 	BaseURL                     string
 	DatabaseUsername            string
 	DatabasePassword            string
@@ -28,6 +29,7 @@ func LoadConfig() (config *Config) {
 	authPort := os.Getenv("AUTH_PORT")
 	productPort := os.Getenv("PRODUCT_PORT")
 	customerPort := os.Getenv("CUSTOMER_PORT")
+	salePort := os.Getenv("SALE_PORT")
 	baseUrl := os.Getenv("BASE_URL")
 	databaseUsername := os.Getenv("DATABASE_USERNAME")
 	databasePassword := os.Getenv("DATABASE_PASSWORD")
@@ -56,5 +58,6 @@ func LoadConfig() (config *Config) {
 		AuthPort:                    authPort,
 		ProductPort:                 productPort,
 		CustomerPort:                customerPort,
+		SalePort:                    salePort,
 	}
 }

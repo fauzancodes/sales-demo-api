@@ -8,8 +8,8 @@ type SDAProductCategory struct {
 	Description string            `json:"description" gorm:"type:text;column:description"`
 	Status      bool              `json:"status" gorm:"type:bool;column:status"`
 	UserID      uuid.UUID         `json:"user_id" gorm:"type:uuid;column:user_id"`
-	User        UserRelation      `gorm:"foreignKey:UserID"`
-	Products    []ProductRelation `gorm:"foreignKey:CategoryID"`
+	User        UserRelation      `json:"user,omitempty" gorm:"foreignKey:UserID"`
+	Products    []ProductRelation `json:"products,omitempty" gorm:"foreignKey:CategoryID"`
 }
 
 func (SDAProductCategory) TableName() string {

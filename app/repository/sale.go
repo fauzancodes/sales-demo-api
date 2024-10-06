@@ -10,8 +10,8 @@ import (
 	"github.com/google/uuid"
 )
 
-func CreateUser(data models.SDAUser) (models.SDAUser, error) {
-	err := config.DB.Create(&data).Error
+func CreateSale(data models.SDASale) (models.SDASale, error) {
+	err := config.DB.Preload("User").Create(&data).Error
 	if err != nil {
 		log.Printf("Failed to insert data to database: %v", err)
 	}
@@ -19,7 +19,7 @@ func CreateUser(data models.SDAUser) (models.SDAUser, error) {
 	return data, err
 }
 
-func GetUserByID(id uuid.UUID, preloadFields []string) (response models.SDAUser, err error) {
+func GetSaleByID(id uuid.UUID, preloadFields []string) (response models.SDASale, err error) {
 	db := utils.BuildPreload(config.DB, preloadFields)
 
 	err = db.Where("id = ?", id).First(&response).Error
@@ -30,7 +30,7 @@ func GetUserByID(id uuid.UUID, preloadFields []string) (response models.SDAUser,
 	return
 }
 
-func GetUsers(param dto.FindParameter, preloadFields []string) (responses []models.SDAUser, total int64, totalFiltered int64, err error) {
+func GetSales(param dto.FindParameter, preloadFields []string) (responses []models.SDASale, total int64, totalFiltered int64, err error) {
 	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
 	if err != nil {
 		log.Printf("Failed to count data from database: %v", err)
@@ -57,8 +57,8 @@ func GetUsers(param dto.FindParameter, preloadFields []string) (responses []mode
 	return
 }
 
-func UpdateUser(data models.SDAUser) (models.SDAUser, error) {
-	err := config.DB.Save(&data).Error
+func UpdateSale(data models.SDASale) (models.SDASale, error) {
+	err := config.DB.Preload("User").Save(&data).Error
 	if err != nil {
 		log.Printf("Failed to update data in database: %v", err)
 	}
@@ -66,7 +66,7 @@ func UpdateUser(data models.SDAUser) (models.SDAUser, error) {
 	return data, err
 }
 
-func DeleteUser(data models.SDAUser) error {
+func DeleteSale(data models.SDASale) error {
 	err := config.DB.Delete(&data).Error
 	if err != nil {
 		log.Printf("Failed to delete data in from database: %v", err)

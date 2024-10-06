@@ -6,10 +6,3 @@ type UserRequest struct {
 	Email     string `json:"email"`
 	Password  string `json:"password,omitempty"`
 }
-
-type UserPreloadParameter struct {
-	LoadProducts          bool
-	LoadProductCategories bool
-	LoadProductStocks     bool
-	LoadCustomers         bool
-}

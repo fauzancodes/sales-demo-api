@@ -11,9 +11,9 @@ type SDAProduct struct {
 	Price       float64                 `json:"price" gorm:"type:float8;column:price"`
 	CategoryID  uuid.UUID               `json:"category_id" gorm:"type:uuid;column:category_id"`
 	UserID      uuid.UUID               `json:"user_id" gorm:"type:uuid;column:user_id"`
-	Category    ProductCategoryRelation `gorm:"foreignKey:CategoryID"`
-	User        UserRelation            `gorm:"foreignKey:UserID"`
-	Stocks      []ProductStockRelation  `gorm:"foreignKey:ProductID"`
+	Category    ProductCategoryRelation `json:"category,omitempty" gorm:"foreignKey:CategoryID"`
+	User        UserRelation            `json:"user,omitempty" gorm:"foreignKey:UserID"`
+	Stocks      []ProductStockRelation  `json:"stocks,omitempty" gorm:"foreignKey:ProductID"`
 }
 
 func (SDAProduct) TableName() string {

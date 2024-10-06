@@ -25,12 +25,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/auth/register",
+							"raw": "http://localhost:{{AUTH_PORT}}/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"register"
@@ -54,12 +54,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/auth/login",
+							"raw": "http://localhost:{{AUTH_PORT}}/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"login"
@@ -76,7 +76,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc3ODY4MzAsImlkIjoiYWRjMDc2MWYtMjVlMy00MjA1LTkwMDktZDE1MGVkZTM1Y2ZkIn0.Q41gOUVp-4iYR-2AWyn2V0IHz39M7uNHhRR0d0m_LuQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
 									"type": "string"
 								}
 							]
@@ -84,12 +84,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/auth/user",
+							"raw": "http://localhost:{{AUTH_PORT}}/auth/user",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"user"
@@ -114,12 +114,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8001/auth/remove-account",
+							"raw": "http://localhost:{{AUTH_PORT}}/auth/remove-account",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8001",
+							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"remove-account"
@@ -153,12 +153,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8001/auth/update-profile",
+							"raw": "http://localhost:{{AUTH_PORT}}/auth/update-profile",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8001",
+							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"update-profile"
@@ -183,7 +183,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
 											"type": "string"
 										}
 									]
@@ -192,7 +192,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\":\"Steal Weapon\",\r\n    \"description\":\"Weapon made from steal\",\r\n    \"status\":true\r\n}",
+									"raw": "{\r\n    \"name\":\"Iron Weapon\",\r\n    \"description\":\"Weapon made from iron\",\r\n    \"status\":true\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -200,12 +200,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8002/product/category",
+									"raw": "http://localhost:{{PRODUCT_PORT}}/product/category",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8002",
+									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category"
@@ -222,7 +222,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
 											"type": "string"
 										}
 									]
@@ -230,12 +230,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8002/product/category?name=&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Products",
+									"raw": "http://localhost:{{PRODUCT_PORT}}/product/category?name=&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Products",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8002",
+									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category"
@@ -307,12 +307,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8002/product/category/:id?preload_fields=User,Products",
+									"raw": "http://localhost:{{PRODUCT_PORT}}/product/category/:id?preload_fields=User,Products",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8002",
+									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category",
@@ -361,12 +361,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8002/product/category/:id",
+									"raw": "http://localhost:{{PRODUCT_PORT}}/product/category/:id",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8002",
+									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category",
@@ -399,12 +399,12 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8002/product/category/:id",
+									"raw": "http://localhost:{{PRODUCT_PORT}}/product/category/:id",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8002",
+									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category",
@@ -434,7 +434,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
 											"type": "string"
 										}
 									]
@@ -443,7 +443,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"amount\": 2,\r\n    \"description\": \"Reduce stock\",\r\n    \"product_id\": \"4c057ef7-24ed-4cb3-a3a4-316780e62c21\",\r\n    \"action\": \"reduce\" //\"add\" or \"reduce\"\r\n}",
+									"raw": "{\r\n    \"amount\": 10,\r\n    \"description\": \"Add stock\",\r\n    \"product_id\": \"d406683f-7272-4c55-a710-47abbc3d9c6a\",\r\n    \"action\": \"add\" //\"add\" or \"reduce\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -451,12 +451,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8002/product/stock",
+									"raw": "http://localhost:{{PRODUCT_PORT}}/product/stock",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8002",
+									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"stock"
@@ -481,12 +481,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8002/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21&preload_fields=Category,User,Stocks",
+									"raw": "http://localhost:{{PRODUCT_PORT}}/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21&preload_fields=Category,User,Stocks",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8002",
+									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"stock"
@@ -542,7 +542,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
 									"type": "string"
 								}
 							]
@@ -551,7 +551,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Nordic Sword\",\r\n    \"description\":\"A sword made by a nord blacksmith\",\r\n    \"price\": 5000,\r\n    \"status\": true,\r\n    \"category_id\": \"58c1d7d7-07f8-4e90-94b9-5acb6ac05833\",\r\n    \"image\": [\r\n        \"https://res.cloudinary.com/fauzancodes/image/upload/v1727595911/sales-demo-api/622c3169-8bd2-46af-909a-def56450ee94/bxoszn4yaiql6gcznq6k.webp\"\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\":\"Steal Sword\",\r\n    \"description\":\"A sword made from steal\",\r\n    \"price\": 5000,\r\n    \"status\": true,\r\n    \"category_id\": \"37dd1cd5-988d-44b8-a9d1-b91a59911907\",\r\n    \"image\": []\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -559,12 +559,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8002/product",
+							"raw": "http://localhost:{{PRODUCT_PORT}}/product",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8002",
+							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product"
 							]
@@ -598,12 +598,12 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8002/product/upload-image",
+							"raw": "http://localhost:{{PRODUCT_PORT}}/product/upload-image",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8002",
+							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product",
 								"upload-image"
@@ -620,7 +620,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
 									"type": "string"
 								}
 							]
@@ -628,12 +628,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8002/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status&preload_fields=Category,User,Stocks",
+							"raw": "http://localhost:{{PRODUCT_PORT}}/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status&preload_fields=Category,User,Stocks",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8002",
+							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product"
 							],
@@ -709,12 +709,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8002/product/:id?preload_fields=Category,User,Stocks",
+							"raw": "http://localhost:{{PRODUCT_PORT}}/product/:id?preload_fields=Category,User,Stocks",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8002",
+							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product",
 								":id"
@@ -762,12 +762,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8002/product/:id",
+							"raw": "http://localhost:{{PRODUCT_PORT}}/product/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8002",
+							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product",
 								":id"
@@ -799,12 +799,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8002/product/:id",
+							"raw": "http://localhost:{{PRODUCT_PORT}}/product/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8002",
+							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product",
 								":id"
@@ -833,7 +833,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc3ODY4MzAsImlkIjoiYWRjMDc2MWYtMjVlMy00MjA1LTkwMDktZDE1MGVkZTM1Y2ZkIn0.Q41gOUVp-4iYR-2AWyn2V0IHz39M7uNHhRR0d0m_LuQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
 									"type": "string"
 								}
 							]
@@ -850,12 +850,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/customer",
+							"raw": "http://localhost:{{CUSTOMER_PORT}}/customer",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer"
 							]
@@ -871,7 +871,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
 									"type": "string"
 								}
 							]
@@ -879,12 +879,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8003/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status&preload_fields=User",
+							"raw": "http://localhost:{{CUSTOMER_PORT}}/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Sales",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8003",
+							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer"
 							],
@@ -936,8 +936,8 @@
 								},
 								{
 									"key": "preload_fields",
-									"value": "User",
-									"description": "Accepted Value (seperated by comma): User"
+									"value": "User,Sales",
+									"description": "Accepted Value (seperated by comma): User, Sales"
 								}
 							]
 						}
@@ -960,12 +960,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8003/customer/:id?preload_fields=User",
+							"raw": "http://localhost:{{CUSTOMER_PORT}}/customer/:id?preload_fields=User,Sales",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8003",
+							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer",
 								":id"
@@ -973,15 +973,15 @@
 							"query": [
 								{
 									"key": "preload_fields",
-									"value": "User",
-									"description": "Accepted Value (seperated by comma): User"
+									"value": "User,Sales",
+									"description": "Accepted Value (seperated by comma): User, Sales"
 								}
 							],
 							"variable": [
 								{
 									"key": "id",
 									"value": "a72271b3-33ce-4c1a-9954-cd6e7dae7b8e",
-									"description": "id of product cutomer"
+									"description": "id of cutomer"
 								}
 							]
 						}
@@ -989,7 +989,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Product Category",
+					"name": "Update Customer",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1013,12 +1013,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8003/customer/:id",
+							"raw": "http://localhost:{{CUSTOMER_PORT}}/customer/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8003",
+							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer",
 								":id"
@@ -1027,7 +1027,7 @@
 								{
 									"key": "id",
 									"value": "a72271b3-33ce-4c1a-9954-cd6e7dae7b8e",
-									"description": "id of product customer"
+									"description": "id of customer"
 								}
 							]
 						}
@@ -1050,12 +1050,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8003/customer/:id",
+							"raw": "http://localhost:{{CUSTOMER_PORT}}/customer/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8003",
+							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer",
 								":id"
@@ -1064,7 +1064,273 @@
 								{
 									"key": "id",
 									"value": "a72271b3-33ce-4c1a-9954-cd6e7dae7b8e",
-									"description": "id of product customer"
+									"description": "id of customer"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sale",
+			"item": [
+				{
+					"name": "Create Sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"invoice_id\": \"\",\r\n    \"tax\": 11.0,\r\n    \"discount\": 10.0,\r\n    \"misc_price\": 100.0,\r\n    \"subtotal\": 0.0,\r\n    \"total_paid\": 0.0,\r\n    \"customer_id\": \"27ad138f-9653-4539-a7de-5583c3291d0f\",\r\n    \"transaction_date\": \"\",\r\n    \"status\": true,\r\n    \"details\": [\r\n        {\r\n            \"product_id\": \"f0224a0e-8471-446a-97df-c7cf59a92c70\",\r\n            \"price\": 5000.0,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"product_id\": \"d406683f-7272-4c55-a710-47abbc3d9c6a\",\r\n            \"price\": 2500.0,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{SALE_PORT}}/sale",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{SALE_PORT}}",
+							"path": [
+								"sale"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sales",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{SALE_PORT}}/sale?invoice_id=&transaction_date_margin_top&transaction_date_margin_bottom&product_id&customer_id&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Customer,Details,Details.Product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{SALE_PORT}}",
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "invoice_id",
+									"value": "",
+									"description": "Invoice ID"
+								},
+								{
+									"key": "transaction_date_margin_top",
+									"value": null,
+									"description": "Margin top of transaction date"
+								},
+								{
+									"key": "transaction_date_margin_bottom",
+									"value": null,
+									"description": "Margin bottom of transaction date"
+								},
+								{
+									"key": "product_id",
+									"value": null,
+									"description": "ID of product"
+								},
+								{
+									"key": "customer_id",
+									"value": null,
+									"description": "ID of customer"
+								},
+								{
+									"key": "page",
+									"value": null,
+									"description": "Page, default: 1"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name and description"
+								},
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Number of data returned, default: 10"
+								},
+								{
+									"key": "offset",
+									"value": null,
+									"description": "Number of data to be skipped, default: 0"
+								},
+								{
+									"key": "order",
+									"value": "",
+									"description": "Data will be ordered respectively, default: created_at"
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"description": "Data will be sorted respectively, default: DESC"
+								},
+								{
+									"key": "status",
+									"value": null,
+									"description": "Status of data (true = active, false = inactive)"
+								},
+								{
+									"key": "preload_fields",
+									"value": "User,Customer,Details,Details.Product",
+									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{SALE_PORT}}/sale/:id?preload_fields=User,Customer,Details,Details.Product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{SALE_PORT}}",
+							"path": [
+								"sale",
+								":id"
+							],
+							"query": [
+								{
+									"key": "preload_fields",
+									"value": "User,Customer,Details,Details.Product",
+									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4a0d3a1a-4864-489b-9e05-6ce1be5ad8d7",
+									"description": "id of sale"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"invoice_id\": \"\",\r\n    \"tax\": 11.0,\r\n    \"discount\": 10.0,\r\n    \"misc_price\": 1000.0,\r\n    \"subtotal\": 0.0,\r\n    \"total_paid\": 0.0,\r\n    \"customer_id\": \"27ad138f-9653-4539-a7de-5583c3291d0f\",\r\n    \"transaction_date\": \"\",\r\n    \"status\": true,\r\n    \"details\": [\r\n        {\r\n            \"product_id\": \"f0224a0e-8471-446a-97df-c7cf59a92c70\",\r\n            \"price\": 5000.0,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{SALE_PORT}}/sale/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{SALE_PORT}}",
+							"path": [
+								"sale",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9d3a3cdc-8fad-4c4f-b3cc-49e6a0e9542e",
+									"description": "id of sale"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{SALE_PORT}}/sale/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{SALE_PORT}}",
+							"path": [
+								"sale",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a448c48a-717e-48bf-b319-f2d0663c6051",
+									"description": "id of sale"
 								}
 							]
 						}
@@ -1079,12 +1345,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/",
+					"raw": "http://localhost:{{INDEX_PORT}}/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "{{INDEX_PORT}}",
 					"path": [
 						""
 					]

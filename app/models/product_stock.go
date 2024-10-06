@@ -10,8 +10,8 @@ type SDAProductStock struct {
 	Current     int             `json:"current" gorm:"type:int8;column:current"`
 	Description string          `json:"description" gorm:"type:text;column:description"`
 	UserID      uuid.UUID       `json:"user_id" gorm:"type:uuid;column:user_id"`
-	Product     ProductRelation `gorm:"foreignKey:ProductID"`
-	User        UserRelation    `gorm:"foreignKey:UserID"`
+	Product     ProductRelation `json:"product,omitempty" gorm:"foreignKey:ProductID"`
+	User        UserRelation    `json:"user,omitempty" gorm:"foreignKey:UserID"`
 }
 
 func (SDAProductStock) TableName() string {

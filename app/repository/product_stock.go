@@ -33,6 +33,7 @@ func GetProductStocks(param dto.FindParameter, preloadFields []string) (response
 	}
 
 	db := utils.BuildPreload(config.DB, preloadFields)
+
 	if param.Limit == 0 {
 		err = db.Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	} else {
@@ -47,6 +48,7 @@ func GetProductStocks(param dto.FindParameter, preloadFields []string) (response
 
 func GetLastProductStock(id uuid.UUID, preloadFields []string) (response models.SDAProductStock, err error) {
 	db := utils.BuildPreload(config.DB, preloadFields)
+
 	err = db.Where("product_id = ?", id).Order("created_at DESC").First(&response).Error
 	if err != nil {
 		log.Printf("Failed to get data from database: %v", err)
