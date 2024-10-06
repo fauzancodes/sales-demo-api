@@ -1,21 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sales Demo API</title>
-  </head>
-  <body>
-    <h1>Sales Demo API</h1>
-    <div>
-      <a href="/docs/Sale Demo API.postman_collection.json" download>
-        Click here to download the postman collection!
-      </a>
-    </div>
-    <div>
-      <a href="/docs/Sales Demo API.postman_environment.json" download>
-        Click here to download the postman environment!
-      </a>
-    </div>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Demo API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ECECEC;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #006BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        main {
+            padding: 40px 20px;
+            text-align: center;
+        }
+        p {
+            line-height: 1.6;
+            color: #555;
+        }
+        .feature-list {
+            text-align: left;
+            display: grid;
+            grid-template-columns: 1fr; /* Default 1 kolom */
+            gap: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0;
+            list-style-type: disc;
+        }
+        .feature-list li {
+            margin-left: 20px;
+            color: #333;
+        }
+        @media screen and (min-width: 768px) {
+            .feature-list {
+                grid-template-columns: 1fr 1fr; /* Ubah menjadi 2 kolom saat layar besar */
+            }
+        }
+        .button-group {
+            margin: 30px 0;
+        }
+        a.button {
+            display: inline-block;
+            margin: 10px;
+            padding: 14px 24px;
+            font-size: 16px;
+            text-decoration: none;
+            background: #006BFF;
+            color: white;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        a.button:hover {
+            background: #004bb3;
+        }
+        footer {
+            background-color: #E0E0E0;
+            color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sales Demo API Documentation</h1>
+    </header>
+    <main>
+        <p>Welcome to the Sales Demo API documentation. Below are the features of the API:</p>
+        <ul class="feature-list">
+            <li>Login and register endpoints supported with jwt authentication</li>
+            <li>The password field is protected by bcrypt hashing</li>
+            <li>Endpoint for email verification, getting logged in user data, updating user data, and deleting user accounts</li>
+            <li>The email verification endpoint is equipped with the function to send an email to the user and check the verification back</li>
+            <li>CRUD endpoints for product categories, products themselves, product stock, and product image uploads</li>
+            <li>Product stock is supported by stock change history</li>
+            <li>CRUD endpoints for customers</li>
+            <li>CRUD endpoints for sales and details</li>
+            <li>Sales endpoints are equipped with validation of subtotal calculations, discounts, taxes, and totals to be paid</li>
+            <li>Sales endpoints are equipped with product stock validation and product stock reduction</li>
+            <li>All GET endpoints are equipped with dynamic pagination, filter, search, limit, offset, order, and sort</li>
+            <li>All POST endpoints are equipped with validation for each field</li>
+            <li>All endpoints are protected with query param sanitization to prevent SQL injection</li>
+        </ul>
+        <div class="button-group">
+            <a href="/docs/Sale Demo API.postman_collection.json" download="Sale Demo API.postman_collection.json" class="button">Download Postman Collection</a>
+            <a href="/docs/Sales Demo API.postman_environment.json" download="Sales Demo API.postman_environment.json" class="button">Download Postman Environment</a>
+            <a href="https://github.com/fauzancodes/sales-demo-api" class="button" target="_blank">Go to GitHub Repository</a>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Sales Demo API Project. All rights reserved.</p>
+    </footer>
+</body>
 </html>
