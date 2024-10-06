@@ -17,3 +17,13 @@ func (request AuthRequest) Validate() error {
 		validation.Field(&request.Password, validation.Required),
 	)
 }
+
+type EmailVerfication struct {
+	Name            string
+	VerificationUrl string
+	AppUrl          string
+}
+
+type ResendEmailVerification struct {
+	Email string `json:"email"`
+}

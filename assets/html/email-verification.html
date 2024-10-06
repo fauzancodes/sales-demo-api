@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .header {
+      background-color: #006BFF;
+      color: #ffffff;
+      padding: 20px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .content {
+      padding: 30px;
+      text-align: center;
+    }
+    .content h2 {
+      color: #333333;
+      font-size: 22px;
+    }
+    .content p {
+      color: #666666;
+      font-size: 16px;
+    }
+    .content a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      color: #006BFF;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    .content a.btn {
+      color: #f4f4f4;
+      background-color: #006BFF;
+      font-weight: bold;
+    }
+    .link-alternative {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #999999;
+    }
+    .link-alternative a {
+      color: #006BFF;
+      text-decoration: underline;
+      word-break: break-all;
+    }
+    .footer {
+      background-color: #f4f4f4;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #999999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Verify Your Email Address</h1>
+    </div>
+    <div class="content">
+      <h2>Hello, {{.Name}}!</h2>
+      <p>Thank you for signing up. Please click the button below to verify your email address:</p>
+      <a class="btn" href="{{.VerificationUrl}}" target="_blank">Verify Email</a>
+      <p>If you did not create an account, please ignore this email.</p>
+      <div class="link-alternative">
+        <p>If the button above does not work, please click or copy and paste the following link into your browser:</p>
+        <a href="{{.VerificationUrl}}" target="_blank">{{.VerificationUrl}}</a>
+      </div>
+    </div>
+    <div class="footer">
+      &copy; 2024 <a href="{{.AppUrl}}" target="_blank">Sale Demo API</a>. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>

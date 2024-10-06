@@ -6,6 +6,7 @@ type SDAUser struct {
 	LastName          string                    `json:"last_name" gorm:"type:varchar(255);column:last_name"`
 	Email             string                    `json:"email" gorm:"type:varchar(255);column:email"`
 	Password          string                    `json:"-" gorm:"type:varchar(255);column:password"`
+	IsVerified        bool                      `json:"is_verified" gorm:"type:bool;column:is_verified"`
 	Products          []ProductRelation         `json:"products,omitempty" gorm:"foreignKey:UserID"`
 	ProductCategories []ProductCategoryRelation `json:"product_categories,omitempty" gorm:"foreignKey:UserID"`
 	ProductStocks     []ProductStockRelation    `json:"product_stocks,omitempty" gorm:"foreignKey:UserID"`

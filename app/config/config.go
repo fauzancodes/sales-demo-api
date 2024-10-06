@@ -11,7 +11,7 @@ type Config struct {
 	ProductPort                 string
 	CustomerPort                string
 	SalePort                    string
-	BaseURL                     string
+	BaseUrl                     string
 	DatabaseUsername            string
 	DatabasePassword            string
 	DatabaseHost                string
@@ -22,6 +22,10 @@ type Config struct {
 	CloudinaryCloudName         string
 	CloudinaryAPIKey            string
 	CLoudinaryAPISecret         string
+	SmtpHost                    string
+	SmtpUsername                string
+	SmtpPassword                string
+	SmtpPort                    int
 }
 
 func LoadConfig() (config *Config) {
@@ -41,6 +45,10 @@ func LoadConfig() (config *Config) {
 	cloudinaryCloudName := os.Getenv("CLOUDINARY_CLOUD_NAME")
 	cloudinaryAPIKey := os.Getenv("CLOUDINARY_API_KEY")
 	cLoudinaryAPISecret := os.Getenv("CLOUDINARY_API_SECRET")
+	smtpHost := os.Getenv("SMTP_HOST")
+	smtpUsername := os.Getenv("SMTP_USERNAME")
+	smtpPassword := os.Getenv("SMTP_PASSWORD")
+	smtpPort, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))
 
 	return &Config{
 		DatabaseUsername:            databaseUsername,
@@ -49,7 +57,7 @@ func LoadConfig() (config *Config) {
 		DatabasePort:                databasePort,
 		DatabaseName:                databaseName,
 		EnableDatabaseAutomigration: enableDatabaseAutomigration,
-		BaseURL:                     baseUrl,
+		BaseUrl:                     baseUrl,
 		CloudinaryFolder:            cloudinaryFolder,
 		CloudinaryCloudName:         cloudinaryCloudName,
 		CloudinaryAPIKey:            cloudinaryAPIKey,
@@ -59,5 +67,9 @@ func LoadConfig() (config *Config) {
 		ProductPort:                 productPort,
 		CustomerPort:                customerPort,
 		SalePort:                    salePort,
+		SmtpHost:                    smtpHost,
+		SmtpUsername:                smtpUsername,
+		SmtpPassword:                smtpPassword,
+		SmtpPort:                    smtpPort,
 	}
 }

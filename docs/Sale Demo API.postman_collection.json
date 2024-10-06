@@ -69,6 +69,36 @@
 					"response": []
 				},
 				{
+					"name": "Resend Email Verification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{AUTH_PORT}}/auth/email-verification/resend",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{AUTH_PORT}}",
+							"path": [
+								"auth",
+								"email-verification",
+								"resend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Current User",
 					"request": {
 						"auth": {
@@ -136,7 +166,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxMTExMDIsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.oyWrx1U6WTpufiXPmqKntviTZ7C1PqkrvSvc-SrZjLE",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgzMTI2MDYsImlkIjoiMGUzZTY3NjctNzM1ZC00MGZiLWIyN2MtMmVkODM3MzY1NjM1In0.I1trQy8C1pkLbZO-kGwkB5UrX3vYsU0vpXTI2Eawkmc",
 									"type": "string"
 								}
 							]

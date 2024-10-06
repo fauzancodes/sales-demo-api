@@ -14,5 +14,11 @@ func AuthRoute(app *echo.Echo) {
 		auth.GET("/user", controllers.GetCurrentUser, middlewares.Auth)
 		auth.PATCH("/update-profile", controllers.UpdateProfile, middlewares.Auth)
 		auth.DELETE("/remove-account", controllers.RemoveAccount, middlewares.Auth)
+
+		emailVerfication := auth.Group("/email-verification")
+		{
+			emailVerfication.GET("/:token", controllers.VerifyUser)
+			emailVerfication.POST("/resend", controllers.ResendEmailVerification)
+		}
 	}
 }
