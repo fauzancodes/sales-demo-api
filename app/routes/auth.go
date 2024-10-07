@@ -20,5 +20,12 @@ func AuthRoute(app *echo.Echo) {
 			emailVerfication.GET("/:token", controllers.VerifyUser)
 			emailVerfication.POST("/resend", controllers.ResendEmailVerification)
 		}
+
+		resetPassword := auth.Group("/reset-password")
+		{
+			resetPassword.POST("/send", controllers.SendForgotPasswordRequest)
+			resetPassword.GET("/instruction/:token", controllers.SendResetPasswordRequestInstruction)
+			resetPassword.POST("", controllers.ResetPassword)
+		}
 	}
 }

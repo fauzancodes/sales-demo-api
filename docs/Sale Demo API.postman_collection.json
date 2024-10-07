@@ -46,7 +46,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\",\r\n    \"password\":\"Password@123\"\r\n}",
+							"raw": "{\r\n    \"email\":\"greybyte0222@gmail.com\",\r\n    \"password\":\"Password@123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -75,7 +75,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\",\r\n    \"success_verification_url\": \"https://fauzancodes.id\",\r\n    \"failed_verification_url\": \"https://localhost:8000\"\r\n}",
+							"raw": "{\r\n    \"email\":\"greybyte0222@gmail.com\",\r\n    \"success_verification_url\": \"https://fauzancodes.id\",\r\n    \"failed_verification_url\": \"http://localhost:8000\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -93,6 +93,65 @@
 								"auth",
 								"email-verification",
 								"resend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Reset Password Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"greybyte0222@gmail.com\",\r\n    \"redirect_url\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{AUTH_PORT}}/auth/reset-password/send",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{AUTH_PORT}}",
+							"path": [
+								"auth",
+								"reset-password",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"new_password\":\"Password@123\",\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg0MDIwMTIsImlkIjoiMGUzZTY3NjctNzM1ZC00MGZiLWIyN2MtMmVkODM3MzY1NjM1IiwicmVkaXJlY3RVcmwiOiIifQ.ijol44Lck_lB-F1OiB9aEhxmQvAYVn-rZsfoOhMKmsw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{AUTH_PORT}}/auth/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{AUTH_PORT}}",
+							"path": [
+								"auth",
+								"reset-password"
 							]
 						}
 					},

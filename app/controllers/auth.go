@@ -338,3 +338,112 @@ func ResendEmailVerification(c echo.Context) error {
 		},
 	)
 }
+
+func SendForgotPasswordRequest(c echo.Context) error {
+	var request dto.SendForgotPasswordRequest
+	if err := c.Bind(&request); err != nil {
+		return c.JSON(
+			http.StatusUnprocessableEntity,
+			dto.Response{
+				Status:  422,
+				Message: "Invalid request body",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	if err := request.Validate(); err != nil {
+		return c.JSON(
+			http.StatusBadRequest,
+			dto.Response{
+				Status:  400,
+				Message: "Invalid request value",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	user, _, _, err := repository.GetUsers(dto.FindParameter{
+		BaseFilter: "deleted_at IS NULL",
+		Filter:     "deleted_at IS NULL AND email = '" + request.Email + "'",
+	}, []string{})
+	if err != nil || len(user) == 0 {
+		return c.JSON(
+			http.StatusNotFound,
+			dto.Response{
+				Status:  404,
+				Message: "Failed to get user",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	go service.SendResetPasswordRequest(user[0], request.RedirectUrl)
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Success to send reset password request",
+		},
+	)
+}
+
+func SendResetPasswordRequestInstruction(c echo.Context) error {
+	token := c.Param("token")
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "You should include a redirect_url field, so that the request will be forwarded to your url, then in that url create a page for the user to fill in their new password, then send the password from the user along with the token in the url param to the POST /auth/reset-password endpoint",
+			Data:    token,
+		},
+	)
+}
+
+func ResetPassword(c echo.Context) error {
+	var request dto.ResetPasswordRequest
+	if err := c.Bind(&request); err != nil {
+		return c.JSON(
+			http.StatusUnprocessableEntity,
+			dto.Response{
+				Status:  422,
+				Message: "Invalid request body",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	if err := request.Validate(); err != nil {
+		return c.JSON(
+			http.StatusBadRequest,
+			dto.Response{
+				Status:  400,
+				Message: "Invalid request value",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	data, err := service.ResetPassword(request)
+	if err != nil {
+		return c.JSON(
+			http.StatusNotFound,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to verify user",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Success to reset password",
+			Data:    data,
+		},
+	)
+}

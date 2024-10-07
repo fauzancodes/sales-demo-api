@@ -55,3 +55,35 @@ func (request RegisterRequest) Validate() error {
 		validation.Field(&request.FailedVerificationUrl, is.URL),
 	)
 }
+
+type ResetPassword struct {
+	Name             string
+	ResetPasswordUrl string
+	AppUrl           string
+}
+
+type SendForgotPasswordRequest struct {
+	Email       string `json:"email"`
+	RedirectUrl string `json:"redirect_url"`
+}
+
+func (request SendForgotPasswordRequest) Validate() error {
+	return validation.ValidateStruct(
+		&request,
+		validation.Field(&request.Email, validation.Required, is.Email),
+		validation.Field(&request.RedirectUrl, is.URL),
+	)
+}
+
+type ResetPasswordRequest struct {
+	NewPassword string `json:"new_password"`
+	Token       string `json:"token"`
+}
+
+func (request ResetPasswordRequest) Validate() error {
+	return validation.ValidateStruct(
+		&request,
+		validation.Field(&request.NewPassword, validation.Required),
+		validation.Field(&request.Token, validation.Required),
+	)
+}

@@ -26,21 +26,25 @@ func Database() *gorm.DB {
 	}
 
 	if LoadConfig().EnableDatabaseAutomigration {
-		err = DB.AutoMigrate(
-			&models.SDAUser{},
-			&models.SDAProductCategory{},
-			&models.SDAProduct{},
-			&models.SDAProductStock{},
-			&models.SDACustomer{},
-			&models.SDASale{},
-			&models.SDASaleDetail{},
-		)
-		if err != nil {
-			log.Fatalf("Failed to migrate database: %v", err)
-		}
+		go RunAutoMigration()
 	}
 
 	log.Printf("Connected to Database: %v", name)
 
 	return DB
+}
+
+func RunAutoMigration() {
+	err := DB.AutoMigrate(
+		&models.SDAUser{},
+		&models.SDAProductCategory{},
+		&models.SDAProduct{},
+		&models.SDAProductStock{},
+		&models.SDACustomer{},
+		&models.SDASale{},
+		&models.SDASaleDetail{},
+	)
+	if err != nil {
+		log.Fatalf("Failed to migrate database: %v", err)
+	}
 }

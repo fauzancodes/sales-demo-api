@@ -56,6 +56,6 @@ func SendEmail(htmlTemplate, targetEmail, subjectMessage, attachmentPath string,
 		log.Println("Failed to send email. Error: ", err.Error())
 		return
 	} else {
-		log.Println("Success to send email. Target Email: ", strings.ToLower(targetEmail))
+		log.Println("Success to send email. Template: "+htmlTemplate+".html. Target Email: ", strings.ToLower(targetEmail))
 	}
 }
