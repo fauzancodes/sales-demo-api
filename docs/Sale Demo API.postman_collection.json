@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\",\r\n    \"password\":\"Password@123\"\r\n}",
+							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\",\r\n    \"password\":\"Password@123\",\r\n    \"success_verification_url\": \"https://fauzancodes.id\",\r\n    \"failed_verification_url\": \"https://localhost:8000\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -75,7 +75,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\"\r\n}",
+							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\",\r\n    \"success_verification_url\": \"https://fauzancodes.id\",\r\n    \"failed_verification_url\": \"https://localhost:8000\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

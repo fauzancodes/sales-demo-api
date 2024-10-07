@@ -16,7 +16,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func SendEmailVerification(user models.SDAUser) {
+func SendEmailVerification(user models.SDAUser, successUrl, failedUrl string) {
 	var appUrl string
 	if config.LoadConfig().BaseUrl == "http://localhost" {
 		appUrl = fmt.Sprintf("%v:%v", config.LoadConfig().BaseUrl, config.LoadConfig().IndexPort)
@@ -27,6 +27,8 @@ func SendEmailVerification(user models.SDAUser) {
 	claims := jwt.MapClaims{}
 	claims["id"] = user.ID
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	claims["successUrl"] = successUrl
+	claims["failedUrl"] = failedUrl
 	token, err := webToken.GenerateToken(&claims)
 	if err != nil {
 		log.Println("Failed to generate jwt token:", err.Error())
@@ -49,7 +51,7 @@ func SendEmailVerification(user models.SDAUser) {
 	utils.SendEmail("email-verification", user.Email, "Email Verification", "", fill)
 }
 
-func VerifyUser(token string) (user models.SDAUser, err error) {
+func VerifyUser(token string) (user models.SDAUser, successUrl, failedUrl string, err error) {
 	if token == "" {
 		err = errors.New("no jwt token provided")
 		return
@@ -59,6 +61,9 @@ func VerifyUser(token string) (user models.SDAUser, err error) {
 	if err != nil {
 		return
 	}
+
+	successUrl = claims["successUrl"].(string)
+	failedUrl = claims["failedUrl"].(string)
 
 	userID := claims["id"].(string)
 	user, err = GetUserByID(userID, []string{})

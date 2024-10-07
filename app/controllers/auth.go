@@ -16,7 +16,7 @@ import (
 )
 
 func Register(c echo.Context) error {
-	var request dto.AuthRequest
+	var request dto.RegisterRequest
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
@@ -67,7 +67,7 @@ func Register(c echo.Context) error {
 		)
 	}
 
-	go service.SendEmailVerification(result)
+	go service.SendEmailVerification(result, request.SuccessVerificationUrl, request.FailedVerificationUrl)
 
 	return c.JSON(
 		http.StatusOK,
@@ -80,7 +80,7 @@ func Register(c echo.Context) error {
 }
 
 func Login(c echo.Context) error {
-	var request dto.AuthRequest
+	var request dto.LoginRequest
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
@@ -251,8 +251,11 @@ func RemoveAccount(c echo.Context) error {
 func VerifyUser(c echo.Context) error {
 	token := c.Param("token")
 
-	data, err := service.VerifyUser(token)
+	data, successUrl, failedUrl, err := service.VerifyUser(token)
 	if err != nil {
+		if failedUrl != "" {
+			return c.Redirect(http.StatusTemporaryRedirect, failedUrl)
+		}
 		return c.JSON(
 			http.StatusNotFound,
 			dto.Response{
@@ -263,6 +266,9 @@ func VerifyUser(c echo.Context) error {
 		)
 	}
 
+	if successUrl != "" {
+		return c.Redirect(http.StatusTemporaryRedirect, successUrl)
+	}
 	return c.JSON(
 		http.StatusOK,
 		dto.Response{
@@ -281,6 +287,17 @@ func ResendEmailVerification(c echo.Context) error {
 			dto.Response{
 				Status:  422,
 				Message: "Invalid request body",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	if err := request.Validate(); err != nil {
+		return c.JSON(
+			http.StatusBadRequest,
+			dto.Response{
+				Status:  400,
+				Message: "Invalid request value",
 				Error:   err.Error(),
 			},
 		)
@@ -311,7 +328,7 @@ func ResendEmailVerification(c echo.Context) error {
 		)
 	}
 
-	go service.SendEmailVerification(user[0])
+	go service.SendEmailVerification(user[0], request.SuccessVerificationUrl, request.FailedVerificationUrl)
 
 	return c.JSON(
 		http.StatusOK,
