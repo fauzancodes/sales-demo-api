@@ -41,3 +41,24 @@ func (request SaleDetailRequest) Validate() error {
 		validation.Field(&request.Price, validation.Min(0.0)),
 	)
 }
+
+type SaleInvoice struct {
+	InvoiceID        string
+	TransactionDate  string
+	Status           string
+	CustomerFullname string
+	Details          []SaleInvoiceDetail
+	Subtotal         float64
+	Discount         float64
+	Tax              float64
+	MiscPrice        float64
+	TotalPaid        float64
+	UserFullname     string
+}
+
+type SaleInvoiceDetail struct {
+	ProductName  string
+	Quantity     int
+	ProductPrice float64
+	TotalPrice   float64
+}

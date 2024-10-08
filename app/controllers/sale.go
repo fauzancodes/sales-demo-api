@@ -8,6 +8,7 @@ import (
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/service"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -170,6 +171,31 @@ func DeleteSale(c echo.Context) error {
 		dto.Response{
 			Status:  200,
 			Message: "Success to delete data",
+		},
+	)
+}
+
+func SendSaleInvoiceByID(c echo.Context) error {
+	id := c.Param("id")
+	parsedUUID, err := uuid.Parse(id)
+	if err != nil {
+		return c.JSON(
+			http.StatusBadRequest,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to parse uuid",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	go service.SendSaleInvoice(parsedUUID)
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Success to send sale invoice to email",
 		},
 	)
 }

@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
@@ -402,4 +403,68 @@ func DeleteSale(id string) (err error) {
 	err = repository.DeleteSale(data)
 
 	return
+}
+
+func SendSaleInvoice(saleID uuid.UUID) {
+	sale, _ := repository.GetSaleByID(saleID, []string{"Details"})
+	if sale.ID != uuid.Nil {
+		fill := dto.SaleInvoice{
+			InvoiceID:       sale.InvoiceID,
+			TransactionDate: sale.TransactionDate.Time.Format(time.RFC1123Z),
+			Status:          "Unpaid",
+			Subtotal:        sale.Subtotal,
+			Discount:        sale.Discount,
+			Tax:             sale.Tax,
+			MiscPrice:       sale.MiscPrice,
+			TotalPaid:       sale.TotalPaid,
+		}
+
+		var customer models.SDACustomer
+		if sale.CustomerID != uuid.Nil {
+			customer, _ = repository.GetCustomerByID(sale.CustomerID, []string{})
+		}
+		if customer.ID != uuid.Nil {
+			fill.CustomerFullname = customer.FirstName + " " + customer.LastName
+		}
+		if strings.ReplaceAll(fill.CustomerFullname, " ", "") == "" {
+			fill.CustomerFullname = customer.Email
+		}
+
+		var user models.SDAUser
+		if sale.UserID != uuid.Nil {
+			user, _ = repository.GetUserByID(sale.UserID, []string{})
+		}
+		if user.ID != uuid.Nil {
+			fill.UserFullname = user.FirstName + " " + user.LastName
+		}
+		if strings.ReplaceAll(fill.UserFullname, " ", "") == "" {
+			fill.UserFullname = user.Email
+		}
+
+		if sale.Status {
+			fill.Status = "Paid"
+		}
+
+		if len(sale.Details) > 0 {
+			for _, detail := range sale.Details {
+				fillDetail := dto.SaleInvoiceDetail{
+					Quantity:     detail.Quantity,
+					ProductPrice: detail.Price,
+				}
+				fillDetail.TotalPrice = float64(fillDetail.Quantity) * fillDetail.ProductPrice
+
+				var product models.SDAProduct
+				if detail.ProductID != uuid.Nil {
+					product, _ = repository.GetProductByID(detail.ProductID, []string{})
+				}
+				if product.ID != uuid.Nil {
+					fillDetail.ProductName = product.Name
+				}
+
+				fill.Details = append(fill.Details, fillDetail)
+			}
+		}
+
+		utils.SendEmail("invoice", user.Email, customer.Email, "Sales Invoice", "", fill)
+	}
 }

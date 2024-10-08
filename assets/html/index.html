@@ -78,14 +78,16 @@
         <ul class="feature-list">
             <li>Login and register endpoints supported with jwt authentication</li>
             <li>The password field is protected by bcrypt hashing</li>
-            <li>Endpoint for email verification, getting logged in user data, updating user data, and deleting user accounts</li>
+            <li>Endpoint for email verification, forgot password, getting logged in user data, updating user data, and deleting user accounts</li>
             <li>The email verification endpoint is equipped with the function to send an email to the user and check the verification back</li>
+            <li>The endpoint for forgotten passwords is equipped with a function to send an email to the user in the form of a verification token which is then used to create a new password</li>
             <li>CRUD endpoints for product categories, products themselves, product stock, and product image uploads</li>
             <li>Product stock is supported by stock change history</li>
             <li>CRUD endpoints for customers</li>
             <li>CRUD endpoints for sales and details</li>
             <li>Sales endpoints are equipped with validation of subtotal calculations, discounts, taxes, and totals to be paid</li>
             <li>Sales endpoints are equipped with product stock validation and product stock reduction</li>
+            <li>Sales endpoints are equipped with endpoints to send sales invoices to customer emails</li>
             <li>All GET endpoints are equipped with dynamic pagination, filter, search, limit, offset, order, and sort</li>
             <li>All POST endpoints are equipped with validation for each field</li>
             <li>All endpoints are protected with query param sanitization to prevent SQL injection</li>

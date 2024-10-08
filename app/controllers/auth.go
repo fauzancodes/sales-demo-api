@@ -104,19 +104,18 @@ func Login(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, user, err := service.GetUsers("", "", request.Email, param, []string{})
+	_, user, _ := service.GetUsers("", "", request.Email, param, []string{})
 	if len(user) == 0 {
 		return c.JSON(
 			http.StatusNotFound,
 			dto.Response{
 				Status:  404,
 				Message: "Email not found",
-				Error:   err.Error(),
 			},
 		)
 	}
 
-	err = bcrypt.VerifyPassword(request.Password, user[0].Password)
+	err := bcrypt.VerifyPassword(request.Password, user[0].Password)
 	if err != nil {
 		return c.JSON(
 			http.StatusBadRequest,

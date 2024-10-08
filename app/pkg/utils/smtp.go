@@ -11,7 +11,7 @@ import (
 	"github.com/go-gomail/gomail"
 )
 
-func SendEmail(htmlTemplate, targetEmail, subjectMessage, attachmentPath string, fill any) {
+func SendEmail(htmlTemplate, senderEmail, targetEmail, subjectMessage, attachmentPath string, fill any) {
 	host := config.LoadConfig().SmtpHost
 	username := config.LoadConfig().SmtpUsername
 	password := config.LoadConfig().SmtpPassword
@@ -42,8 +42,12 @@ func SendEmail(htmlTemplate, targetEmail, subjectMessage, attachmentPath string,
 		log.Println("Success to fill in template")
 	}
 
+	if senderEmail == "" {
+		senderEmail = username
+	}
+
 	mailer := gomail.NewMessage()
-	mailer.SetHeader("From", username)
+	mailer.SetHeader("From", senderEmail)
 	mailer.SetHeader("To", strings.ToLower(targetEmail))
 	mailer.SetHeader("Subject", subjectMessage)
 	mailer.SetBody("text/html", tpl.String())

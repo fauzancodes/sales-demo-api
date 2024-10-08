@@ -1344,6 +1344,50 @@
 					"response": []
 				},
 				{
+					"name": "Send Invoice",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{SALE_PORT}}/sale/:id?preload_fields=User,Customer,Details,Details.Product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{SALE_PORT}}",
+							"path": [
+								"sale",
+								":id"
+							],
+							"query": [
+								{
+									"key": "preload_fields",
+									"value": "User,Customer,Details,Details.Product",
+									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4a0d3a1a-4864-489b-9e05-6ce1be5ad8d7",
+									"description": "id of sale"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update Sale",
 					"request": {
 						"auth": {

@@ -49,7 +49,7 @@ func SendEmailVerification(user models.SDAUser, successUrl, failedUrl string) {
 		VerificationUrl: verificationUrl,
 	}
 
-	utils.SendEmail("email-verification", user.Email, "Email Verification", "", fill)
+	utils.SendEmail("email-verification", "", user.Email, "Email Verification", "", fill)
 }
 
 func VerifyUser(token string) (user models.SDAUser, successUrl, failedUrl string, err error) {
@@ -117,7 +117,7 @@ func SendResetPasswordRequest(user models.SDAUser, redirectUrl string) {
 		ResetPasswordUrl: resetPasswordUrl,
 	}
 
-	utils.SendEmail("reset-password", user.Email, "Reset Your Password", "", fill)
+	utils.SendEmail("reset-password", "", user.Email, "Reset Your Password", "", fill)
 }
 
 func ResetPassword(request dto.ResetPasswordRequest) (user models.SDAUser, err error) {

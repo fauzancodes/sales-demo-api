@@ -14,5 +14,6 @@ func SaleRoute(app *echo.Echo) {
 		sale.GET("/:id", controllers.GetSaleByID)
 		sale.PATCH("/:id", controllers.UpdateSale)
 		sale.DELETE("/:id", controllers.DeleteSale)
+		sale.GET("/send-invoice/:id", controllers.SendSaleInvoiceByID)
 	}
 }
