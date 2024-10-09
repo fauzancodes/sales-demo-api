@@ -28,9 +28,9 @@
         .feature-list {
             text-align: left;
             display: grid;
-            grid-template-columns: 1fr; /* Default 1 kolom */
+            grid-template-columns: 1fr;
             gap: 20px;
-            max-width: 800px;
+            max-width: 100%;
             margin: 20px auto;
             padding: 0;
             list-style-type: disc;
@@ -41,7 +41,8 @@
         }
         @media screen and (min-width: 768px) {
             .feature-list {
-                grid-template-columns: 1fr 1fr; /* Ubah menjadi 2 kolom saat layar besar */
+                grid-template-columns: 1fr 1fr 1fr;
+                max-width: 90%;
             }
         }
         .button-group {
@@ -76,22 +77,22 @@
     <main>
         <p>Welcome to the Sales Demo API documentation. Below are the features of the API:</p>
         <ul class="feature-list">
-            <li>Login and register endpoints supported with jwt authentication</li>
-            <li>The password field is protected by bcrypt hashing</li>
-            <li>Endpoint for email verification, forgot password, getting logged in user data, updating user data, and deleting user accounts</li>
-            <li>The email verification endpoint is equipped with the function to send an email to the user and check the verification back</li>
-            <li>The endpoint for forgotten passwords is equipped with a function to send an email to the user in the form of a verification token which is then used to create a new password</li>
-            <li>CRUD endpoints for product categories, products themselves, product stock, and product image uploads</li>
-            <li>Product stock is supported by stock change history</li>
-            <li>CRUD endpoints for customers</li>
-            <li>CRUD endpoints for sales and details</li>
-            <li>Sales endpoints are equipped with validation of subtotal calculations, discounts, taxes, and totals to be paid</li>
-            <li>Sales endpoints are equipped with product stock validation and product stock reduction</li>
-            <li>Sales endpoints are equipped with endpoints to send sales invoices to customer emails with invoice download link</li>
-            <li>All GET endpoints are equipped with dynamic pagination, filter, search, limit, offset, order, and sort</li>
-            <li>All POST endpoints are equipped with validation for each field</li>
-            <li>All endpoints are protected with query param sanitization to prevent SQL injection</li>
-            <li>All functions are made as modular as possible, so that someone can copy-paste a function to use in their own golang project or even further, copy a function to give to chatgpt and have chatgpt translate it to another programming language</li>
+            <li><strong>Secure Authentication:</strong> Effortlessly manage user access with robust login and registration endpoints, powered by JWT authentication for a seamless user experience.</li>
+            <li><strong>Password Protection:</strong> Safeguard sensitive information with industry-standard bcrypt hashing, ensuring user passwords are encrypted and secure.</li>
+            <li><strong>Comprehensive User Management:</strong> Empower users with endpoints for email verification, password recovery, accessing personal data, updating profiles, and deleting accounts with ease.</li>
+            <li><strong>Email Verification Made Easy:</strong> Automatically send verification emails to users and seamlessly check their verification status to enhance security and trust.</li>
+            <li><strong>Password Recovery Simplified:</strong> Streamline the password reset process by sending users a secure verification token via email, enabling them to create new passwords effortlessly.</li>
+            <li><strong>Product Management at Your Fingertips:</strong> Enjoy complete control with CRUD endpoints for managing product categories, individual products, stock levels, and image uploads.</li>
+            <li><strong>Stock Monitoring with History:</strong> Keep track of inventory changes with a comprehensive stock change history, ensuring accurate product management.</li>
+            <li><strong>Customer Management:</strong> Easily manage customer information with dedicated CRUD endpoints, allowing you to maintain detailed records.</li>
+            <li><strong>Sales Management Made Simple:</strong> Handle sales and detailed transactions with ease through dedicated CRUD endpoints for streamlined operations.</li>
+            <li><strong>Sales Validation Built-In:</strong> Ensure accurate calculations with validation for subtotals, discounts, taxes, and totals, so you can focus on what matters most.</li>
+            <li><strong>Real-Time Stock Validation:</strong> Stay informed with product stock validation and automatic stock reduction during sales, preventing overselling and enhancing customer satisfaction.</li>
+            <li><strong>Invoicing Made Effortless:</strong> Automatically send invoices to customers via email, complete with downloadable links for easy access.</li>
+            <li><strong>Dynamic Data Retrieval:</strong> All GET endpoints feature dynamic pagination, filtering, searching, and sorting options, making data retrieval intuitive and efficient.</li>
+            <li><strong>Robust Input Validation:</strong> Ensure data integrity with comprehensive validation on all POST endpoints, preventing errors and enhancing user experience.</li>
+            <li><strong>SQL Injection Prevention:</strong> All endpoints is protected with query parameter sanitization, guarding against SQL injection attacks for enhanced security.</li>
+            <li><strong>Modular Design for Flexibility:</strong> Crafted with modularity in mind, our functions can be easily copied and adapted for use in your own Golang projects, or even translated into other programming languages with ease.</li>
         </ul>
         <div class="button-group">
             <a href="/docs/Sale Demo API.postman_collection.json" download="Sale Demo API.postman_collection.json" class="button">Download Postman Collection</a>
