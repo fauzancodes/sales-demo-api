@@ -1,15 +1,12 @@
 package controllers
 
 import (
-	"context"
 	"log"
 	"net/http"
 	"path/filepath"
 
-	"github.com/cloudinary/cloudinary-go/v2"
-	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
-	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/upload"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 )
@@ -58,13 +55,7 @@ func UploadFile(c echo.Context) error {
 		}
 		defer src.Close()
 
-		cloudName := config.LoadConfig().CloudinaryCloudName
-		apiKey := config.LoadConfig().CloudinaryAPIKey
-		apiSecret := config.LoadConfig().CLoudinaryAPISecret
-		folder := config.LoadConfig().CloudinaryFolder + "/" + userID
-
-		request, _ := cloudinary.NewFromParams(cloudName, apiKey, apiSecret)
-		response, err := request.Upload.Upload(context.Background(), src, uploader.UploadParams{Folder: folder})
+		secureUrl, _, _, err := upload.UploadFile(src, userID, "")
 		if err != nil {
 			return c.JSON(
 				http.StatusInternalServerError,
@@ -76,7 +67,7 @@ func UploadFile(c echo.Context) error {
 			)
 		}
 
-		responseURL = response.SecureURL
+		responseURL = secureUrl
 	} else {
 		return c.JSON(
 			http.StatusBadRequest,

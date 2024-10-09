@@ -2,17 +2,15 @@ package service
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"log"
 	"strings"
 	"time"
 
-	"github.com/cloudinary/cloudinary-go/v2"
-	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
-	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/smtp"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/upload"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
@@ -478,22 +476,15 @@ func SendSaleInvoice(saleID uuid.UUID) {
 			return
 		}
 
-		cloudName := config.LoadConfig().CloudinaryCloudName
-		apiKey := config.LoadConfig().CloudinaryAPIKey
-		apiSecret := config.LoadConfig().CLoudinaryAPISecret
-		folder := config.LoadConfig().CloudinaryFolder + "/" + user.ID.String()
-		request, _ := cloudinary.NewFromParams(cloudName, apiKey, apiSecret)
-		response, err := request.Upload.Upload(context.Background(), pdf, uploader.UploadParams{
-			Folder:   folder,
-			PublicID: fmt.Sprintf("SI%v", utils.GenerateRandomNumber(12)),
-		})
+		_, publicID, cloudName, err := upload.UploadFile(pdf, user.ID.String(), fmt.Sprintf("SI%v", utils.GenerateRandomNumber(12)))
 		if err != nil {
 			log.Println("Failed to upload pdf file:", err.Error())
 			return
 		}
-		fill.AttachmentLink = fmt.Sprintf("https://res.cloudinary.com/%v/image/upload/fl_attachment/%v.png", cloudName, strings.Split(response.PublicID, ".")[0])
 
-		utils.SendEmail("invoice", user.Email, customer.Email, "Sales Invoice", "", fill)
+		fill.AttachmentLink = fmt.Sprintf("https://res.cloudinary.com/%v/image/upload/fl_attachment/%v.png", cloudName, strings.Split(publicID, ".")[0])
+
+		smtp.SendEmail("invoice", user.Email, customer.Email, "Sales Invoice", "", fill)
 	}
 }
 

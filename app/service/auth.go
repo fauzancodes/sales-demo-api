@@ -12,7 +12,7 @@ import (
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/bcrypt"
 	webToken "github.com/fauzancodes/sales-demo-api/app/pkg/jwt"
-	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/smtp"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -49,7 +49,7 @@ func SendEmailVerification(user models.SDAUser, successUrl, failedUrl string) {
 		VerificationUrl: verificationUrl,
 	}
 
-	utils.SendEmail("email-verification", "", user.Email, "Email Verification", "", fill)
+	smtp.SendEmail("email-verification", "", user.Email, "Email Verification", "", fill)
 }
 
 func VerifyUser(token string) (user models.SDAUser, successUrl, failedUrl string, err error) {
@@ -117,7 +117,7 @@ func SendResetPasswordRequest(user models.SDAUser, redirectUrl string) {
 		ResetPasswordUrl: resetPasswordUrl,
 	}
 
-	utils.SendEmail("reset-password", "", user.Email, "Reset Your Password", "", fill)
+	smtp.SendEmail("reset-password", "", user.Email, "Reset Your Password", "", fill)
 }
 
 func ResetPassword(request dto.ResetPasswordRequest) (user models.SDAUser, err error) {
