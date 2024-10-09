@@ -79,7 +79,7 @@
           <td>{{ printf "%.2f" .Tax }}</td>
         </tr>
         <tr>
-          <th>Misc Price:</th>
+          <th>Misc Prices:</th>
           <td>{{ printf "%.2f" .MiscPrice }}</td>
         </tr>
         <tr>
@@ -87,6 +87,7 @@
           <td><strong>{{ printf "%.2f" .TotalPaid }}</strong></td>
         </tr>
       </table>
+      <p><a href="{{ .AttachmentLink }}" target="_blank">Click here to download the invoice in pdf format!</a></p>
       <p>If you have any questions, feel free to reach out to us.</p>
       <p>Best Regards,</p>
       <p>{{ .UserFullname }}</p>

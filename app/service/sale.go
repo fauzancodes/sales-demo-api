@@ -1,16 +1,23 @@
 package service
 
 import (
+	"bytes"
+	"context"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
+	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
 	"github.com/guregu/null"
+	"github.com/jung-kurt/gofpdf"
 )
 
 func CheckSaleDetails(request dto.SaleRequest) (dto.SaleRequest, error) {
@@ -465,6 +472,116 @@ func SendSaleInvoice(saleID uuid.UUID) {
 			}
 		}
 
+		pdf, err := GenerateInvoicePDF(fill)
+		if err != nil {
+			log.Println("Failed to generate pdf file:", err.Error())
+			return
+		}
+
+		cloudName := config.LoadConfig().CloudinaryCloudName
+		apiKey := config.LoadConfig().CloudinaryAPIKey
+		apiSecret := config.LoadConfig().CLoudinaryAPISecret
+		folder := config.LoadConfig().CloudinaryFolder + "/" + user.ID.String()
+		request, _ := cloudinary.NewFromParams(cloudName, apiKey, apiSecret)
+		response, err := request.Upload.Upload(context.Background(), pdf, uploader.UploadParams{
+			Folder:   folder,
+			PublicID: fmt.Sprintf("SI%v", utils.GenerateRandomNumber(12)),
+		})
+		if err != nil {
+			log.Println("Failed to upload pdf file:", err.Error())
+			return
+		}
+		fill.AttachmentLink = fmt.Sprintf("https://res.cloudinary.com/%v/image/upload/fl_attachment/%v.png", cloudName, strings.Split(response.PublicID, ".")[0])
+
 		utils.SendEmail("invoice", user.Email, customer.Email, "Sales Invoice", "", fill)
 	}
+}
+
+func GenerateInvoicePDF(sale dto.SaleInvoice) (*bytes.Buffer, error) {
+	pdf := gofpdf.New("P", "mm", "A4", "")
+	pdf.SetFont("Arial", "B", 16)
+	pdf.AddPage()
+
+	// Header
+	pdf.Cell(190, 10, "Sales Invoice")
+	pdf.Ln(10)
+
+	// Invoice Details
+	pdf.SetFont("Arial", "", 12)
+	pdf.Cell(40, 10, fmt.Sprintf("Invoice ID: %s", sale.InvoiceID))
+	pdf.Ln(8)
+	pdf.Cell(40, 10, fmt.Sprintf("Date: %s", sale.TransactionDate))
+	pdf.Ln(8)
+	pdf.Cell(40, 10, fmt.Sprintf("Status: %s", sale.Status)) // Paid or Unpaid status
+	pdf.Ln(8)
+	pdf.Cell(40, 10, fmt.Sprintf("Customer: %s", sale.CustomerFullname))
+	pdf.Ln(12)
+
+	// Table Header
+	pdf.SetFillColor(240, 240, 240)
+	pdf.CellFormat(70, 10, "Product", "1", 0, "", true, 0, "")
+	pdf.CellFormat(30, 10, "Quantity", "1", 0, "C", true, 0, "")
+	pdf.CellFormat(40, 10, "Unit Price (USD)", "1", 0, "C", true, 0, "")
+	pdf.CellFormat(50, 10, "Total Price (USD)", "1", 0, "C", true, 0, "")
+	pdf.Ln(-1)
+
+	// Table Content
+	for _, item := range sale.Details {
+		pdf.CellFormat(70, 10, item.ProductName, "1", 0, "", false, 0, "")
+		pdf.CellFormat(30, 10, fmt.Sprintf("%d", item.Quantity), "1", 0, "C", false, 0, "")
+		pdf.CellFormat(40, 10, fmt.Sprintf("%.2f", item.ProductPrice), "1", 0, "R", false, 0, "")
+		pdf.CellFormat(50, 10, fmt.Sprintf("%.2f", item.TotalPrice), "1", 0, "R", false, 0, "")
+		pdf.Ln(-1)
+	}
+
+	// Line break before Summary
+	pdf.Ln(10)
+
+	// Summary Section
+	pdf.SetFont("Arial", "B", 12)
+	pdf.Cell(70, 10, "Summary")
+	pdf.Ln(8)
+
+	pdf.SetFont("Arial", "", 12)
+	pdf.CellFormat(130, 10, "Subtotal:", "", 0, "R", false, 0, "")
+	pdf.CellFormat(50, 10, fmt.Sprintf("%.2f", sale.Subtotal), "", 0, "R", false, 0, "")
+	pdf.Ln(8)
+
+	if sale.Discount > 0 {
+		pdf.CellFormat(130, 10, "Discount:", "", 0, "R", false, 0, "")
+		pdf.CellFormat(50, 10, fmt.Sprintf("%.2f", sale.Discount), "", 0, "R", false, 0, "")
+		pdf.Ln(8)
+	}
+
+	if sale.Tax > 0 {
+		pdf.CellFormat(130, 10, "Tax:", "", 0, "R", false, 0, "")
+		pdf.CellFormat(50, 10, fmt.Sprintf("%.2f", sale.Tax), "", 0, "R", false, 0, "")
+		pdf.Ln(8)
+	}
+
+	if sale.MiscPrice > 0 {
+		pdf.CellFormat(130, 10, "Misc Prices:", "", 0, "R", false, 0, "")
+		pdf.CellFormat(50, 10, fmt.Sprintf("%.2f", sale.MiscPrice), "", 0, "R", false, 0, "")
+		pdf.Ln(8)
+	}
+
+	// Total Paid
+	pdf.SetFont("Arial", "B", 12)
+	pdf.CellFormat(130, 10, "Total Paid:", "", 0, "R", false, 0, "")
+	pdf.CellFormat(50, 10, fmt.Sprintf("%.2f", sale.TotalPaid), "", 0, "R", false, 0, "")
+	pdf.Ln(12)
+
+	// Line break before Best Regards
+	pdf.Ln(10)
+
+	// Best Regards Section
+	pdf.Cell(190, 10, "Best Regards,")
+	pdf.Ln(8)
+	pdf.Cell(190, 10, sale.UserFullname)
+	pdf.Ln(12)
+
+	// Save PDF to buffer
+	var buf bytes.Buffer
+	err := pdf.Output(&buf)
+	return &buf, err
 }

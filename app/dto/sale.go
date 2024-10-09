@@ -54,6 +54,7 @@ type SaleInvoice struct {
 	MiscPrice        float64
 	TotalPaid        float64
 	UserFullname     string
+	AttachmentLink   string
 }
 
 type SaleInvoiceDetail struct {

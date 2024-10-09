@@ -13,6 +13,7 @@ require (
 	github.com/grokify/html-strip-tags-go v0.1.0
 	github.com/guregu/null v4.0.0+incompatible
 	github.com/joho/godotenv v1.5.1
+	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/labstack/echo/v4 v4.12.0
 	golang.org/x/crypto v0.22.0
 	golang.org/x/exp v0.0.0-20241004190924-225e2abe05e6
