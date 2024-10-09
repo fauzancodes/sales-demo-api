@@ -2,12 +2,10 @@ package upload
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/fauzancodes/sales-demo-api/app/config"
-	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 )
 
 func UploadFile(file interface{}, folder string, filename string) (secureUrl, publicID, cloudName string, err error) {
@@ -18,7 +16,7 @@ func UploadFile(file interface{}, folder string, filename string) (secureUrl, pu
 	request, _ := cloudinary.NewFromParams(cloudName, apiKey, apiSecret)
 	response, err := request.Upload.Upload(context.Background(), file, uploader.UploadParams{
 		Folder:   folder,
-		PublicID: fmt.Sprintf("SI%v", utils.GenerateRandomNumber(12)),
+		PublicID: filename,
 	})
 	if err != nil {
 		return
