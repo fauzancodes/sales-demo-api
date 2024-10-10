@@ -4,6 +4,7 @@ import "github.com/google/uuid"
 
 type SDAProduct struct {
 	CustomGormModel
+	Code        string                  `json:"code" gorm:"type:varchar(50);column:code"`
 	Name        string                  `json:"name" gorm:"type:varchar(255);column:name"`
 	Description string                  `json:"description" gorm:"type:text;column:description"`
 	Image       string                  `json:"image" gorm:"type:text;column:image"`
@@ -22,6 +23,7 @@ func (SDAProduct) TableName() string {
 
 type ProductRelation struct {
 	CustomGormModel
+	Code       string    `json:"code" gorm:"column:code"`
 	Name       string    `json:"name" gorm:"column:name"`
 	Status     bool      `json:"status" gorm:"column:status"`
 	Price      float64   `json:"price" gorm:"column:price"`

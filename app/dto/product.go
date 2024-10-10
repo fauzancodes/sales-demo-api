@@ -6,6 +6,7 @@ import (
 )
 
 type ProductRequest struct {
+	Code        string   `json:"code"`
 	Name        string   `json:"name"`
 	Description string   `json:"description"`
 	Status      bool     `json:"status"`
@@ -23,6 +24,7 @@ func (request ProductRequest) Validate() error {
 
 type ProductResponse struct {
 	models.CustomGormModel
+	Code        string                         `json:"code"`
 	Name        string                         `json:"name"`
 	Description string                         `json:"description"`
 	Status      bool                           `json:"status"`

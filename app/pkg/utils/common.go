@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -43,4 +44,10 @@ func GenerateRandomNumber(length int) string {
 	}
 	randomString := string(randomBytes)
 	return randomString
+}
+
+func GetBaseUrl(c echo.Context) (response string) {
+	response = fmt.Sprintf("%v://%v", c.Scheme(), c.Request().Host)
+
+	return
 }

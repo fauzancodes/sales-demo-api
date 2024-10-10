@@ -2,9 +2,13 @@ package service
 
 import (
 	"encoding/json"
+	"errors"
+	"mime/multipart"
+	"path/filepath"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/upload"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
@@ -12,6 +16,7 @@ import (
 
 func BuildProductResponse(data models.SDAProduct) (response dto.ProductResponse, err error) {
 	response.CustomGormModel = data.CustomGormModel
+	response.Code = data.Code
 	response.Name = data.Name
 	response.Description = data.Description
 	response.Status = data.Status
@@ -34,6 +39,9 @@ func CreateProduct(userID string, request dto.ProductRequest) (response models.S
 	if err != nil {
 		return
 	}
+	if request.Code == "" || request.Code == "-" {
+		request.Code = utils.GenerateRandomNumber(12)
+	}
 
 	parsedCategoryUUID, err := uuid.Parse(request.CategoryID)
 	if err != nil {
@@ -46,6 +54,7 @@ func CreateProduct(userID string, request dto.ProductRequest) (response models.S
 	}
 
 	data := models.SDAProduct{
+		Code:        response.Code,
 		Name:        request.Name,
 		Description: request.Description,
 		Status:      request.Status,
@@ -137,6 +146,9 @@ func UpdateProduct(id string, request dto.ProductRequest) (response models.SDAPr
 		return
 	}
 
+	if request.Code != "" {
+		data.Code = request.Code
+	}
 	if request.Name != "" {
 		data.Name = request.Name
 	}
@@ -185,6 +197,28 @@ func DeleteProduct(id string) (err error) {
 	}
 
 	err = repository.DeleteProduct(data)
+
+	return
+}
+
+func UploadProductPicture(file *multipart.FileHeader, userID string) (responseURL string, err error) {
+	extension := filepath.Ext(file.Filename)
+	if extension == ".png" || extension == ".jpg" || extension == ".jpeg" || extension == ".webp" {
+		var src multipart.File
+		src, err = file.Open()
+		if err != nil {
+			return
+		}
+		defer src.Close()
+
+		responseURL, _, _, err = upload.UploadFile(src, userID, "")
+		if err != nil {
+			return
+		}
+	} else {
+		err = errors.New("the file extension is wrong. allowed file extensions are images (.png, .jpg, .jpeg, .webp)")
+		return
+	}
 
 	return
 }

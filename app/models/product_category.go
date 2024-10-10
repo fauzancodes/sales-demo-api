@@ -4,6 +4,7 @@ import "github.com/google/uuid"
 
 type SDAProductCategory struct {
 	CustomGormModel
+	Code        string            `json:"code" gorm:"type:varchar(50);column:code"`
 	Name        string            `json:"name" gorm:"type:varchar(255);column:name"`
 	Description string            `json:"description" gorm:"type:text;column:description"`
 	Status      bool              `json:"status" gorm:"type:bool;column:status"`
@@ -18,6 +19,7 @@ func (SDAProductCategory) TableName() string {
 
 type ProductCategoryRelation struct {
 	CustomGormModel
+	Code   string    `json:"code" gorm:"column:code"`
 	Name   string    `json:"name" gorm:"column:name"`
 	Status bool      `json:"status" gorm:"column:status"`
 	UserID uuid.UUID `json:"-" gorm:"column:user_id"`

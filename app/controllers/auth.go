@@ -67,7 +67,7 @@ func Register(c echo.Context) error {
 		)
 	}
 
-	go service.SendEmailVerification(result, request.SuccessVerificationUrl, request.FailedVerificationUrl)
+	go service.SendEmailVerification(result, request.SuccessVerificationUrl, request.FailedVerificationUrl, utils.GetBaseUrl(c))
 
 	return c.JSON(
 		http.StatusOK,
@@ -327,7 +327,7 @@ func ResendEmailVerification(c echo.Context) error {
 		)
 	}
 
-	go service.SendEmailVerification(user[0], request.SuccessVerificationUrl, request.FailedVerificationUrl)
+	go service.SendEmailVerification(user[0], request.SuccessVerificationUrl, request.FailedVerificationUrl, utils.GetBaseUrl(c))
 
 	return c.JSON(
 		http.StatusOK,
@@ -377,7 +377,7 @@ func SendForgotPasswordRequest(c echo.Context) error {
 		)
 	}
 
-	go service.SendResetPasswordRequest(user[0], request.RedirectUrl)
+	go service.SendResetPasswordRequest(user[0], request.RedirectUrl, utils.GetBaseUrl(c))
 
 	return c.JSON(
 		http.StatusOK,

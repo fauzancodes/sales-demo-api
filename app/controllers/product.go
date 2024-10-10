@@ -170,3 +170,41 @@ func DeleteProduct(c echo.Context) error {
 		},
 	)
 }
+
+func UploadProductPicture(c echo.Context) error {
+	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
+	log.Printf("Current user ID: %v", userID)
+
+	file, err := c.FormFile("image")
+	if err != nil {
+		return c.JSON(
+			http.StatusBadRequest,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to get file from form",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	responseURL, err := service.UploadProductPicture(file, userID)
+	if err != nil {
+		return c.JSON(
+			http.StatusInternalServerError,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to upload product picture",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Success to upload",
+			Data:    responseURL,
+		},
+	)
+}

@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/bcrypt"
@@ -17,14 +16,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func SendEmailVerification(user models.SDAUser, successUrl, failedUrl string) {
-	var appUrl string
-	if config.LoadConfig().BaseUrl == "http://localhost" {
-		appUrl = fmt.Sprintf("%v:%v", config.LoadConfig().BaseUrl, config.LoadConfig().IndexPort)
-	} else {
-		appUrl = config.LoadConfig().BaseUrl
-	}
-
+func SendEmailVerification(user models.SDAUser, successUrl, failedUrl, appUrl string) {
 	claims := jwt.MapClaims{}
 	claims["id"] = user.ID
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
@@ -81,14 +73,7 @@ func VerifyUser(token string) (user models.SDAUser, successUrl, failedUrl string
 	return
 }
 
-func SendResetPasswordRequest(user models.SDAUser, redirectUrl string) {
-	var appUrl string
-	if config.LoadConfig().BaseUrl == "http://localhost" {
-		appUrl = fmt.Sprintf("%v:%v", config.LoadConfig().BaseUrl, config.LoadConfig().IndexPort)
-	} else {
-		appUrl = config.LoadConfig().BaseUrl
-	}
-
+func SendResetPasswordRequest(user models.SDAUser, redirectUrl, appUrl string) {
 	claims := jwt.MapClaims{}
 	claims["id"] = user.ID
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()

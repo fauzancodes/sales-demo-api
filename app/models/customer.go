@@ -4,6 +4,7 @@ import "github.com/google/uuid"
 
 type SDACustomer struct {
 	CustomGormModel
+	Code      string         `json:"code" gorm:"type:varchar(50);column:code"`
 	FirstName string         `json:"first_name" gorm:"type:varchar(255);column:first_name"`
 	LastName  string         `json:"last_name" gorm:"type:varchar(255);column:last_name"`
 	Email     string         `json:"email" gorm:"type:varchar(255);column:email"`
@@ -20,6 +21,7 @@ func (SDACustomer) TableName() string {
 
 type CustomerRelation struct {
 	CustomGormModel
+	Code      string    `json:"code" gorm:"column:code"`
 	FirstName string    `json:"first_name" gorm:"column:first_name"`
 	LastName  string    `json:"last_name" gorm:"column:last_name"`
 	Email     string    `json:"email" gorm:"column:email"`

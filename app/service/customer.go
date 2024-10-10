@@ -13,8 +13,12 @@ func CreateCustomer(userID string, request dto.CustomerRequest) (response models
 	if err != nil {
 		return
 	}
+	if request.Code == "" || request.Code == "-" {
+		request.Code = utils.GenerateRandomNumber(12)
+	}
 
 	data := models.SDACustomer{
+		Code:      request.Code,
 		FirstName: request.FirstName,
 		LastName:  request.LastName,
 		Email:     request.Email,
@@ -85,6 +89,9 @@ func UpdateCustomer(id string, request dto.CustomerRequest) (response models.SDA
 		return
 	}
 
+	if request.Code != "" {
+		data.Code = request.Code
+	}
 	if request.FirstName != "" {
 		data.FirstName = request.FirstName
 	}

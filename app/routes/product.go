@@ -16,9 +16,15 @@ func ProductRoute(app *echo.Echo) {
 			category.GET("/:id", controllers.GetProductCategoryByID)
 			category.PATCH("/:id", controllers.UpdateProductCategory)
 			category.DELETE("/:id", controllers.DeleteProductCategory)
+
+			importData := category.Group("/import")
+			{
+				importData.GET("/template", controllers.GetProductCategoryImportTemplate)
+				importData.POST("", controllers.ImportProductCategory)
+			}
 		}
 
-		product.POST("/upload-image", controllers.UploadFile)
+		product.POST("/upload-image", controllers.UploadProductPicture)
 		product.POST("", controllers.CreateProduct)
 		product.GET("", controllers.GetProducts)
 		product.GET("/:id", controllers.GetProductByID)
