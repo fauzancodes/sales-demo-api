@@ -11,7 +11,7 @@ import (
 )
 
 func CreateProductStock(data models.SDAProductStock) (models.SDAProductStock, error) {
-	err := config.DB.Preload("User").Preload("Product").Create(&data).Error
+	err := config.DB.Create(&data).Error
 	if err != nil {
 		log.Printf("Failed to insert data to database: %v", err)
 	}

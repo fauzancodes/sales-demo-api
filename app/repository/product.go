@@ -11,7 +11,7 @@ import (
 )
 
 func CreateProduct(data models.SDAProduct) (models.SDAProduct, error) {
-	err := config.DB.Preload("User").Preload("Category").Create(&data).Error
+	err := config.DB.Create(&data).Error
 	if err != nil {
 		log.Printf("Failed to insert data to database: %v", err)
 	}
@@ -58,7 +58,7 @@ func GetProducts(param dto.FindParameter, preloadFields []string) (responses []m
 }
 
 func UpdateProduct(data models.SDAProduct) (models.SDAProduct, error) {
-	err := config.DB.Preload("User").Preload("Category").Save(&data).Error
+	err := config.DB.Save(&data).Error
 	if err != nil {
 		log.Printf("Failed to update data in database: %v", err)
 	}

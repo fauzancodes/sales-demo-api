@@ -1069,6 +1069,82 @@
 			"name": "Customer",
 			"item": [
 				{
+					"name": "Import",
+					"item": [
+						{
+							"name": "Template",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg3Mzk1NzIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.XVlKFxcJ0PvWutJXTdL7wbyli1T9jRxo3jD8ZGEnN2c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:{{CUSTOMER_PORT}}/customer/import/template",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "{{CUSTOMER_PORT}}",
+									"path": [
+										"customer",
+										"import",
+										"template"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Import Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg3Mzk1NzIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.XVlKFxcJ0PvWutJXTdL7wbyli1T9jRxo3jD8ZGEnN2c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/Personal Project/sales-demo-api/assets/template/product.xlsx"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:{{CUSTOMER_PORT}}/customer/import",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "{{CUSTOMER_PORT}}",
+									"path": [
+										"customer",
+										"import"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Create Customer",
 					"request": {
 						"auth": {

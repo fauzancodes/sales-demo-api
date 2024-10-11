@@ -14,5 +14,11 @@ func CustomerRoute(app *echo.Echo) {
 		customer.GET("/:id", controllers.GetCustomerByID)
 		customer.PATCH("/:id", controllers.UpdateCustomer)
 		customer.DELETE("/:id", controllers.DeleteCustomer)
+
+		importData := customer.Group("/import")
+		{
+			importData.GET("/template", controllers.GetCustomerImportTemplate)
+			importData.POST("", controllers.ImportCustomer)
+		}
 	}
 }

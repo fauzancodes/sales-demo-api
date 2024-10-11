@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -167,6 +168,55 @@ func DeleteCustomer(c echo.Context) error {
 		dto.Response{
 			Status:  200,
 			Message: "Success to delete data",
+		},
+	)
+}
+
+func GetCustomerImportTemplate(c echo.Context) error {
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Download Template Url",
+			Data:    fmt.Sprintf("%v/assets/template/customer.xlsx", utils.GetBaseUrl(c)),
+		},
+	)
+}
+
+func ImportCustomer(c echo.Context) error {
+	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
+	log.Printf("Current user ID: %v", userID)
+
+	file, err := c.FormFile("file")
+	if err != nil {
+		return c.JSON(
+			http.StatusBadRequest,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to get file from form",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	response, err := service.ImportCustomer(file, userID)
+	if err != nil {
+		return c.JSON(
+			http.StatusInternalServerError,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to import data",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Success to import data",
+			Data:    response,
 		},
 	)
 }
