@@ -31,6 +31,12 @@ func ProductRoute(app *echo.Echo) {
 		product.PATCH("/:id", controllers.UpdateProduct)
 		product.DELETE("/:id", controllers.DeleteProduct)
 
+		importData := product.Group("/import")
+		{
+			importData.GET("/template", controllers.GetProductImportTemplate)
+			importData.POST("", controllers.ImportProduct)
+		}
+
 		stock := product.Group("/stock")
 		{
 			stock.POST("", controllers.CreateProductStock)

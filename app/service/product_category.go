@@ -1,18 +1,14 @@
 package service
 
 import (
-	"encoding/csv"
 	"errors"
 	"mime/multipart"
-	"path/filepath"
-	"strconv"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
-	"github.com/xuri/excelize/v2"
 )
 
 func CreateProductCategory(userID string, request dto.ProductCategoryRequest) (response models.SDAProductCategory, err error) {
@@ -124,44 +120,8 @@ func DeleteProductCategory(id string) (err error) {
 }
 
 func ImportProductCategory(file *multipart.FileHeader, userID string) (responses []models.SDAProductCategory, err error) {
-	src, err := file.Open()
+	rows, err := utils.ValidateImportFile(file, 3)
 	if err != nil {
-		return
-	}
-	defer src.Close()
-
-	var rows [][]string
-	extension := filepath.Ext(file.Filename)
-
-	if extension == ".xls" || extension == ".xlsx" {
-		var f *excelize.File
-		f, err = excelize.OpenReader(src)
-		if err != nil {
-			return
-		}
-
-		sheets := f.GetSheetList()
-		if len(sheets) == 0 {
-			err = errors.New("there is no sheet in the file")
-			return
-		}
-
-		rows, err = f.GetRows(sheets[0])
-		if err != nil {
-			return
-		}
-		if len(rows[0]) != 3 {
-			err = errors.New("The number of columns must match the template. Expected: 3 columns. Current: " + strconv.Itoa(len(rows[0])) + " columns")
-			return
-		}
-	} else if extension == ".csv" {
-		reader := csv.NewReader(src)
-		rows, err = reader.ReadAll()
-		if err != nil {
-			return
-		}
-	} else {
-		err = errors.New("the file format only accepts .xls, .xlsx, .csv")
 		return
 	}
 

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"mime/multipart"
 	"path/filepath"
+	"strconv"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
@@ -54,7 +55,7 @@ func CreateProduct(userID string, request dto.ProductRequest) (response models.S
 	}
 
 	data := models.SDAProduct{
-		Code:        response.Code,
+		Code:        request.Code,
 		Name:        request.Name,
 		Description: request.Description,
 		Status:      request.Status,
@@ -217,6 +218,95 @@ func UploadProductPicture(file *multipart.FileHeader, userID string) (responseUR
 		}
 	} else {
 		err = errors.New("the file extension is wrong. allowed file extensions are images (.png, .jpg, .jpeg, .webp)")
+		return
+	}
+
+	return
+}
+
+func ImportProduct(file *multipart.FileHeader, userID string) (responses []models.SDAProduct, err error) {
+	rows, err := utils.ValidateImportFile(file, 6)
+	if err != nil {
+		return
+	}
+
+	rows = rows[1:]
+	if len(rows) > 0 {
+		for _, data := range rows {
+			var response models.SDAProduct
+
+			var category models.SDAProductCategory
+			existingCategories, _, _, _ := repository.GetProductCategories(dto.FindParameter{
+				Filter: "deleted_at IS NULL AND code = '" + data[5] + "'",
+			}, []string{})
+
+			if len(existingCategories) > 0 {
+				category = existingCategories[0]
+			} else {
+				existingCategories, _, _, _ = repository.GetProductCategories(dto.FindParameter{
+					Filter: "deleted_at IS NULL AND name = '" + data[4] + "'",
+				}, []string{})
+
+				if len(existingCategories) > 0 {
+					category = existingCategories[0]
+				} else {
+					input := dto.ProductCategoryRequest{
+						Code:   data[5],
+						Name:   data[4],
+						Status: true,
+					}
+					if input.Code == "" || input.Code == "-" {
+						input.Code = utils.GenerateRandomNumber(12)
+					}
+
+					category, err = CreateProductCategory(userID, input)
+					if err != nil {
+						return
+					}
+				}
+			}
+
+			check, _, _, _ := repository.GetProducts(dto.FindParameter{
+				Filter: "deleted_at IS NULL AND code = '" + data[2] + "'",
+			}, []string{})
+
+			if len(check) > 0 {
+				response = check[0]
+			} else {
+				check, _, _, _ = repository.GetProducts(dto.FindParameter{
+					Filter: "deleted_at IS NULL AND name = '" + data[0] + "'",
+				}, []string{})
+
+				if len(check) > 0 {
+					response = check[0]
+				}
+			}
+
+			if response.ID == uuid.Nil {
+				input := dto.ProductRequest{
+					Code:        data[2],
+					Name:        data[0],
+					Description: data[1],
+					Status:      true,
+					Image:       []string{},
+					CategoryID:  category.ID.String(),
+				}
+				price, _ := strconv.ParseFloat(data[3], 64)
+				input.Price = price
+				if input.Code == "" || input.Code == "-" {
+					input.Code = utils.GenerateRandomNumber(12)
+				}
+
+				response, err = CreateProduct(userID, input)
+				if err != nil {
+					return
+				}
+			}
+
+			responses = append(responses, response)
+		}
+	} else {
+		err = errors.New("there is no data in the file")
 		return
 	}
 

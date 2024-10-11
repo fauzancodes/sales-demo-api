@@ -4,7 +4,7 @@
 		"name": "Sale Demo API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25300027",
-		"_collection_link": "https://warped-trinity-920625.postman.co/workspace/Team-Workspace~34d91d2f-9cc2-4352-8a90-0b3e69f8e68e/collection/25300027-d211a606-1b1d-4793-ba30-180ee9f3412c?action=share&source=collection_link&creator=25300027"
+		"_collection_link": "https://warped-trinity-920625.postman.co/workspace/34d91d2f-9cc2-4352-8a90-0b3e69f8e68e/collection/25300027-d211a606-1b1d-4793-ba30-180ee9f3412c?action=share&source=collection_link&creator=25300027"
 	},
 	"item": [
 		{
@@ -46,7 +46,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"greybyte0222@gmail.com\",\r\n    \"password\":\"Password@123\"\r\n}",
+							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\",\r\n    \"password\":\"Password@123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -264,6 +264,84 @@
 				{
 					"name": "Category",
 					"item": [
+						{
+							"name": "Import",
+							"item": [
+								{
+									"name": "Template",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg2NTY2MTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.dd_L2cYdqBqvE_aNLlt69PBLIgK3r6KkTZxX4qbWFUk",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:{{PRODUCT_PORT}}/product/category/import/template",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "{{PRODUCT_PORT}}",
+											"path": [
+												"product",
+												"category",
+												"import",
+												"template"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Import Data",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg2NTY2MTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.dd_L2cYdqBqvE_aNLlt69PBLIgK3r6KkTZxX4qbWFUk",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"type": "file",
+													"src": "/D:/Personal Project/sales-demo-api/assets/template/product_category.xlsx"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:{{PRODUCT_PORT}}/product/category/import",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "{{PRODUCT_PORT}}",
+											"path": [
+												"product",
+												"category",
+												"import"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
 						{
 							"name": "Create Category",
 							"request": {
@@ -624,6 +702,82 @@
 					]
 				},
 				{
+					"name": "Import",
+					"item": [
+						{
+							"name": "Template",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg3Mzk1NzIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.XVlKFxcJ0PvWutJXTdL7wbyli1T9jRxo3jD8ZGEnN2c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:{{PRODUCT_PORT}}/product/import/template",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "{{PRODUCT_PORT}}",
+									"path": [
+										"product",
+										"import",
+										"template"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Import Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg3Mzk1NzIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.XVlKFxcJ0PvWutJXTdL7wbyli1T9jRxo3jD8ZGEnN2c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/Personal Project/sales-demo-api/assets/template/product.xlsx"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:{{PRODUCT_PORT}}/product/import",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "{{PRODUCT_PORT}}",
+									"path": [
+										"product",
+										"import"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Create Product",
 					"request": {
 						"auth": {
@@ -669,7 +823,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg2NTY2MTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.dd_L2cYdqBqvE_aNLlt69PBLIgK3r6KkTZxX4qbWFUk",
 									"type": "string"
 								}
 							]
@@ -682,7 +836,7 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/ASUS/Downloads/Picture/NordicSword.webp"
+									"src": "/C:/Users/ASUS/Downloads/Picture/ezgif-2-401d601d74.png"
 								}
 							]
 						},
@@ -1173,7 +1327,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg0ODM0MjEsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CVyui-soqXCpa7ultu6Q2oH0mfdW9trq25T4ywYIjrE",
 									"type": "string"
 								}
 							]
@@ -1182,7 +1336,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"invoice_id\": \"\",\r\n    \"tax\": 11.0,\r\n    \"discount\": 10.0,\r\n    \"misc_price\": 100.0,\r\n    \"subtotal\": 0.0,\r\n    \"total_paid\": 0.0,\r\n    \"customer_id\": \"27ad138f-9653-4539-a7de-5583c3291d0f\",\r\n    \"transaction_date\": \"\",\r\n    \"status\": true,\r\n    \"details\": [\r\n        {\r\n            \"product_id\": \"f0224a0e-8471-446a-97df-c7cf59a92c70\",\r\n            \"price\": 5000.0,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"product_id\": \"d406683f-7272-4c55-a710-47abbc3d9c6a\",\r\n            \"price\": 2500.0,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"invoice_id\": \"\",\r\n    \"tax\": 11.0,\r\n    \"discount\": 10.0,\r\n    \"misc_price\": 1000.0,\r\n    \"subtotal\": 0.0,\r\n    \"total_paid\": 0.0,\r\n    \"customer_id\": \"27ad138f-9653-4539-a7de-5583c3291d0f\",\r\n    \"transaction_date\": \"\",\r\n    \"status\": true,\r\n    \"details\": [\r\n        {\r\n            \"product_id\": \"f0224a0e-8471-446a-97df-c7cf59a92c70\",\r\n            \"price\": 5000.0,\r\n            \"quantity\": 3\r\n        },\r\n        {\r\n            \"product_id\": \"d406683f-7272-4c55-a710-47abbc3d9c6a\",\r\n            \"price\": 2500.0,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1211,7 +1365,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg0ODM0MjEsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CVyui-soqXCpa7ultu6Q2oH0mfdW9trq25T4ywYIjrE",
 									"type": "string"
 								}
 							]
@@ -1351,7 +1505,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg1NzExNTksImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.sgpMSheVMCq5UTSJy0txphHXp25Arg_4_HtcFN86j8U",
 									"type": "string"
 								}
 							]
@@ -1359,7 +1513,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{SALE_PORT}}/sale/:id?preload_fields=User,Customer,Details,Details.Product",
+							"raw": "http://localhost:{{SALE_PORT}}/sale/send-invoice/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1367,19 +1521,13 @@
 							"port": "{{SALE_PORT}}",
 							"path": [
 								"sale",
+								"send-invoice",
 								":id"
-							],
-							"query": [
-								{
-									"key": "preload_fields",
-									"value": "User,Customer,Details,Details.Product",
-									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product"
-								}
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "4a0d3a1a-4864-489b-9e05-6ce1be5ad8d7",
+									"value": "367492f4-3163-4a4f-b4b4-377d93344881",
 									"description": "id of sale"
 								}
 							]
