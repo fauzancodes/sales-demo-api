@@ -178,7 +178,7 @@ func ImportProductCategory(file *multipart.FileHeader, userID string) (responses
 				response = check[0]
 			} else {
 				check, _, _, _ = repository.GetProductCategories(dto.FindParameter{
-					Filter: "deleted_at IS NULL AND name = '" + data[2] + "'",
+					Filter: "deleted_at IS NULL AND name = '" + data[0] + "'",
 				}, []string{})
 
 				if len(check) > 0 {
