@@ -11,7 +11,7 @@ import (
 )
 
 func CreateSale(data models.SDASale) (models.SDASale, error) {
-	err := config.DB.Preload("User").Create(&data).Error
+	err := config.DB.Preload("User").Preload("Customer").Preload("Details").Create(&data).Error
 	if err != nil {
 		log.Printf("Failed to insert data to database: %v", err)
 	}
@@ -58,7 +58,7 @@ func GetSales(param dto.FindParameter, preloadFields []string) (responses []mode
 }
 
 func UpdateSale(data models.SDASale) (models.SDASale, error) {
-	err := config.DB.Preload("User").Save(&data).Error
+	err := config.DB.Preload("User").Preload("Customer").Preload("Details").Save(&data).Error
 	if err != nil {
 		log.Printf("Failed to update data in database: %v", err)
 	}
