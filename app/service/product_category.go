@@ -169,19 +169,38 @@ func ImportProductCategory(file *multipart.FileHeader, userID string) (responses
 	if len(rows) > 0 {
 		for _, data := range rows {
 			var response models.SDAProductCategory
-			input := dto.ProductCategoryRequest{
-				Code:        data[2],
-				Name:        data[0],
-				Description: data[1],
-				Status:      true,
-			}
-			if input.Code == "" || input.Code == "-" {
-				input.Code = utils.GenerateRandomNumber(12)
+
+			check, _, _, _ := repository.GetProductCategories(dto.FindParameter{
+				Filter: "deleted_at IS NULL AND code = '" + data[2] + "'",
+			}, []string{})
+
+			if len(check) > 0 {
+				response = check[0]
+			} else {
+				check, _, _, _ = repository.GetProductCategories(dto.FindParameter{
+					Filter: "deleted_at IS NULL AND name = '" + data[2] + "'",
+				}, []string{})
+
+				if len(check) > 0 {
+					response = check[0]
+				}
 			}
 
-			response, err = CreateProductCategory(userID, input)
-			if err != nil {
-				return
+			if response.ID == uuid.Nil {
+				input := dto.ProductCategoryRequest{
+					Code:        data[2],
+					Name:        data[0],
+					Description: data[1],
+					Status:      true,
+				}
+				if input.Code == "" || input.Code == "-" {
+					input.Code = utils.GenerateRandomNumber(12)
+				}
+
+				response, err = CreateProductCategory(userID, input)
+				if err != nil {
+					return
+				}
 			}
 
 			responses = append(responses, response)

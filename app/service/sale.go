@@ -377,8 +377,7 @@ func DeleteSale(id string) (err error) {
 	}
 
 	dataDetails, _, _, err := repository.GetSaleDetails(dto.FindParameter{
-		BaseFilter: "deleted_at IS NULL AND user_id = '" + data.UserID.String() + "'",
-		Filter:     "deleted_at IS NULL AND user_id = '" + data.UserID.String() + "' AND sale_id = '" + data.ID.String() + "'",
+		Filter: "deleted_at IS NULL AND user_id = '" + data.UserID.String() + "' AND sale_id = '" + data.ID.String() + "'",
 	}, []string{})
 	if err != nil {
 		return
