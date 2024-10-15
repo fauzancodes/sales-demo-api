@@ -13,6 +13,7 @@ type SDAUser struct {
 	Customers         []CustomerRelation        `json:"customers,omitempty" gorm:"foreignKey:UserID"`
 	Sales             []SaleRelation            `json:"sales,omitempty" gorm:"foreignKey:UserID"`
 	SaleDetails       []SaleDetailRelation      `json:"sale_details,omitempty" gorm:"foreignKey:UserID"`
+	Payment           SDAMidtransSalePayment    `json:"payment,omitempty" gorm:"foreignKey:UserID"`
 }
 
 func (SDAUser) TableName() string {

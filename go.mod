@@ -15,6 +15,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/labstack/echo/v4 v4.12.0
+	github.com/midtrans/midtrans-go v1.3.8
 	github.com/xuri/excelize/v2 v2.8.1
 	golang.org/x/crypto v0.22.0
 	golang.org/x/exp v0.0.0-20241004190924-225e2abe05e6

@@ -43,6 +43,8 @@ func RunAutoMigration() {
 		&models.SDACustomer{},
 		&models.SDASale{},
 		&models.SDASaleDetail{},
+		&models.SDAMidtransPaymentMethod{},
+		&models.SDAMidtransSalePayment{},
 	)
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)

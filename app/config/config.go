@@ -6,11 +6,13 @@ import (
 )
 
 type Config struct {
+	SecretKey                   string
 	IndexPort                   string
 	AuthPort                    string
 	ProductPort                 string
 	CustomerPort                string
 	SalePort                    string
+	PaymentGatewayPort          string
 	BaseUrl                     string
 	DatabaseUsername            string
 	DatabasePassword            string
@@ -26,14 +28,20 @@ type Config struct {
 	SmtpUsername                string
 	SmtpPassword                string
 	SmtpPort                    int
+	MidtransEnv                 string
+	MidtransMerchantID          string
+	MidtransClientKey           string
+	MidtransServerKey           string
 }
 
 func LoadConfig() (config *Config) {
+	secretKey := os.Getenv("SECRET_KEY")
 	indexPort := os.Getenv("INDEX_PORT")
 	authPort := os.Getenv("AUTH_PORT")
 	productPort := os.Getenv("PRODUCT_PORT")
 	customerPort := os.Getenv("CUSTOMER_PORT")
 	salePort := os.Getenv("SALE_PORT")
+	paymentGatewayPort := os.Getenv("PAYMENT_GATEWAY_PORT")
 	baseUrl := os.Getenv("BASE_URL")
 	databaseUsername := os.Getenv("DATABASE_USERNAME")
 	databasePassword := os.Getenv("DATABASE_PASSWORD")
@@ -49,8 +57,13 @@ func LoadConfig() (config *Config) {
 	smtpUsername := os.Getenv("SMTP_USERNAME")
 	smtpPassword := os.Getenv("SMTP_PASSWORD")
 	smtpPort, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))
+	midtransEnv := os.Getenv("MIDTRANS_ENV")
+	midtransMerchantID := os.Getenv("MIDTRANS_MERCHANT_ID")
+	midtransClientKey := os.Getenv("MIDTRANS_CLIENT_KEY")
+	midtransServerKey := os.Getenv("MIDTRANS_SERVER_KEY")
 
 	return &Config{
+		SecretKey:                   secretKey,
 		DatabaseUsername:            databaseUsername,
 		DatabasePassword:            databasePassword,
 		DatabaseHost:                databaseHost,
@@ -67,9 +80,14 @@ func LoadConfig() (config *Config) {
 		ProductPort:                 productPort,
 		CustomerPort:                customerPort,
 		SalePort:                    salePort,
+		PaymentGatewayPort:          paymentGatewayPort,
 		SmtpHost:                    smtpHost,
 		SmtpUsername:                smtpUsername,
 		SmtpPassword:                smtpPassword,
 		SmtpPort:                    smtpPort,
+		MidtransEnv:                 midtransEnv,
+		MidtransMerchantID:          midtransMerchantID,
+		MidtransClientKey:           midtransClientKey,
+		MidtransServerKey:           midtransServerKey,
 	}
 }

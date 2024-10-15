@@ -2,12 +2,12 @@ package jwt
 
 import (
 	"fmt"
-	"os"
 
+	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var SecretKey = os.Getenv("SECRET_KEY")
+var SecretKey = config.LoadConfig().SecretKey
 
 func GenerateToken(claims *jwt.MapClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

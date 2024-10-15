@@ -13,15 +13,9 @@ func main() {
 	app := echo.New()
 
 	config.Database()
-
-	routes.IndexRoute(app)
-	routes.AuthRoute(app)
-	routes.ProductRoute(app)
-	routes.CustomerRoute(app)
-	routes.SaleRoute(app)
 	routes.PaymentGatewayRoute(app)
 
-	port := config.LoadConfig().IndexPort
+	port := config.LoadConfig().PaymentGatewayPort
 
 	log.Printf("Server: " + config.LoadConfig().BaseUrl + ":" + port)
 	app.Logger.Fatal(app.Start(":" + port))

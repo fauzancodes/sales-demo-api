@@ -15,6 +15,9 @@ go build -o bin/ cmd/customer/customer.go
 echo "Building Sale Service  ..."
 go build -o bin/ cmd/sale/sale.go
 
+echo "Building Payment Gateway Service  ..."
+go build -o bin/ cmd/payment_gateway/payment_gateway.go
+
 echo "Building Main Service  ..."
 go build -o bin/
 

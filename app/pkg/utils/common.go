@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"errors"
 	"fmt"
+	"math"
 	"mime/multipart"
 	"path/filepath"
 	"strconv"
@@ -99,4 +100,8 @@ func ValidateImportFile(file *multipart.FileHeader, numberOfColumns int) (rows [
 	}
 
 	return
+}
+
+func RoundFloat(number float64) (result int) {
+	return int(math.Round(number))
 }
