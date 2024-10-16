@@ -357,6 +357,8 @@ func MidtransHandleNotification(request dto.MidtransNotificationRequest) (err er
 		return
 	}
 
+	sale[0].Status = true
+
 	_, err = repository.UpdateSale(sale[0])
 	if err != nil {
 		return
