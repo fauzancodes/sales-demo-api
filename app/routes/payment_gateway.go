@@ -7,12 +7,12 @@ import (
 )
 
 func PaymentGatewayRoute(app *echo.Echo) {
-	paymentGateway := app.Group("/payment-gateway", middlewares.Auth, middlewares.StripHTMLMiddleware)
+	paymentGateway := app.Group("/payment-gateway", middlewares.StripHTMLMiddleware)
 	{
 		midtrans := paymentGateway.Group("/midtrans")
 		{
-			midtrans.GET("/available-payment-method", controllers.GetMidtransPaymentMethods)
-			midtrans.POST("/charge", controllers.MidtransCharge)
+			midtrans.GET("/available-payment-method", controllers.GetMidtransPaymentMethods, middlewares.Auth)
+			midtrans.POST("/charge", controllers.MidtransCharge, middlewares.Auth)
 			midtrans.POST("/notification", controllers.MidtransNotification)
 		}
 	}

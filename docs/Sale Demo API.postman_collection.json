@@ -601,7 +601,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg4OTY4MzcsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.M6k5Akt8frBrkIXJ3EGD8ap_KB1W3ssTd__c_VqmZas",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkwODQ0NTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7kowcWqCc0_bEkVEUZeT7e7di9S1wLUziuypioDmV5I",
 											"type": "string"
 										}
 									]
@@ -610,7 +610,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"amount\": 10,\r\n    \"description\": \"Add stock\",\r\n    \"product_id\": \"0bf1d22c-2146-405b-9a41-49953c1b10cc\",\r\n    \"action\": \"add\" //\"add\" or \"reduce\"\r\n}",
+									"raw": "{\r\n    \"amount\": 50,\r\n    \"description\": \"Add stock\",\r\n    \"product_id\": \"0bf1d22c-2146-405b-9a41-49953c1b10cc\",\r\n    \"action\": \"add\" //\"add\" or \"reduce\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1403,7 +1403,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg4OTY4MzcsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.M6k5Akt8frBrkIXJ3EGD8ap_KB1W3ssTd__c_VqmZas",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkxODY1OTYsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Yl4j_kta_mhfGCvtWcuarTYfOJPXV1lN_f5oQZJTA24",
 									"type": "string"
 								}
 							]
@@ -1441,7 +1441,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg0ODM0MjEsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CVyui-soqXCpa7ultu6Q2oH0mfdW9trq25T4ywYIjrE",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkwODQ0NTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7kowcWqCc0_bEkVEUZeT7e7di9S1wLUziuypioDmV5I",
 									"type": "string"
 								}
 							]
@@ -1710,7 +1710,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg4OTY4MzcsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.M6k5Akt8frBrkIXJ3EGD8ap_KB1W3ssTd__c_VqmZas",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkwODQ0NTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7kowcWqCc0_bEkVEUZeT7e7di9S1wLUziuypioDmV5I",
 											"type": "string"
 										}
 									]
@@ -1719,7 +1719,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"invoice_id\": \"\",\r\n    \"payment_method_code\": \"\",\r\n    \"card\": {\r\n        \"card_number\": \"\",\r\n        \"exp_month\": 0,\r\n        \"exp_year\": 0,\r\n        \"cvv\": \"\"\r\n    }\r\n}",
+									"raw": "{\r\n    \"invoice_id\": \"INV344023296827\",\r\n    \"payment_method_code\": \"bca\",\r\n    \"card\": {\r\n        \"card_number\": \"\",\r\n        \"exp_month\": 0,\r\n        \"exp_year\": 0,\r\n        \"cvv\": \"\"\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1757,7 +1757,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg5ODc4MzEsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.QnP2hNjrfRLiWVIjwhz5VIjmZIhZSM2nhBi_KDupv0k",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkwODQ0NTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7kowcWqCc0_bEkVEUZeT7e7di9S1wLUziuypioDmV5I",
 											"type": "string"
 										}
 									]
