@@ -1,7 +1,9 @@
-package main
+// package main
+package handler
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/routes"
@@ -9,7 +11,22 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func Main(w http.ResponseWriter, r *http.Request) {
+	app := Start()
+
+	app.ServeHTTP(w, r)
+}
+
 func main() {
+	app := Start()
+
+	port := config.LoadConfig().IndexPort
+
+	log.Printf("Server: " + config.LoadConfig().BaseUrl + ":" + port)
+	app.Logger.Fatal(app.Start(":" + port))
+}
+
+func Start() *echo.Echo {
 	app := echo.New()
 
 	config.Database()
@@ -21,8 +38,5 @@ func main() {
 	routes.SaleRoute(app)
 	routes.PaymentGatewayRoute(app)
 
-	port := config.LoadConfig().IndexPort
-
-	log.Printf("Server: " + config.LoadConfig().BaseUrl + ":" + port)
-	app.Logger.Fatal(app.Start(":" + port))
+	return app
 }

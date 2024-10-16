@@ -1,6 +1,8 @@
 package service
 
 import (
+	"crypto/sha512"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"strings"
@@ -87,7 +89,7 @@ func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (respon
 
 	c := coreapi.Client{}
 	c.New(serverKey, env)
-	c.Options.SetPaymentOverrideNotification(baseUrl + "/payment-gateway/midtrans/callback")
+	c.Options.SetPaymentOverrideNotification(baseUrl + "/payment-gateway/midtrans/notification")
 
 	chargeReq := &coreapi.ChargeReq{
 		TransactionDetails: midtrans.TransactionDetails{
@@ -121,20 +123,22 @@ func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (respon
 			Authentication: true,
 		}
 
+		var bank string
 		switch cardResponse.Bank {
 		case "bca":
-			chargeReq.CreditCard = &coreapi.CreditCardDetails{Bank: string(midtrans.BankBca)}
+			bank = string(midtrans.BankBca)
 		case "mandiri":
-			chargeReq.CreditCard = &coreapi.CreditCardDetails{Bank: string(midtrans.BankMandiri)}
+			bank = string(midtrans.BankMandiri)
 		case "bni":
-			chargeReq.CreditCard = &coreapi.CreditCardDetails{Bank: string(midtrans.BankBni)}
+			bank = string(midtrans.BankBni)
 		case "cimb":
-			chargeReq.CreditCard = &coreapi.CreditCardDetails{Bank: string(midtrans.BankCimb)}
+			bank = string(midtrans.BankCimb)
 		case "maybank":
-			chargeReq.CreditCard = &coreapi.CreditCardDetails{Bank: string(midtrans.BankMaybank)}
+			bank = string(midtrans.BankMaybank)
 		case "bri":
-			chargeReq.CreditCard = &coreapi.CreditCardDetails{Bank: string(midtrans.BankBri)}
+			bank = string(midtrans.BankBri)
 		}
+		chargeReq.CreditCard = &coreapi.CreditCardDetails{Bank: bank}
 	case "akulaku":
 		chargeReq.PaymentType = coreapi.PaymentTypeAkulaku
 	case "kredivo":
@@ -190,16 +194,18 @@ func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (respon
 		chargeReq.PaymentType = coreapi.CoreapiPaymentType("permata")
 	default:
 		chargeReq.PaymentType = coreapi.PaymentTypeBankTransfer
+		var bank midtrans.Bank
 		switch paymentMethod.Code {
 		case "bca":
-			chargeReq.BankTransfer = &coreapi.BankTransferDetails{Bank: midtrans.BankBca}
+			bank = midtrans.BankBca
 		case "bni":
-			chargeReq.BankTransfer = &coreapi.BankTransferDetails{Bank: midtrans.BankBni}
+			bank = midtrans.BankBni
 		case "bri":
-			chargeReq.BankTransfer = &coreapi.BankTransferDetails{Bank: midtrans.BankBri}
+			bank = midtrans.BankBri
 		case "cimb":
-			chargeReq.BankTransfer = &coreapi.BankTransferDetails{Bank: midtrans.BankCimb}
+			bank = midtrans.BankCimb
 		}
+		chargeReq.BankTransfer = &coreapi.BankTransferDetails{Bank: bank}
 	}
 
 	var totalQuantity int
@@ -270,11 +276,7 @@ func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (respon
 	}
 
 	switch paymentMethod.Code {
-	case "credit_card":
-		data.RedirectUrl = midtransResponse.RedirectURL
-	case "akulaku":
-		data.RedirectUrl = midtransResponse.RedirectURL
-	case "kredivo":
+	case "credit_card", "akulaku", "kredivo":
 		data.RedirectUrl = midtransResponse.RedirectURL
 	case "qris_gopay":
 		if len(midtransResponse.Actions) > 0 {
@@ -295,9 +297,7 @@ func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (respon
 			data.RedirectUrl = midtransResponse.Actions[0].URL
 		}
 		data.ExpiryDate = null.TimeFrom(time.Now().In(location).Add(time.Hour))
-	case "alfamart":
-		data.PaymentCode = midtransResponse.PaymentCode
-	case "indomaret":
+	case "alfamart", "indomaret":
 		data.PaymentCode = midtransResponse.PaymentCode
 	case "mandiri":
 		data.MandiriBillKey = midtransResponse.BillKey
@@ -311,6 +311,56 @@ func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (respon
 	}
 
 	response, err = repository.CreateMidtransSalePayment(data)
+
+	return
+}
+
+func MidtransHandleNotification(request dto.MidtransNotificationRequest) (err error) {
+	expectedSignatureKeyRaw := request.OrderID + request.StatusCode + request.GrossAmount + config.LoadConfig().MidtransServerKey
+	hash := sha512.New()
+	hash.Write([]byte(expectedSignatureKeyRaw))
+
+	expectedSignatureKey := hex.EncodeToString(hash.Sum(nil))
+
+	if !(expectedSignatureKey == request.SignatureKey) {
+		err = errors.New("unauthorized")
+		return
+	}
+
+	if request.FraudStatus != "" {
+		if request.FraudStatus != "accept" {
+			err = errors.New("transaction indicated as fraud")
+			return
+		}
+	}
+	if request.PaymentType == "credit_card" {
+		if request.TransactionStatus != "capture" && request.TransactionStatus != "settlement" {
+			err = errors.New("transaction not yet settled")
+			return
+		}
+	} else {
+		if request.TransactionStatus != "settlement" {
+			err = errors.New("transaction not yet settled")
+			return
+		}
+	}
+
+	sale, _, _, _ := repository.GetSales(dto.FindParameter{
+		Filter: "deleted_at IS NULL AND invoice_id = '" + request.OrderID + "'",
+	}, []string{})
+	if len(sale) == 0 {
+		err = errors.New("data not found")
+		return
+	}
+	if sale[0].ID == uuid.Nil {
+		err = errors.New("data not found")
+		return
+	}
+
+	_, err = repository.UpdateSale(sale[0])
+	if err != nil {
+		return
+	}
 
 	return
 }

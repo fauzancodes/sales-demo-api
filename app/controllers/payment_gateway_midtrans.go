@@ -92,13 +92,36 @@ func MidtransCharge(c echo.Context) error {
 	)
 }
 
-func MidtransCallback(c echo.Context) error {
+func MidtransNotification(c echo.Context) error {
+	var request dto.MidtransNotificationRequest
+	if err := c.Bind(&request); err != nil {
+		return c.JSON(
+			http.StatusUnprocessableEntity,
+			dto.Response{
+				Status:  422,
+				Message: "Invalid request body",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	err := service.MidtransHandleNotification(request)
+	if err != nil {
+		return c.JSON(
+			http.StatusInternalServerError,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to handle midtrans notification",
+				Error:   err.Error(),
+			},
+		)
+	}
 
 	return c.JSON(
 		http.StatusOK,
 		dto.Response{
 			Status:  200,
-			Message: "Success to process midtrans callback",
+			Message: "Success to process midtrans notification",
 			Data:    c.Request().Body,
 		},
 	)

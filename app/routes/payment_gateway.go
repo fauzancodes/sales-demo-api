@@ -13,7 +13,7 @@ func PaymentGatewayRoute(app *echo.Echo) {
 		{
 			midtrans.GET("/available-payment-method", controllers.GetMidtransPaymentMethods)
 			midtrans.POST("/charge", controllers.MidtransCharge)
-			midtrans.POST("/callback", controllers.MidtransCallback)
+			midtrans.POST("/notification", controllers.MidtransNotification)
 		}
 	}
 }
