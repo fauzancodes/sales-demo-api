@@ -1710,7 +1710,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkwODQ0NTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7kowcWqCc0_bEkVEUZeT7e7di9S1wLUziuypioDmV5I",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkxODc3NTksImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Qj4M-csynslIG-6zUcuaWxPlnZdNIvo2sJPEYJ83Cwk",
 											"type": "string"
 										}
 									]
@@ -1719,7 +1719,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"invoice_id\": \"INV344023296827\",\r\n    \"payment_method_code\": \"bca\",\r\n    \"card\": {\r\n        \"card_number\": \"\",\r\n        \"exp_month\": 0,\r\n        \"exp_year\": 0,\r\n        \"cvv\": \"\"\r\n    }\r\n}",
+									"raw": "{\r\n    \"invoice_id\": \"INV927074881578\",\r\n    \"payment_method_code\": \"bca\",\r\n    \"card\": {\r\n        \"card_number\": \"\",\r\n        \"exp_month\": 0,\r\n        \"exp_year\": 0,\r\n        \"cvv\": \"\"\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1737,6 +1737,53 @@
 										"payment-gateway",
 										"midtrans",
 										"charge"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Notification",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"transaction_time\":\"2023-11-15 18:45:13\",\r\n    \"transaction_status\":\"settlement\",\r\n    \"fraud_status\":\"accept\",\r\n    \"order_id\":\"payment_notif_test_G232477704_4d0175ad-4824-4f44-ba3f-c80d61f560fb\",\r\n    \"signature_key\":\"fb717d3b72b73cd195588ae53423ec17018721222d3cbe5f7e253517be3148ea2ef377633abbf8e477eac3f66ad98c3bcbbb75502a13924d6d9b8f4b471ad1c8\",\r\n    \"status_code\":\"200\",\r\n    \"gross_amount\":\"105000.00\",\r\n    \"payment_type\":\"gopay\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{HOST}}:{{PAYMENT_GATEWAY_PORT}}/payment-gateway/midtrans/notification",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{HOST}}"
+									],
+									"port": "{{PAYMENT_GATEWAY_PORT}}",
+									"path": [
+										"payment-gateway",
+										"midtrans",
+										"notification"
 									],
 									"query": [
 										{

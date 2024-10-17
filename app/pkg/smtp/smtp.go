@@ -11,36 +11,11 @@ import (
 	"github.com/go-gomail/gomail"
 )
 
-func SendEmail(htmlTemplate, senderEmail, targetEmail, subjectMessage, attachmentPath string, fill any) {
+func SendEmail(htmlTemplate, htmlString, senderEmail, targetEmail, subjectMessage, attachmentPath string, fill any) {
 	host := config.LoadConfig().SmtpHost
 	username := config.LoadConfig().SmtpUsername
 	password := config.LoadConfig().SmtpPassword
 	port := config.LoadConfig().SmtpPort
-
-	htmlFile, err := os.ReadFile("assets/html/" + htmlTemplate + ".html")
-	if err != nil {
-		log.Println("Failed to read file:", err.Error())
-		return
-	} else {
-		log.Println("Success to read file")
-	}
-
-	tmpl, err := template.New("emailTemplate").Parse(string(htmlFile))
-	if err != nil {
-		log.Println("Failed to parse template:", err.Error())
-		return
-	} else {
-		log.Println("Success to parse template")
-	}
-
-	var tpl bytes.Buffer
-	err = tmpl.Execute(&tpl, fill)
-	if err != nil {
-		log.Println("Failed to fill in template:", err.Error())
-		return
-	} else {
-		log.Println("Success to fill in template")
-	}
 
 	if senderEmail == "" {
 		senderEmail = username
@@ -50,7 +25,37 @@ func SendEmail(htmlTemplate, senderEmail, targetEmail, subjectMessage, attachmen
 	mailer.SetHeader("From", senderEmail)
 	mailer.SetHeader("To", strings.ToLower(targetEmail))
 	mailer.SetHeader("Subject", subjectMessage)
-	mailer.SetBody("text/html", tpl.String())
+
+	if strings.ToLower(config.LoadConfig().Env) == "vercel" {
+		mailer.SetBody("text/html", htmlString)
+	} else {
+		htmlFile, err := os.ReadFile("assets/html/" + htmlTemplate + ".html")
+		if err != nil {
+			log.Println("Failed to read file:", err.Error())
+			return
+		} else {
+			log.Println("Success to read file")
+		}
+
+		tmpl, err := template.New("emailTemplate").Parse(string(htmlFile))
+		if err != nil {
+			log.Println("Failed to parse template:", err.Error())
+			return
+		} else {
+			log.Println("Success to parse template")
+		}
+
+		var tpl bytes.Buffer
+		err = tmpl.Execute(&tpl, fill)
+		if err != nil {
+			log.Println("Failed to fill in template:", err.Error())
+			return
+		} else {
+			log.Println("Success to fill in template")
+		}
+		mailer.SetBody("text/html", tpl.String())
+	}
+
 	if attachmentPath != "" {
 		mailer.Attach(attachmentPath)
 	}

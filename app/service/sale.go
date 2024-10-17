@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 	"time"
 
@@ -483,7 +484,112 @@ func SendSaleInvoice(saleID uuid.UUID) {
 
 		fill.AttachmentLink = fmt.Sprintf("https://res.cloudinary.com/%v/image/upload/fl_attachment/%v.png", cloudName, strings.Split(publicID, ".")[0])
 
-		smtp.SendEmail("invoice", user.Email, customer.Email, "Sales Invoice", "", fill)
+		var htmlStringDetail string
+		if len(fill.Details) > 0 {
+			for _, item := range fill.Details {
+				htmlStringDetail += `
+					<tr>
+						<td>` + item.ProductName + `</td>
+						<td>` + strconv.Itoa(item.Quantity) + `</td>
+						<td>` + fmt.Sprintf("%.2f", item.ProductPrice) + `</td>
+						<td>` + fmt.Sprintf("%.2f", item.TotalPrice) + `</td>
+					</tr>
+				`
+			}
+		}
+		htmlString := `
+			<!DOCTYPE html>
+			<html>
+				<head>
+					<meta charset="UTF-8">
+					<style>
+						body {
+							font-family: Arial, sans-serif;
+							line-height: 1.6;
+						}
+						.container {
+							margin: 0 auto;
+							padding: 20px;
+							max-width: 600px;
+						}
+						.invoice-header {
+							text-align: center;
+							margin-bottom: 40px;
+						}
+						.invoice-details {
+							width: 100%;
+							margin-bottom: 20px;
+							border-collapse: collapse;
+						}
+						.invoice-details th, .invoice-details td {
+							padding: 10px;
+							border: 1px solid #ddd;
+							text-align: left;
+						}
+						.summary {
+							margin-top: 20px;
+						}
+						.summary tr th, .summary tr td {
+							padding: 10px;
+							text-align: left;
+						}
+					</style>
+				</head>
+				<body>
+					<div class="container">
+						<div class="invoice-header">
+							<h1>Sales Invoice</h1>
+							<p>Invoice ID: <strong>` + fill.InvoiceID + `</strong></p>
+							<p>Date: ` + fill.TransactionDate + `</p>
+							<p>Status: <strong>` + fill.Status + `</strong></p>
+						</div>
+						<p>Dear, ` + fill.CustomerFullname + `,</p>
+						<p>Thank you for your purchase. Below are the details of your order:</p>
+						<table class="invoice-details">
+							<thead>
+								<tr>
+									<th>Product</th>
+									<th>Quantity</th>
+									<th>Unit Price</th>
+									<th>Total Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								` + htmlStringDetail + `
+							</tbody>
+						</table>
+						<table class="summary">
+							<tr>
+								<th>Subtotal:</th>
+								<td>` + fmt.Sprintf("%.2f", fill.Subtotal) + `</td>
+							</tr>
+							<tr>
+								<th>Discount:</th>
+								<td>` + fmt.Sprintf("%.2f", fill.Discount) + `</td>
+							</tr>
+							<tr>
+								<th>Tax:</th>
+								<td>` + fmt.Sprintf("%.2f", fill.Tax) + `</td>
+							</tr>
+							<tr>
+								<th>Misc Prices:</th>
+								<td>` + fmt.Sprintf("%.2f", fill.MiscPrice) + `</td>
+							</tr>
+							<tr>
+								<th>Total Paid:</th>
+								<td><strong>` + fmt.Sprintf("%.2f", fill.TotalPaid) + `</strong></td>
+							</tr>
+						</table>
+						<p><a href="` + fill.AttachmentLink + `" target="_blank">Click here to download the invoice in pdf format!</a></p>
+						<p>If you have any questions, feel free to reach out to us.</p>
+						<p>Best Regards,</p>
+						<p>` + fill.UserFullname + `</p>
+					</div>
+				</body>
+			</html>
+		`
+
+		smtp.SendEmail("invoice", htmlString, user.Email, customer.Email, "Sales Invoice", "", fill)
 	}
 }
 
