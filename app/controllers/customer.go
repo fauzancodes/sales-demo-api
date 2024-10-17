@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
+	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/service"
@@ -173,12 +175,17 @@ func DeleteCustomer(c echo.Context) error {
 }
 
 func GetCustomerImportTemplate(c echo.Context) error {
+	url := fmt.Sprintf("%v/assets/template/customer.xlsx", utils.GetBaseUrl(c))
+	if strings.ToLower(config.LoadConfig().Env) == "vercel" {
+		url = config.LoadConfig().CustomerImportTemplate
+	}
+
 	return c.JSON(
 		http.StatusOK,
 		dto.Response{
 			Status:  200,
 			Message: "Download Template Url",
-			Data:    fmt.Sprintf("%v/assets/template/customer.xlsx", utils.GetBaseUrl(c)),
+			Data:    url,
 		},
 	)
 }
