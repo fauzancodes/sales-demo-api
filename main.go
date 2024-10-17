@@ -3,6 +3,8 @@
 package handler
 
 import (
+	_ "embed"
+
 	"log"
 	"net/http"
 

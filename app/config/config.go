@@ -32,6 +32,7 @@ type Config struct {
 	MidtransMerchantID          string
 	MidtransClientKey           string
 	MidtransServerKey           string
+	Env                         string
 }
 
 func LoadConfig() (config *Config) {
@@ -61,6 +62,7 @@ func LoadConfig() (config *Config) {
 	midtransMerchantID := os.Getenv("MIDTRANS_MERCHANT_ID")
 	midtransClientKey := os.Getenv("MIDTRANS_CLIENT_KEY")
 	midtransServerKey := os.Getenv("MIDTRANS_SERVER_KEY")
+	env := os.Getenv("ENV")
 
 	return &Config{
 		SecretKey:                   secretKey,
@@ -89,5 +91,6 @@ func LoadConfig() (config *Config) {
 		MidtransMerchantID:          midtransMerchantID,
 		MidtransClientKey:           midtransClientKey,
 		MidtransServerKey:           midtransServerKey,
+		Env:                         env,
 	}
 }
