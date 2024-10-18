@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\",\r\n    \"password\":\"Password@123\",\r\n    \"success_verification_url\": \"https://fauzancodes.id\",\r\n    \"failed_verification_url\": \"https://localhost:8000\"\r\n}",
+							"raw": "{\r\n    \"email\":\"greybyte0222@gmail.com\",\r\n    \"password\":\"Password@123\",\r\n    \"success_verification_url\": \"https://fauzancodes.id\",\r\n    \"failed_verification_url\": \"https://sales-demo-api.vercel.app\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -25,12 +25,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{AUTH_PORT}}/auth/register",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{AUTH_BASE_URL}}/auth/register",
 							"host": [
-								"{{HOST}}"
+								"{{AUTH_BASE_URL}}"
 							],
-							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"register"
@@ -54,12 +52,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{AUTH_PORT}}/auth/login",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{AUTH_BASE_URL}}/auth/login",
 							"host": [
-								"{{HOST}}"
+								"{{AUTH_BASE_URL}}"
 							],
-							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"login"
@@ -75,7 +71,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"greybyte0222@gmail.com\",\r\n    \"success_verification_url\": \"https://fauzancodes.id\",\r\n    \"failed_verification_url\": \"http://localhost:8000\"\r\n}",
+							"raw": "{\r\n    \"email\":\"greybyte0222@gmail.com\",\r\n    \"success_verification_url\": \"https://fauzancodes.id\",\r\n    \"failed_verification_url\": \"https://fauzancodes.id\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -83,12 +79,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{AUTH_PORT}}/auth/email-verification/resend",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{AUTH_BASE_URL}}/auth/email-verification/resend",
 							"host": [
-								"{{HOST}}"
+								"{{AUTH_BASE_URL}}"
 							],
-							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"email-verification",
@@ -113,12 +107,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{AUTH_PORT}}/auth/reset-password/send",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{AUTH_BASE_URL}}/auth/reset-password/send",
 							"host": [
-								"{{HOST}}"
+								"{{AUTH_BASE_URL}}"
 							],
-							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"reset-password",
@@ -143,12 +135,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{AUTH_PORT}}/auth/reset-password",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{AUTH_BASE_URL}}/auth/reset-password",
 							"host": [
-								"{{HOST}}"
+								"{{AUTH_BASE_URL}}"
 							],
-							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"reset-password"
@@ -173,12 +163,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{AUTH_PORT}}/auth/user",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{AUTH_BASE_URL}}/auth/user",
 							"host": [
-								"{{HOST}}"
+								"{{AUTH_BASE_URL}}"
 							],
-							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"user"
@@ -203,12 +191,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{AUTH_PORT}}/auth/remove-account",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{AUTH_BASE_URL}}/auth/remove-account",
 							"host": [
-								"{{HOST}}"
+								"{{AUTH_BASE_URL}}"
 							],
-							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"remove-account"
@@ -242,12 +228,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{AUTH_PORT}}/auth/update-profile",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{AUTH_BASE_URL}}/auth/update-profile",
 							"host": [
-								"{{HOST}}"
+								"{{AUTH_BASE_URL}}"
 							],
-							"port": "{{AUTH_PORT}}",
 							"path": [
 								"auth",
 								"update-profile"
@@ -283,12 +267,10 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/category/import/template",
-											"protocol": "{{SCHEME}}",
+											"raw": "{{PRODUCT_BASE_URL}}/product/category/import/template",
 											"host": [
-												"{{HOST}}"
+												"{{PRODUCT_BASE_URL}}"
 											],
-											"port": "{{PRODUCT_PORT}}",
 											"path": [
 												"product",
 												"category",
@@ -325,12 +307,10 @@
 											]
 										},
 										"url": {
-											"raw": "{{SCHEME}}s://{{HOST}}:{{PRODUCT_PORT}}/product/category/import",
-											"protocol": "{{SCHEME}}s",
+											"raw": "{{PRODUCT_BASE_URL}}/product/category/import",
 											"host": [
-												"{{HOST}}"
+												"{{PRODUCT_BASE_URL}}"
 											],
-											"port": "{{PRODUCT_PORT}}",
 											"path": [
 												"product",
 												"category",
@@ -367,12 +347,10 @@
 									}
 								},
 								"url": {
-									"raw": "{{SCHEMEs}}://{{HOST}}:{{PRODUCT_PORT}}/product/category",
-									"protocol": "{{SCHEMEs}}",
+									"raw": "{{PRODUCT_BASE_URL}}/product/category",
 									"host": [
-										"{{HOST}}"
+										"{{PRODUCT_BASE_URL}}"
 									],
-									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category"
@@ -397,12 +375,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/category?name=&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Products",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PRODUCT_BASE_URL}}/product/category?name=&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Products",
 									"host": [
-										"{{HOST}}"
+										"{{PRODUCT_BASE_URL}}"
 									],
-									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category"
@@ -474,12 +450,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/category/:id?preload_fields=User,Products",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PRODUCT_BASE_URL}}/product/category/:id?preload_fields=User,Products",
 									"host": [
-										"{{HOST}}"
+										"{{PRODUCT_BASE_URL}}"
 									],
-									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category",
@@ -528,12 +502,10 @@
 									}
 								},
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/category/:id",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PRODUCT_BASE_URL}}/product/category/:id",
 									"host": [
-										"{{HOST}}"
+										"{{PRODUCT_BASE_URL}}"
 									],
-									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category",
@@ -566,12 +538,10 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/category/:id",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PRODUCT_BASE_URL}}/product/category/:id",
 									"host": [
-										"{{HOST}}"
+										"{{PRODUCT_BASE_URL}}"
 									],
-									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"category",
@@ -618,12 +588,10 @@
 									}
 								},
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/stock",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PRODUCT_BASE_URL}}/product/stock",
 									"host": [
-										"{{HOST}}"
+										"{{PRODUCT_BASE_URL}}"
 									],
-									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"stock"
@@ -648,12 +616,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21&preload_fields=Category,User,Stocks",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PRODUCT_BASE_URL}}/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21&preload_fields=Category,User,Stocks",
 									"host": [
-										"{{HOST}}"
+										"{{PRODUCT_BASE_URL}}"
 									],
-									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"stock"
@@ -720,12 +686,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/import/template",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PRODUCT_BASE_URL}}/product/import/template",
 									"host": [
-										"{{HOST}}"
+										"{{PRODUCT_BASE_URL}}"
 									],
-									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"import",
@@ -761,12 +725,10 @@
 									]
 								},
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/import",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PRODUCT_BASE_URL}}/product/import",
 									"host": [
-										"{{HOST}}"
+										"{{PRODUCT_BASE_URL}}"
 									],
-									"port": "{{PRODUCT_PORT}}",
 									"path": [
 										"product",
 										"import"
@@ -802,12 +764,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{PRODUCT_BASE_URL}}/product",
 							"host": [
-								"{{HOST}}"
+								"{{PRODUCT_BASE_URL}}"
 							],
-							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product"
 							]
@@ -841,12 +801,10 @@
 							]
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/upload-image",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{PRODUCT_BASE_URL}}/product/upload-image",
 							"host": [
-								"{{HOST}}"
+								"{{PRODUCT_BASE_URL}}"
 							],
-							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product",
 								"upload-image"
@@ -871,12 +829,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status&preload_fields=Category,User,Stocks",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{PRODUCT_BASE_URL}}/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status&preload_fields=Category,User,Stocks",
 							"host": [
-								"{{HOST}}"
+								"{{PRODUCT_BASE_URL}}"
 							],
-							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product"
 							],
@@ -952,12 +908,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/:id?preload_fields=Category,User,Stocks",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{PRODUCT_BASE_URL}}/product/:id?preload_fields=Category,User,Stocks",
 							"host": [
-								"{{HOST}}"
+								"{{PRODUCT_BASE_URL}}"
 							],
-							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product",
 								":id"
@@ -1005,12 +959,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/:id",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{PRODUCT_BASE_URL}}/product/:id",
 							"host": [
-								"{{HOST}}"
+								"{{PRODUCT_BASE_URL}}"
 							],
-							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product",
 								":id"
@@ -1042,12 +994,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{PRODUCT_PORT}}/product/:id",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{PRODUCT_BASE_URL}}/product/:id",
 							"host": [
-								"{{HOST}}"
+								"{{PRODUCT_BASE_URL}}"
 							],
-							"port": "{{PRODUCT_PORT}}",
 							"path": [
 								"product",
 								":id"
@@ -1087,12 +1037,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{CUSTOMER_PORT}}/customer/import/template",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{CUSTOMER_BASE_URL}}/customer/import/template",
 									"host": [
-										"{{HOST}}"
+										"{{CUSTOMER_BASE_URL}}"
 									],
-									"port": "{{CUSTOMER_PORT}}",
 									"path": [
 										"customer",
 										"import",
@@ -1128,12 +1076,10 @@
 									]
 								},
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{CUSTOMER_PORT}}/customer/import",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{CUSTOMER_BASE_URL}}/customer/import",
 									"host": [
-										"{{HOST}}"
+										"{{CUSTOMER_BASE_URL}}"
 									],
-									"port": "{{CUSTOMER_PORT}}",
 									"path": [
 										"customer",
 										"import"
@@ -1169,12 +1115,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{CUSTOMER_PORT}}/customer",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{CUSTOMER_BASE_URL}}/customer",
 							"host": [
-								"{{HOST}}"
+								"{{CUSTOMER_BASE_URL}}"
 							],
-							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer"
 							]
@@ -1198,12 +1142,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{CUSTOMER_PORT}}/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Sales",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{CUSTOMER_BASE_URL}}/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Sales",
 							"host": [
-								"{{HOST}}"
+								"{{CUSTOMER_BASE_URL}}"
 							],
-							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer"
 							],
@@ -1279,12 +1221,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{CUSTOMER_PORT}}/customer/:id?preload_fields=User,Sales",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{CUSTOMER_BASE_URL}}/customer/:id?preload_fields=User,Sales",
 							"host": [
-								"{{HOST}}"
+								"{{CUSTOMER_BASE_URL}}"
 							],
-							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer",
 								":id"
@@ -1332,12 +1272,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{CUSTOMER_PORT}}/customer/:id",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{CUSTOMER_BASE_URL}}/customer/:id",
 							"host": [
-								"{{HOST}}"
+								"{{CUSTOMER_BASE_URL}}"
 							],
-							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer",
 								":id"
@@ -1369,12 +1307,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{CUSTOMER_PORT}}/customer/:id",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{CUSTOMER_BASE_URL}}/customer/:id",
 							"host": [
-								"{{HOST}}"
+								"{{CUSTOMER_BASE_URL}}"
 							],
-							"port": "{{CUSTOMER_PORT}}",
 							"path": [
 								"customer",
 								":id"
@@ -1420,12 +1356,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{SALE_PORT}}/sale",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{SALE_BASE_URL}}/sale",
 							"host": [
-								"{{HOST}}"
+								"{{SALE_BASE_URL}}"
 							],
-							"port": "{{SALE_PORT}}",
 							"path": [
 								"sale"
 							]
@@ -1449,12 +1383,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{SALE_PORT}}/sale?invoice_id=&transaction_date_margin_top&transaction_date_margin_bottom&product_id&customer_id&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Customer,Details,Details.Product,Payment,Payment.PaymentMethod",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{SALE_BASE_URL}}/sale?invoice_id=&transaction_date_margin_top&transaction_date_margin_bottom&product_id&customer_id&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Customer,Details,Details.Product,Payment,Payment.PaymentMethod",
 							"host": [
-								"{{HOST}}"
+								"{{SALE_BASE_URL}}"
 							],
-							"port": "{{SALE_PORT}}",
 							"path": [
 								"sale"
 							],
@@ -1545,12 +1477,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{SALE_PORT}}/sale/:id?preload_fields=User,Customer,Details,Details.Product,Payment,Payment.PaymentMethod",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{SALE_BASE_URL}}/sale/:id?preload_fields=User,Customer,Details,Details.Product,Payment,Payment.PaymentMethod",
 							"host": [
-								"{{HOST}}"
+								"{{SALE_BASE_URL}}"
 							],
-							"port": "{{SALE_PORT}}",
 							"path": [
 								"sale",
 								":id"
@@ -1589,12 +1519,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{SALE_PORT}}/sale/send-invoice/:id",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{SALE_BASE_URL}}/sale/send-invoice/:id",
 							"host": [
-								"{{HOST}}"
+								"{{SALE_BASE_URL}}"
 							],
-							"port": "{{SALE_PORT}}",
 							"path": [
 								"sale",
 								"send-invoice",
@@ -1636,12 +1564,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{SALE_PORT}}/sale/:id",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{SALE_BASE_URL}}/sale/:id",
 							"host": [
-								"{{HOST}}"
+								"{{SALE_BASE_URL}}"
 							],
-							"port": "{{SALE_PORT}}",
 							"path": [
 								"sale",
 								":id"
@@ -1673,12 +1599,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{SCHEME}}://{{HOST}}:{{SALE_PORT}}/sale/:id",
-							"protocol": "{{SCHEME}}",
+							"raw": "{{SALE_BASE_URL}}/sale/:id",
 							"host": [
-								"{{HOST}}"
+								"{{SALE_BASE_URL}}"
 							],
-							"port": "{{SALE_PORT}}",
 							"path": [
 								"sale",
 								":id"
@@ -1727,12 +1651,10 @@
 									}
 								},
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PAYMENT_GATEWAY_PORT}}/payment-gateway/midtrans/charge",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/midtrans/charge",
 									"host": [
-										"{{HOST}}"
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
 									],
-									"port": "{{PAYMENT_GATEWAY_PORT}}",
 									"path": [
 										"payment-gateway",
 										"midtrans",
@@ -1774,12 +1696,10 @@
 									}
 								},
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PAYMENT_GATEWAY_PORT}}/payment-gateway/midtrans/notification",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/midtrans/notification",
 									"host": [
-										"{{HOST}}"
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
 									],
-									"port": "{{PAYMENT_GATEWAY_PORT}}",
 									"path": [
 										"payment-gateway",
 										"midtrans",
@@ -1812,12 +1732,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{SCHEME}}://{{HOST}}:{{PAYMENT_GATEWAY_PORT}}/payment-gateway/midtrans/available-payment-method?code=&page&search=&limit=&offset&order=&sort=",
-									"protocol": "{{SCHEME}}",
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/midtrans/available-payment-method?code=&page&search=&limit=&offset&order=&sort=",
 									"host": [
-										"{{HOST}}"
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
 									],
-									"port": "{{PAYMENT_GATEWAY_PORT}}",
 									"path": [
 										"payment-gateway",
 										"midtrans",
@@ -1874,12 +1792,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{HOST}}:{{INDEX_PORT}}/",
-					"protocol": "http",
+					"raw": "{{INDEX_BASE_URL}}/",
 					"host": [
-						"{{HOST}}"
+						"{{INDEX_BASE_URL}}"
 					],
-					"port": "{{INDEX_PORT}}",
 					"path": [
 						""
 					]
