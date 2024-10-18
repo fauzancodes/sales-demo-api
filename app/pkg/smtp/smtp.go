@@ -26,35 +26,31 @@ func SendEmail(htmlTemplate, htmlString, senderEmail, targetEmail, subjectMessag
 	mailer.SetHeader("To", strings.ToLower(targetEmail))
 	mailer.SetHeader("Subject", subjectMessage)
 
-	if strings.ToLower(config.LoadConfig().Env) == "vercel" {
-		mailer.SetBody("text/html", htmlString)
+	htmlFile, err := os.ReadFile("assets/html/" + htmlTemplate + ".html")
+	if err != nil {
+		log.Println("Failed to read file:", err.Error())
+		return
 	} else {
-		htmlFile, err := os.ReadFile("assets/html/" + htmlTemplate + ".html")
-		if err != nil {
-			log.Println("Failed to read file:", err.Error())
-			return
-		} else {
-			log.Println("Success to read file")
-		}
-
-		tmpl, err := template.New("emailTemplate").Parse(string(htmlFile))
-		if err != nil {
-			log.Println("Failed to parse template:", err.Error())
-			return
-		} else {
-			log.Println("Success to parse template")
-		}
-
-		var tpl bytes.Buffer
-		err = tmpl.Execute(&tpl, fill)
-		if err != nil {
-			log.Println("Failed to fill in template:", err.Error())
-			return
-		} else {
-			log.Println("Success to fill in template")
-		}
-		mailer.SetBody("text/html", tpl.String())
+		log.Println("Success to read file")
 	}
+
+	tmpl, err := template.New("emailTemplate").Parse(string(htmlFile))
+	if err != nil {
+		log.Println("Failed to parse template:", err.Error())
+		return
+	} else {
+		log.Println("Success to parse template")
+	}
+
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, fill)
+	if err != nil {
+		log.Println("Failed to fill in template:", err.Error())
+		return
+	} else {
+		log.Println("Success to fill in template")
+	}
+	mailer.SetBody("text/html", tpl.String())
 
 	if attachmentPath != "" {
 		mailer.Attach(attachmentPath)

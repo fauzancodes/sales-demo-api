@@ -6,36 +6,32 @@ import (
 )
 
 type Config struct {
-	SecretKey                     string
-	IndexPort                     string
-	AuthPort                      string
-	ProductPort                   string
-	CustomerPort                  string
-	SalePort                      string
-	PaymentGatewayPort            string
-	BaseUrl                       string
-	DatabaseUsername              string
-	DatabasePassword              string
-	DatabaseHost                  string
-	DatabasePort                  string
-	DatabaseName                  string
-	EnableDatabaseAutomigration   bool
-	CloudinaryFolder              string
-	CloudinaryCloudName           string
-	CloudinaryAPIKey              string
-	CLoudinaryAPISecret           string
-	SmtpHost                      string
-	SmtpUsername                  string
-	SmtpPassword                  string
-	SmtpPort                      int
-	MidtransEnv                   string
-	MidtransMerchantID            string
-	MidtransClientKey             string
-	MidtransServerKey             string
-	Env                           string
-	CustomerImportTemplate        string
-	ProductCategoryImportTemplate string
-	ProductImportTemplate         string
+	SecretKey                   string
+	IndexPort                   string
+	AuthPort                    string
+	ProductPort                 string
+	CustomerPort                string
+	SalePort                    string
+	PaymentGatewayPort          string
+	BaseUrl                     string
+	DatabaseUsername            string
+	DatabasePassword            string
+	DatabaseHost                string
+	DatabasePort                string
+	DatabaseName                string
+	EnableDatabaseAutomigration bool
+	CloudinaryFolder            string
+	CloudinaryCloudName         string
+	CloudinaryAPIKey            string
+	CLoudinaryAPISecret         string
+	SmtpHost                    string
+	SmtpUsername                string
+	SmtpPassword                string
+	SmtpPort                    int
+	MidtransEnv                 string
+	MidtransMerchantID          string
+	MidtransClientKey           string
+	MidtransServerKey           string
 }
 
 func LoadConfig() (config *Config) {
@@ -65,41 +61,33 @@ func LoadConfig() (config *Config) {
 	midtransMerchantID := os.Getenv("MIDTRANS_MERCHANT_ID")
 	midtransClientKey := os.Getenv("MIDTRANS_CLIENT_KEY")
 	midtransServerKey := os.Getenv("MIDTRANS_SERVER_KEY")
-	env := os.Getenv("ENV")
-	customerImportTemplate := os.Getenv("CUSTOMER_IMPORT_TEMPLATE")
-	productCategoryImportTemplate := os.Getenv("PRODUCT_CATEGORY_IMPORT_TEMPLATE")
-	productImportTemplate := os.Getenv("PRODUCT_IMPORT_TEMPLATE")
 
 	return &Config{
-		SecretKey:                     secretKey,
-		DatabaseUsername:              databaseUsername,
-		DatabasePassword:              databasePassword,
-		DatabaseHost:                  databaseHost,
-		DatabasePort:                  databasePort,
-		DatabaseName:                  databaseName,
-		EnableDatabaseAutomigration:   enableDatabaseAutomigration,
-		BaseUrl:                       baseUrl,
-		CloudinaryFolder:              cloudinaryFolder,
-		CloudinaryCloudName:           cloudinaryCloudName,
-		CloudinaryAPIKey:              cloudinaryAPIKey,
-		CLoudinaryAPISecret:           cLoudinaryAPISecret,
-		IndexPort:                     indexPort,
-		AuthPort:                      authPort,
-		ProductPort:                   productPort,
-		CustomerPort:                  customerPort,
-		SalePort:                      salePort,
-		PaymentGatewayPort:            paymentGatewayPort,
-		SmtpHost:                      smtpHost,
-		SmtpUsername:                  smtpUsername,
-		SmtpPassword:                  smtpPassword,
-		SmtpPort:                      smtpPort,
-		MidtransEnv:                   midtransEnv,
-		MidtransMerchantID:            midtransMerchantID,
-		MidtransClientKey:             midtransClientKey,
-		MidtransServerKey:             midtransServerKey,
-		Env:                           env,
-		CustomerImportTemplate:        customerImportTemplate,
-		ProductCategoryImportTemplate: productCategoryImportTemplate,
-		ProductImportTemplate:         productImportTemplate,
+		SecretKey:                   secretKey,
+		DatabaseUsername:            databaseUsername,
+		DatabasePassword:            databasePassword,
+		DatabaseHost:                databaseHost,
+		DatabasePort:                databasePort,
+		DatabaseName:                databaseName,
+		EnableDatabaseAutomigration: enableDatabaseAutomigration,
+		BaseUrl:                     baseUrl,
+		CloudinaryFolder:            cloudinaryFolder,
+		CloudinaryCloudName:         cloudinaryCloudName,
+		CloudinaryAPIKey:            cloudinaryAPIKey,
+		CLoudinaryAPISecret:         cLoudinaryAPISecret,
+		IndexPort:                   indexPort,
+		AuthPort:                    authPort,
+		ProductPort:                 productPort,
+		CustomerPort:                customerPort,
+		SalePort:                    salePort,
+		PaymentGatewayPort:          paymentGatewayPort,
+		SmtpHost:                    smtpHost,
+		SmtpUsername:                smtpUsername,
+		SmtpPassword:                smtpPassword,
+		SmtpPort:                    smtpPort,
+		MidtransEnv:                 midtransEnv,
+		MidtransMerchantID:          midtransMerchantID,
+		MidtransClientKey:           midtransClientKey,
+		MidtransServerKey:           midtransServerKey,
 	}
 }

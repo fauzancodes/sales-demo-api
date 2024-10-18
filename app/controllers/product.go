@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
-	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/service"
@@ -214,9 +212,6 @@ func UploadProductPicture(c echo.Context) error {
 
 func GetProductImportTemplate(c echo.Context) error {
 	url := fmt.Sprintf("%v/assets/template/product.xlsx", utils.GetBaseUrl(c))
-	if strings.ToLower(config.LoadConfig().Env) == "vercel" {
-		url = config.LoadConfig().ProductImportTemplate
-	}
 
 	return c.JSON(
 		http.StatusOK,

@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
-	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/service"
@@ -175,9 +173,6 @@ func DeleteProductCategory(c echo.Context) error {
 
 func GetProductCategoryImportTemplate(c echo.Context) error {
 	url := fmt.Sprintf("%v/assets/template/product_category.xlsx", utils.GetBaseUrl(c))
-	if strings.ToLower(config.LoadConfig().Env) == "vercel" {
-		url = config.LoadConfig().ProductCategoryImportTemplate
-	}
 
 	return c.JSON(
 		http.StatusOK,
