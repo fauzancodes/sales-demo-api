@@ -15,5 +15,10 @@ func PaymentGatewayRoute(app *echo.Echo) {
 			midtrans.POST("/charge", controllers.MidtransCharge, middlewares.Auth)
 			midtrans.POST("/notification", controllers.MidtransNotification)
 		}
+
+		ipaymu := paymentGateway.Group("/ipaymu")
+		{
+			ipaymu.GET("/available-payment-method", controllers.GetIPaymuPaymentMethods, middlewares.Auth)
+		}
 	}
 }

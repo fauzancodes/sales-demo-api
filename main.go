@@ -1,10 +1,6 @@
-// package main
-
-package handler
+package main
 
 import (
-	_ "embed"
-
 	"log"
 	"net/http"
 
