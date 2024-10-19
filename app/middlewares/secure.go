@@ -34,7 +34,12 @@ func StripHTMLMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 				sanitizedValue = strings.ReplaceAll(sanitizedValue, "*", "")
 				sanitizedValue = strings.ReplaceAll(sanitizedValue, " AND ", "")
 				sanitizedValue = strings.ReplaceAll(sanitizedValue, " OR ", "")
+				sanitizedValue = strings.ReplaceAll(sanitizedValue, " and ", "")
+				sanitizedValue = strings.ReplaceAll(sanitizedValue, " or ", "")
 				sanitizedValue = strings.ReplaceAll(sanitizedValue, " || ", "")
+				sanitizedValue = strings.ReplaceAll(sanitizedValue, " && ", "")
+				sanitizedValue = strings.ReplaceAll(sanitizedValue, "'", "")
+				sanitizedValue = strings.ReplaceAll(sanitizedValue, "&#39;", "")
 				values[i] = strip.StripTags(sanitizedValue)
 			}
 			c.QueryParams()[key] = values
