@@ -77,7 +77,7 @@ func SendIPaymuRequest(method, path string, request []byte) (responseBody []byte
 
 	url, err := url.Parse(config.LoadConfig().IPaymuBaseURL + path)
 	if err != nil {
-		err = errors.New("Failed to parse URL: " + err.Error())
+		err = errors.New("failed to parse URL: " + err.Error())
 		return
 	}
 
@@ -106,14 +106,14 @@ func SendIPaymuRequest(method, path string, request []byte) (responseBody []byte
 
 	response, err := http.DefaultClient.Do(req)
 	if err != nil {
-		err = errors.New("Failed to sent request: " + err.Error())
+		err = errors.New("failed to sent request: " + err.Error())
 		return
 	}
 	defer response.Body.Close()
 
 	responseBody, err = io.ReadAll(response.Body)
 	if err != nil {
-		err = errors.New("Failed to read response: " + err.Error())
+		err = errors.New("failed to read response: " + err.Error())
 		return
 	}
 
@@ -128,7 +128,7 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
-		err = errors.New("Failed to parse user ID: " + err.Error())
+		err = errors.New("failed to parse user ID: " + err.Error())
 		return
 	}
 
@@ -136,7 +136,6 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 		Filter: "deleted_at IS NULL AND code = '" + strings.ToLower(request.PaymentMethodCode) + "'",
 	})
 	if err != nil {
-		err = errors.New("Failed to get payment method data: " + err.Error())
 		return
 	}
 	if len(paymentMethodData) == 0 {
@@ -149,7 +148,6 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
-		err = errors.New("Failed to get sale data: " + err.Error())
 		return
 	}
 	if len(saleData) == 0 {
@@ -241,20 +239,19 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 
 	postBody, err := json.Marshal(postBodyRaw)
 	if err != nil {
-		err = errors.New("Failed to marshal post body: " + err.Error())
+		err = errors.New("failed to marshal post body: " + err.Error())
 		return
 	}
 
 	ipaymuResponse, err := SendIPaymuRequest("POST", "/payment/direct", postBody)
 	if err != nil {
-		err = errors.New("Failed to send ipaymu request: " + err.Error())
 		return
 	}
 
 	var responseBody dto.IPaymuResponse
 	err = json.Unmarshal(ipaymuResponse, &responseBody)
 	if err != nil {
-		err = errors.New("Failed to unmarshal response body: " + err.Error())
+		err = errors.New("failed to unmarshal response body: " + err.Error())
 		return
 	}
 
@@ -283,20 +280,19 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 			var qr *qrcode.QRCode
 			qr, err = qrcode.New(responseBody.Data.PaymentCode, qrcode.Medium)
 			if err != nil {
-				err = errors.New("Failed to generate qr code: " + err.Error())
+				err = errors.New("failed to generate qr code: " + err.Error())
 				return
 			}
 
 			var buf bytes.Buffer
 			err = png.Encode(&buf, qr.Image(256))
 			if err != nil {
-				err = errors.New("Failed to encode qr code to png: " + err.Error())
+				err = errors.New("failed to encode qr code to png: " + err.Error())
 				return
 			}
 
 			data.QRCodeUrl, _, _, err = upload.UploadFile(bytes.NewReader(buf.Bytes()), userID, "")
 			if err != nil {
-				err = errors.New("Failed to upload qr code: " + err.Error())
 				return
 			}
 		} else {

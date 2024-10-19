@@ -55,7 +55,8 @@ func PopulatePaging(c echo.Context, custom string) (param PagingRequest) {
 	sort := c.QueryParam("sort")
 	if strings.ToLower(sort) == "asc" {
 		sort = "ASC"
-	} else {
+	}
+	if strings.ToLower(sort) == "desc" {
 		sort = "DESC"
 	}
 	order := c.QueryParam("order")

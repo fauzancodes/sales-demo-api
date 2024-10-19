@@ -2,8 +2,8 @@ package service
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -472,13 +472,11 @@ func SendSaleInvoice(saleID uuid.UUID) {
 
 		pdf, err := GenerateInvoicePDF(fill)
 		if err != nil {
-			log.Println("Failed to generate pdf file:", err.Error())
 			return
 		}
 
 		_, publicID, cloudName, err := upload.UploadFile(pdf, user.ID.String(), fmt.Sprintf("SI%v", utils.GenerateRandomNumber(12)))
 		if err != nil {
-			log.Println("Failed to upload pdf file:", err.Error())
 			return
 		}
 
@@ -588,5 +586,9 @@ func GenerateInvoicePDF(sale dto.SaleInvoice) (*bytes.Buffer, error) {
 	// Save PDF to buffer
 	var buf bytes.Buffer
 	err := pdf.Output(&buf)
+	if err != nil {
+		err = errors.New("failed to generate pdf file: " + err.Error())
+	}
+
 	return &buf, err
 }

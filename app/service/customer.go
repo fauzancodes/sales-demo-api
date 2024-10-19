@@ -137,50 +137,50 @@ func ImportCustomer(file *multipart.FileHeader, userID string) (responses []mode
 	}
 
 	rows = rows[1:]
-	if len(rows) > 0 {
-		for _, data := range rows {
-			var response models.SDACustomer
+	if len(rows) == 0 {
+		err = errors.New("there is no data in the file")
+		return
+	}
 
-			check, _, _, _ := repository.GetCustomers(dto.FindParameter{
-				Filter: "deleted_at IS NULL AND code = '" + data[4] + "'",
+	for _, data := range rows {
+		var response models.SDACustomer
+
+		check, _, _, _ := repository.GetCustomers(dto.FindParameter{
+			Filter: "deleted_at IS NULL AND code = '" + data[4] + "'",
+		}, []string{})
+
+		if len(check) > 0 {
+			response = check[0]
+		} else {
+			check, _, _, _ = repository.GetCustomers(dto.FindParameter{
+				Filter: "deleted_at IS NULL AND email = '" + data[2] + "'",
 			}, []string{})
 
 			if len(check) > 0 {
 				response = check[0]
-			} else {
-				check, _, _, _ = repository.GetCustomers(dto.FindParameter{
-					Filter: "deleted_at IS NULL AND email = '" + data[2] + "'",
-				}, []string{})
-
-				if len(check) > 0 {
-					response = check[0]
-				}
 			}
-
-			if response.ID == uuid.Nil {
-				input := dto.CustomerRequest{
-					Code:      data[4],
-					FirstName: data[0],
-					LastName:  data[1],
-					Email:     data[2],
-					Phone:     data[3],
-					Status:    true,
-				}
-				if input.Code == "" || input.Code == "-" {
-					input.Code = utils.GenerateRandomNumber(12)
-				}
-
-				response, err = CreateCustomer(userID, input)
-				if err != nil {
-					return
-				}
-			}
-
-			responses = append(responses, response)
 		}
-	} else {
-		err = errors.New("there is no data in the file")
-		return
+
+		if response.ID == uuid.Nil {
+			input := dto.CustomerRequest{
+				Code:      data[4],
+				FirstName: data[0],
+				LastName:  data[1],
+				Email:     data[2],
+				Phone:     data[3],
+				Status:    true,
+			}
+			if input.Code == "" || input.Code == "-" {
+				input.Code = utils.GenerateRandomNumber(12)
+			}
+
+			response, err = CreateCustomer(userID, input)
+			if err != nil {
+				return
+			}
+		}
+
+		responses = append(responses, response)
 	}
 
 	return

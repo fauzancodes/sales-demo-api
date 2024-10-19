@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -24,7 +23,6 @@ func SendEmailVerification(user models.SDAUser, successUrl, failedUrl, appUrl st
 	claims["failedUrl"] = failedUrl
 	token, err := webToken.GenerateToken(&claims)
 	if err != nil {
-		log.Println("Failed to generate jwt token:", err.Error())
 		return
 	}
 
@@ -80,7 +78,6 @@ func SendResetPasswordRequest(user models.SDAUser, redirectUrl, appUrl string) {
 	claims["redirectUrl"] = redirectUrl
 	token, err := webToken.GenerateToken(&claims)
 	if err != nil {
-		log.Println("Failed to generate jwt token:", err.Error())
 		return
 	}
 

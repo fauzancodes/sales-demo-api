@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"log"
+	"errors"
 
 	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
@@ -12,13 +12,13 @@ import (
 func GetIPaymuPaymentMethods(param dto.FindParameter) (responses []models.SDAIPaymuPaymentMethod, total int64, totalFiltered int64, err error) {
 	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
 	if err != nil {
-		log.Printf("Failed to count data from database: %v", err)
+		err = errors.New("failed to count data from database: " + err.Error())
 		return
 	}
 
 	err = config.DB.Model(responses).Where(param.Filter).Count(&totalFiltered).Error
 	if err != nil {
-		log.Printf("Failed to count filtered data from database: %v", err)
+		err = errors.New("failed to count filtered data from database: " + err.Error())
 		return
 	}
 
@@ -30,7 +30,7 @@ func GetIPaymuPaymentMethods(param dto.FindParameter) (responses []models.SDAIPa
 		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	}
 	if err != nil {
-		log.Printf("Failed to get data list from database: %v", err)
+		err = errors.New("failed to get data list from database: " + err.Error())
 	}
 
 	return
@@ -39,13 +39,13 @@ func GetIPaymuPaymentMethods(param dto.FindParameter) (responses []models.SDAIPa
 func CreateIPaymuSalePayment(data models.SDAIPaymuSalePayment) (models.SDAIPaymuSalePayment, error) {
 	err := config.DB.Create(&data).Error
 	if err != nil {
-		log.Printf("Failed to insert data to database: %v", err)
+		err = errors.New("failed to insert data to database: " + err.Error())
 		return data, err
 	}
 
 	err = config.DB.Preload("PaymentMethod").First(&data, data.ID).Error
 	if err != nil {
-		log.Printf("Failed to load PaymentMethod: %v", err)
+		err = errors.New("failed to load PaymentMethod: " + err.Error())
 		return data, err
 	}
 
@@ -55,13 +55,13 @@ func CreateIPaymuSalePayment(data models.SDAIPaymuSalePayment) (models.SDAIPaymu
 func GetIPaymuSalePayments(param dto.FindParameter) (responses []models.SDAIPaymuSalePayment, total int64, totalFiltered int64, err error) {
 	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
 	if err != nil {
-		log.Printf("Failed to count data from database: %v", err)
+		err = errors.New("failed to count data from database: " + err.Error())
 		return
 	}
 
 	err = config.DB.Model(responses).Where(param.Filter).Count(&totalFiltered).Error
 	if err != nil {
-		log.Printf("Failed to count filtered data from database: %v", err)
+		err = errors.New("failed to count filtered data from database: " + err.Error())
 		return
 	}
 
@@ -73,7 +73,7 @@ func GetIPaymuSalePayments(param dto.FindParameter) (responses []models.SDAIPaym
 		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	}
 	if err != nil {
-		log.Printf("Failed to get data list from database: %v", err)
+		err = errors.New("failed to get data list from database: " + err.Error())
 	}
 
 	return

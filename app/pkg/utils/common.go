@@ -41,7 +41,6 @@ func GenerateRandomNumber(length int) string {
 	location, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
 		location = time.Local
-		err = nil
 	}
 	rand.Seed(uint64(time.Now().In(location).UnixNano()))
 	charset := "0123456789"
@@ -62,15 +61,22 @@ func GetBaseUrl(c echo.Context) (response string) {
 func ValidateImportFile(file *multipart.FileHeader, numberOfColumns int) (rows [][]string, err error) {
 	src, err := file.Open()
 	if err != nil {
+		err = errors.New("failed to open file: " + err.Error())
 		return
 	}
 	defer src.Close()
 
 	extension := filepath.Ext(file.Filename)
+	if extension != ".xls" && extension != ".xlsx" && extension != ".csv" {
+		err = errors.New("the file format only accepts .xls, .xlsx, .csv")
+		return
+	}
+
 	if extension == ".xls" || extension == ".xlsx" {
 		var f *excelize.File
 		f, err = excelize.OpenReader(src)
 		if err != nil {
+			err = errors.New("failed to read file: " + err.Error())
 			return
 		}
 
@@ -82,21 +88,22 @@ func ValidateImportFile(file *multipart.FileHeader, numberOfColumns int) (rows [
 
 		rows, err = f.GetRows(sheets[0])
 		if err != nil {
+			err = errors.New("failed to get rows: " + err.Error())
 			return
 		}
 		if len(rows[0]) != numberOfColumns {
 			err = errors.New("The number of columns must match the template. Expected: " + strconv.Itoa(numberOfColumns) + " columns. Current: " + strconv.Itoa(len(rows[0])) + " columns")
 			return
 		}
-	} else if extension == ".csv" {
+	}
+
+	if extension == ".csv" {
 		reader := csv.NewReader(src)
 		rows, err = reader.ReadAll()
 		if err != nil {
+			err = errors.New("failed to read rows: " + err.Error())
 			return
 		}
-	} else {
-		err = errors.New("the file format only accepts .xls, .xlsx, .csv")
-		return
 	}
 
 	return

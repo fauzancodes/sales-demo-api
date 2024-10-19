@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"log"
+	"errors"
 
 	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
@@ -13,7 +13,7 @@ import (
 func CreateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
 	err := config.DB.Create(&data).Error
 	if err != nil {
-		log.Printf("Failed to insert data to database: %v", err)
+		err = errors.New("failed to insert data to database: " + err.Error())
 	}
 
 	return data, err
@@ -24,7 +24,7 @@ func GetCustomerByID(id uuid.UUID, preloadFields []string) (response models.SDAC
 
 	err = db.Where("id = ?", id).First(&response).Error
 	if err != nil {
-		log.Printf("Failed to get data from database: %v", err)
+		err = errors.New("failed to get data from database: " + err.Error())
 	}
 
 	return
@@ -33,13 +33,13 @@ func GetCustomerByID(id uuid.UUID, preloadFields []string) (response models.SDAC
 func GetCustomers(param dto.FindParameter, preloadFields []string) (responses []models.SDACustomer, total int64, totalFiltered int64, err error) {
 	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
 	if err != nil {
-		log.Printf("Failed to count data from database: %v", err)
+		err = errors.New("failed to to count data from database: " + err.Error())
 		return
 	}
 
 	err = config.DB.Model(responses).Where(param.Filter).Count(&totalFiltered).Error
 	if err != nil {
-		log.Printf("Failed to count filtered data from database: %v", err)
+		err = errors.New("failed to count filtered data from database: " + err.Error())
 		return
 	}
 
@@ -51,7 +51,7 @@ func GetCustomers(param dto.FindParameter, preloadFields []string) (responses []
 		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	}
 	if err != nil {
-		log.Printf("Failed to get data list from database: %v", err)
+		err = errors.New("failed to get data list from database: " + err.Error())
 	}
 
 	return
@@ -60,7 +60,7 @@ func GetCustomers(param dto.FindParameter, preloadFields []string) (responses []
 func UpdateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
 	err := config.DB.Save(&data).Error
 	if err != nil {
-		log.Printf("Failed to update data in database: %v", err)
+		err = errors.New("failed to update data in database: " + err.Error())
 	}
 
 	return data, err
@@ -69,7 +69,7 @@ func UpdateCustomer(data models.SDACustomer) (models.SDACustomer, error) {
 func DeleteCustomer(data models.SDACustomer) error {
 	err := config.DB.Delete(&data).Error
 	if err != nil {
-		log.Printf("Failed to delete data in from database: %v", err)
+		err = errors.New("failed to delete data in from database: " + err.Error())
 	}
 
 	return err

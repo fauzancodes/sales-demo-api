@@ -126,48 +126,48 @@ func ImportProductCategory(file *multipart.FileHeader, userID string) (responses
 	}
 
 	rows = rows[1:]
-	if len(rows) > 0 {
-		for _, data := range rows {
-			var response models.SDAProductCategory
+	if len(rows) == 0 {
+		err = errors.New("there is no data in the file")
+		return
+	}
 
-			check, _, _, _ := repository.GetProductCategories(dto.FindParameter{
-				Filter: "deleted_at IS NULL AND code = '" + data[2] + "'",
+	for _, data := range rows {
+		var response models.SDAProductCategory
+
+		check, _, _, _ := repository.GetProductCategories(dto.FindParameter{
+			Filter: "deleted_at IS NULL AND code = '" + data[2] + "'",
+		}, []string{})
+
+		if len(check) > 0 {
+			response = check[0]
+		} else {
+			check, _, _, _ = repository.GetProductCategories(dto.FindParameter{
+				Filter: "deleted_at IS NULL AND name = '" + data[0] + "'",
 			}, []string{})
 
 			if len(check) > 0 {
 				response = check[0]
-			} else {
-				check, _, _, _ = repository.GetProductCategories(dto.FindParameter{
-					Filter: "deleted_at IS NULL AND name = '" + data[0] + "'",
-				}, []string{})
-
-				if len(check) > 0 {
-					response = check[0]
-				}
 			}
-
-			if response.ID == uuid.Nil {
-				input := dto.ProductCategoryRequest{
-					Code:        data[2],
-					Name:        data[0],
-					Description: data[1],
-					Status:      true,
-				}
-				if input.Code == "" || input.Code == "-" {
-					input.Code = utils.GenerateRandomNumber(12)
-				}
-
-				response, err = CreateProductCategory(userID, input)
-				if err != nil {
-					return
-				}
-			}
-
-			responses = append(responses, response)
 		}
-	} else {
-		err = errors.New("there is no data in the file")
-		return
+
+		if response.ID == uuid.Nil {
+			input := dto.ProductCategoryRequest{
+				Code:        data[2],
+				Name:        data[0],
+				Description: data[1],
+				Status:      true,
+			}
+			if input.Code == "" || input.Code == "-" {
+				input.Code = utils.GenerateRandomNumber(12)
+			}
+
+			response, err = CreateProductCategory(userID, input)
+			if err != nil {
+				return
+			}
+		}
+
+		responses = append(responses, response)
 	}
 
 	return
