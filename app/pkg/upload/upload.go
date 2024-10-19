@@ -2,6 +2,7 @@ package upload
 
 import (
 	"context"
+	"errors"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
@@ -19,6 +20,7 @@ func UploadFile(file interface{}, folder string, filename string) (secureUrl, pu
 		PublicID: filename,
 	})
 	if err != nil {
+		err = errors.New("failed to upload file to cloudinary: " + err.Error())
 		return
 	}
 

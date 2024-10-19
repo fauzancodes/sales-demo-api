@@ -2,15 +2,20 @@ package repository
 
 import (
 	"log"
+	"time"
 
 	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/google/uuid"
+	"github.com/guregu/null"
 )
 
 func CreateSale(data models.SDASale) (models.SDASale, error) {
+	if data.Status {
+		data.PaymentDate = null.TimeFrom(time.Now())
+	}
 	err := config.DB.Create(&data).Error
 	if err != nil {
 		log.Printf("Failed to insert data to database: %v", err)

@@ -32,6 +32,9 @@ type Config struct {
 	MidtransMerchantID          string
 	MidtransClientKey           string
 	MidtransServerKey           string
+	IPaymuVA                    string
+	IPaymuApiKey                string
+	IPaymuBaseURL               string
 }
 
 func LoadConfig() (config *Config) {
@@ -61,6 +64,9 @@ func LoadConfig() (config *Config) {
 	midtransMerchantID := os.Getenv("MIDTRANS_MERCHANT_ID")
 	midtransClientKey := os.Getenv("MIDTRANS_CLIENT_KEY")
 	midtransServerKey := os.Getenv("MIDTRANS_SERVER_KEY")
+	ipaymuVA := os.Getenv("IPAYMU_VA")
+	ipaymuApiKey := os.Getenv("IPAYMU_API_KEY")
+	ipaymuBaseURL := os.Getenv("IPAYMU_BASE_URL")
 
 	return &Config{
 		SecretKey:                   secretKey,
@@ -89,5 +95,8 @@ func LoadConfig() (config *Config) {
 		MidtransMerchantID:          midtransMerchantID,
 		MidtransClientKey:           midtransClientKey,
 		MidtransServerKey:           midtransServerKey,
+		IPaymuVA:                    ipaymuVA,
+		IPaymuApiKey:                ipaymuApiKey,
+		IPaymuBaseURL:               ipaymuBaseURL,
 	}
 }

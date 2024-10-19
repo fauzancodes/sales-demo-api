@@ -19,8 +19,10 @@ type SDASale struct {
 	UserID          uuid.UUID              `json:"user_id" gorm:"type:uuid;column:user_id"`
 	User            UserRelation           `json:"user,omitempty" gorm:"foreignKey:UserID"`
 	Customer        CustomerRelation       `json:"customer,omitempty" gorm:"foreignKey:CustomerID"`
+	PaymentDate     null.Time              `json:"payment_date" gorm:"type:timestamptz;column:payment_date"`
 	Details         []SaleDetailRelation   `json:"details,omitempty" gorm:"foreignKey:SaleID"`
-	Payment         SDAMidtransSalePayment `json:"payment,omitempty" gorm:"foreignKey:SaleID"`
+	Midtrans        SDAMidtransSalePayment `json:"midtrans,omitempty" gorm:"foreignKey:SaleID"`
+	IPaymu          SDAIPaymuSalePayment   `json:"ipaymu,omitempty" gorm:"foreignKey:SaleID"`
 }
 
 func (SDASale) TableName() string {

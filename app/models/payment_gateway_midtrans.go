@@ -22,7 +22,6 @@ type SDAMidtransSalePayment struct {
 	PaymentMethodID   uuid.UUID                `json:"payment_method_id" gorm:"type:uuid;column:payment_method_id"`
 	PaymentMethod     SDAMidtransPaymentMethod `json:"payment_method,omitempty" gorm:"foreignKey:PaymentMethodID"`
 	ReferenceCode     string                   `json:"reference_code" gorm:"type:varchar(255);column:reference_code"`
-	PaymentDate       null.Time                `json:"payment_date" gorm:"type:timestamptz;column:payment_date"`
 	ExpiryDate        null.Time                `json:"expiry_date" gorm:"type:timestamptz;column:expiry_date"`
 	RawResponse       string                   `json:"-" gorm:"type:text;column:raw_response"`
 	PaymentCode       string                   `json:"payment_code" gorm:"type:varchar(50);column:payment_code"`

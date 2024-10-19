@@ -358,6 +358,7 @@ func MidtransHandleNotification(request dto.MidtransNotificationRequest) (err er
 	}
 
 	sale[0].Status = true
+	sale[0].PaymentDate = null.TimeFrom(time.Now())
 
 	_, err = repository.UpdateSale(sale[0])
 	if err != nil {

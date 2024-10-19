@@ -11,7 +11,7 @@ import (
 	"github.com/go-gomail/gomail"
 )
 
-func SendEmail(htmlTemplate, htmlString, senderEmail, targetEmail, subjectMessage, attachmentPath string, fill any) {
+func SendEmail(htmlTemplate, senderEmail, targetEmail, subjectMessage, attachmentPath string, fill any) {
 	host := config.LoadConfig().SmtpHost
 	username := config.LoadConfig().SmtpUsername
 	password := config.LoadConfig().SmtpPassword
