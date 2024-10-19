@@ -571,7 +571,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkwODQ0NTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7kowcWqCc0_bEkVEUZeT7e7di9S1wLUziuypioDmV5I",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
 											"type": "string"
 										}
 									]
@@ -580,7 +580,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"amount\": 50,\r\n    \"description\": \"Add stock\",\r\n    \"product_id\": \"0bf1d22c-2146-405b-9a41-49953c1b10cc\",\r\n    \"action\": \"add\" //\"add\" or \"reduce\"\r\n}",
+									"raw": "{\r\n    \"amount\": 50,\r\n    \"description\": \"Add stock\",\r\n    \"product_id\": \"ac7d1274-b5c1-4cfb-bae5-7a8bd3c351f7\",\r\n    \"action\": \"add\" //\"add\" or \"reduce\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -821,7 +821,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
 									"type": "string"
 								}
 							]
@@ -1098,7 +1098,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NjIwMDQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Tz_bGP9unoh0C500rRjXdLvJsArI3ZecK2Wm79FmeyY",
 									"type": "string"
 								}
 							]
@@ -1107,7 +1107,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\":\"Eorlund\",\r\n    \"last_name\":\"The Whitemane\",\r\n    \"email\": \"eorlund@whiterun.com\",\r\n    \"phone\": \"089977665544\",\r\n    \"status\":true\r\n}",
+							"raw": "{\r\n    \"first_name\":\"Kodhak\",\r\n    \"last_name\":\"The Whitemane\",\r\n    \"email\": \"kodhak@whiterun.com\",\r\n    \"phone\": \"089977665544\",\r\n    \"status\":true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1134,7 +1134,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NjIwMDQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Tz_bGP9unoh0C500rRjXdLvJsArI3ZecK2Wm79FmeyY",
 									"type": "string"
 								}
 							]
@@ -1339,7 +1339,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkxODY1OTYsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Yl4j_kta_mhfGCvtWcuarTYfOJPXV1lN_f5oQZJTA24",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
 									"type": "string"
 								}
 							]
@@ -1348,7 +1348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"invoice_id\": \"\",\r\n    \"tax\": 11.0,\r\n    \"discount\": 10.0,\r\n    \"misc_price\": 1000.0,\r\n    \"subtotal\": 0.0,\r\n    \"total_paid\": 0.0,\r\n    \"customer_id\": \"27ad138f-9653-4539-a7de-5583c3291d0f\",\r\n    \"transaction_date\": \"\",\r\n    \"status\": true,\r\n    \"details\": [\r\n        {\r\n            \"product_id\": \"660fe2bb-079f-44cc-83ce-9527a917f41d\",\r\n            \"price\": 1350.0,\r\n            \"quantity\": 3\r\n        },\r\n        {\r\n            \"product_id\": \"0bf1d22c-2146-405b-9a41-49953c1b10cc\",\r\n            \"price\": 1500.0,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"invoice_id\": \"\",\r\n    \"tax\": 11.0,\r\n    \"discount\": 10.0,\r\n    \"misc_price\": 1000.0,\r\n    \"subtotal\": 0.0,\r\n    \"total_paid\": 0.0,\r\n    \"customer_id\": \"27ad138f-9653-4539-a7de-5583c3291d0f\",\r\n    \"transaction_date\": \"\",\r\n    \"status\": true,\r\n    \"details\": [\r\n        {\r\n            \"product_id\": \"660fe2bb-079f-44cc-83ce-9527a917f41d\",\r\n            \"price\": 1350.0,\r\n            \"quantity\": 3\r\n        },\r\n        {\r\n            \"product_id\": \"0bf1d22c-2146-405b-9a41-49953c1b10cc\",\r\n            \"price\": 1500.0,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"product_id\": \"ac7d1274-b5c1-4cfb-bae5-7a8bd3c351f7\",\r\n            \"price\": 3000.0,\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1383,7 +1383,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SALE_BASE_URL}}/sale?invoice_id=&transaction_date_margin_top&transaction_date_margin_bottom&product_id&customer_id&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Customer,Details,Details.Product,Payment,Payment.PaymentMethod",
+							"raw": "{{SALE_BASE_URL}}/sale?invoice_id=&transaction_date_margin_top&transaction_date_margin_bottom&product_id&customer_id&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
 							"host": [
 								"{{SALE_BASE_URL}}"
 							],
@@ -1453,8 +1453,8 @@
 								},
 								{
 									"key": "preload_fields",
-									"value": "User,Customer,Details,Details.Product,Payment,Payment.PaymentMethod",
-									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product, Payment, Payment.PaymentMethod"
+									"value": "User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
+									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product, Midtrans, Midtrans.PaymentMethod, IPaymu, IPaymu.PaymentMethod"
 								}
 							]
 						}
@@ -1477,7 +1477,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SALE_BASE_URL}}/sale/:id?preload_fields=User,Customer,Details,Details.Product,Payment,Payment.PaymentMethod",
+							"raw": "{{SALE_BASE_URL}}/sale/:id?preload_fields=User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
 							"host": [
 								"{{SALE_BASE_URL}}"
 							],
@@ -1488,8 +1488,8 @@
 							"query": [
 								{
 									"key": "preload_fields",
-									"value": "User,Customer,Details,Details.Product,Payment,Payment.PaymentMethod",
-									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product, Payment, Payment.PaymentMethod"
+									"value": "User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
+									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product, Payment, Payment.PaymentMethod, IPaymu, IPaymu.PaymentMethod"
 								}
 							],
 							"variable": [
@@ -1672,51 +1672,6 @@
 							"response": []
 						},
 						{
-							"name": "Notification",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"transaction_time\":\"2023-11-15 18:45:13\",\r\n    \"transaction_status\":\"settlement\",\r\n    \"fraud_status\":\"accept\",\r\n    \"order_id\":\"payment_notif_test_G232477704_4d0175ad-4824-4f44-ba3f-c80d61f560fb\",\r\n    \"signature_key\":\"fb717d3b72b73cd195588ae53423ec17018721222d3cbe5f7e253517be3148ea2ef377633abbf8e477eac3f66ad98c3bcbbb75502a13924d6d9b8f4b471ad1c8\",\r\n    \"status_code\":\"200\",\r\n    \"gross_amount\":\"105000.00\",\r\n    \"payment_type\":\"gopay\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/midtrans/notification",
-									"host": [
-										"{{PAYMENT_GATEWAY_BASE_URL}}"
-									],
-									"path": [
-										"payment-gateway",
-										"midtrans",
-										"notification"
-									],
-									"query": [
-										{
-											"key": "",
-											"value": null,
-											"disabled": true
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Avalaible Payment Method",
 							"request": {
 								"auth": {
@@ -1776,6 +1731,160 @@
 											"key": "sort",
 											"value": "",
 											"description": "Data will be sorted respectively, default: DESC"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "IPaymu",
+					"item": [
+						{
+							"name": "Avalaible Payment Method",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/ipaymu/available-payment-method?code=&page&search=&limit=&offset&order=&sort=",
+									"host": [
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"ipaymu",
+										"available-payment-method"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "",
+											"description": "Payment Method Code"
+										},
+										{
+											"key": "page",
+											"value": null,
+											"description": "Page, default: 1"
+										},
+										{
+											"key": "search",
+											"value": "",
+											"description": "Search by name and description"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "Number of data returned, default: 10"
+										},
+										{
+											"key": "offset",
+											"value": null,
+											"description": "Number of data to be skipped, default: 0"
+										},
+										{
+											"key": "order",
+											"value": "",
+											"description": "Data will be ordered respectively, default: created_at"
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"description": "Data will be sorted respectively, default: DESC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV384546549040\",\r\n    \"payment_method_code\": \"bsi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/ipaymu/charge",
+									"host": [
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"ipaymu",
+										"charge"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge Copy",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"trx_id\":145626,\"sid\":\"INV384546549040\",\"sub_total\":\"12666\",\"total\":\"12666\",\"fee\":\"3500\",\"status_code\":\"1\",\"status\":\"berhasil\",\"va\":\"172937032818\",\"via\":\"va\",\"channel\":\"BSI\",\"reference_id\":\"INV384546549040\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/ipaymu/notification",
+									"host": [
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"ipaymu",
+										"notification"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
 										}
 									]
 								}
