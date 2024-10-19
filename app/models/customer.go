@@ -11,8 +11,8 @@ type SDACustomer struct {
 	Phone     string         `json:"phone" gorm:"type:varchar(255);column:phone"`
 	Status    bool           `json:"status" gorm:"type:bool;column:status"`
 	UserID    uuid.UUID      `json:"user_id" gorm:"type:uuid;column:user_id"`
-	User      UserRelation   `gorm:"foreignKey:UserID"`
-	Sales     []SaleRelation `gorm:"foreignKey:CustomerID"`
+	User      *UserRelation  `json:"user,omitempty" gorm:"foreignKey:UserID"`
+	Sales     []SaleRelation `json:"sales,omitempty" gorm:"foreignKey:CustomerID"`
 }
 
 func (SDACustomer) TableName() string {
