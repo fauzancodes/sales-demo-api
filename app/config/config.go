@@ -35,6 +35,10 @@ type Config struct {
 	IPaymuVA                    string
 	IPaymuApiKey                string
 	IPaymuBaseURL               string
+	XenditBusinessID            string
+	XenditSecretKey             string
+	XenditPublicKey             string
+	XenditWebhookToken          string
 }
 
 func LoadConfig() (config *Config) {
@@ -67,6 +71,10 @@ func LoadConfig() (config *Config) {
 	ipaymuVA := os.Getenv("IPAYMU_VA")
 	ipaymuApiKey := os.Getenv("IPAYMU_API_KEY")
 	ipaymuBaseURL := os.Getenv("IPAYMU_BASE_URL")
+	xenditBusinessID := os.Getenv("XENDIT_BUSINESS_ID")
+	xenditSecretKey := os.Getenv("XENDIT_SECRET_KEY")
+	xenditPublicKey := os.Getenv("XENDIT_PUBLIC_KEY")
+	xenditWebhookToken := os.Getenv("XENDIT_WEBHOOK_TOKEN")
 
 	return &Config{
 		SecretKey:                   secretKey,
@@ -98,5 +106,9 @@ func LoadConfig() (config *Config) {
 		IPaymuVA:                    ipaymuVA,
 		IPaymuApiKey:                ipaymuApiKey,
 		IPaymuBaseURL:               ipaymuBaseURL,
+		XenditSecretKey:             xenditSecretKey,
+		XenditPublicKey:             xenditPublicKey,
+		XenditWebhookToken:          xenditWebhookToken,
+		XenditBusinessID:            xenditBusinessID,
 	}
 }

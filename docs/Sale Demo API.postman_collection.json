@@ -1107,7 +1107,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\":\"Kodhak\",\r\n    \"last_name\":\"The Whitemane\",\r\n    \"email\": \"kodhak@whiterun.com\",\r\n    \"phone\": \"089977665544\",\r\n    \"status\":true\r\n}",
+							"raw": "{\r\n    \"first_name\":\"Vilkas\",\r\n    \"last_name\":\"\",\r\n    \"email\": \"vilkas@whiterun.com\",\r\n    \"phone\": \"089977665544\",\r\n    \"status\":true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1627,52 +1627,7 @@
 					"name": "Midtrans",
 					"item": [
 						{
-							"name": "Charge",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkxODc3NTksImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Qj4M-csynslIG-6zUcuaWxPlnZdNIvo2sJPEYJ83Cwk",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"invoice_id\": \"INV927074881578\",\r\n    \"payment_method_code\": \"bca\",\r\n    \"card\": {\r\n        \"card_number\": \"\",\r\n        \"exp_month\": 0,\r\n        \"exp_year\": 0,\r\n        \"cvv\": \"\"\r\n    }\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/midtrans/charge",
-									"host": [
-										"{{PAYMENT_GATEWAY_BASE_URL}}"
-									],
-									"path": [
-										"payment-gateway",
-										"midtrans",
-										"charge"
-									],
-									"query": [
-										{
-											"key": "",
-											"value": null,
-											"disabled": true
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Avalaible Payment Method",
+							"name": "Available Payment Method",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -1736,6 +1691,51 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Charge",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkxODc3NTksImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Qj4M-csynslIG-6zUcuaWxPlnZdNIvo2sJPEYJ83Cwk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV927074881578\",\r\n    \"payment_method_code\": \"bca\",\r\n    \"card\": {\r\n        \"card_number\": \"\",\r\n        \"exp_month\": 0,\r\n        \"exp_year\": 0,\r\n        \"cvv\": \"\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/midtrans/charge",
+									"host": [
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"midtrans",
+										"charge"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1743,7 +1743,7 @@
 					"name": "IPaymu",
 					"item": [
 						{
-							"name": "Avalaible Payment Method",
+							"name": "Available Payment Method",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -1852,39 +1852,72 @@
 								}
 							},
 							"response": []
-						},
+						}
+					]
+				},
+				{
+					"name": "Xendit",
+					"item": [
 						{
-							"name": "Charge Copy",
+							"name": "Available Payment Method",
 							"request": {
 								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\"trx_id\":145626,\"sid\":\"INV384546549040\",\"sub_total\":\"12666\",\"total\":\"12666\",\"fee\":\"3500\",\"status_code\":\"1\",\"status\":\"berhasil\",\"va\":\"172937032818\",\"via\":\"va\",\"channel\":\"BSI\",\"reference_id\":\"INV384546549040\"}",
-									"options": {
-										"raw": {
-											"language": "json"
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk1MDE2NDQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.S7Nuyk6kAscoSYpW_b7CIFynqkq7QTYWjJ0Q_HAdIXE",
+											"type": "string"
 										}
-									}
+									]
 								},
+								"method": "GET",
+								"header": [],
 								"url": {
-									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/ipaymu/notification",
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/xendit/available-payment-method?code=&page&search=&limit=&offset&order=&sort=",
 									"host": [
 										"{{PAYMENT_GATEWAY_BASE_URL}}"
 									],
 									"path": [
 										"payment-gateway",
-										"ipaymu",
-										"notification"
+										"xendit",
+										"available-payment-method"
 									],
 									"query": [
 										{
-											"key": "",
+											"key": "code",
+											"value": "",
+											"description": "Payment Method Code"
+										},
+										{
+											"key": "page",
 											"value": null,
-											"disabled": true
+											"description": "Page, default: 1"
+										},
+										{
+											"key": "search",
+											"value": "",
+											"description": "Search by name and description"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "Number of data returned, default: 10"
+										},
+										{
+											"key": "offset",
+											"value": null,
+											"description": "Number of data to be skipped, default: 0"
+										},
+										{
+											"key": "order",
+											"value": "",
+											"description": "Data will be ordered respectively, default: created_at"
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"description": "Data will be sorted respectively, default: DESC"
 										}
 									]
 								}
