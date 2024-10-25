@@ -121,50 +121,74 @@ func CreateSale(userID string, request dto.SaleRequest) (response models.SDASale
 		return
 	}
 
-	for _, item := range request.Details {
-		var parsedProductUUID uuid.UUID
-		parsedProductUUID, err = uuid.Parse(item.ProductID)
-		if err != nil {
-			return
-		}
+	detailsChan := make([]chan models.SaleDetailRelation, len(request.Details))
+	errChan := make([]chan error, len(request.Details))
+	for i, item := range request.Details {
+		detailsChan[i] = make(chan models.SaleDetailRelation)
+		errChan[i] = make(chan error)
+		go CreateSaleDetails(&response, item, response.UserID, "Stock reduction from create sales "+response.InvoiceID, detailsChan[i], errChan[i])
+	}
 
-		detail := models.SDASaleDetail{
-			ProductID: parsedProductUUID,
-			Price:     item.Price,
-			Quantity:  item.Quantity,
-			SaleID:    response.ID,
-			UserID:    parsedUserUUID,
+	for i := range request.Details {
+		select {
+		case err = <-errChan[i]:
+			if err != nil {
+				return
+			}
+		case detail := <-detailsChan[i]:
+			response.Details = append(response.Details, detail)
 		}
-
-		var detailResponse models.SDASaleDetail
-		detailResponse, err = repository.CreateSaleDetail(detail)
-		if err != nil {
-			return
-		}
-
-		lastStock, _ := repository.GetLastProductStock(detailResponse.ProductID, []string{})
-		_, err = repository.CreateProductStock(models.SDAProductStock{
-			ProductID:   detailResponse.ProductID,
-			Reduction:   detailResponse.Quantity,
-			Current:     lastStock.Current - detailResponse.Quantity,
-			Description: "Stock reduction from create sales " + response.InvoiceID,
-			UserID:      response.UserID,
-		})
-		if err != nil {
-			return
-		}
-
-		response.Details = append(response.Details, models.SaleDetailRelation{
-			CustomGormModel: detailResponse.CustomGormModel,
-			ProductID:       detailResponse.ProductID,
-			Price:           detailResponse.Price,
-			Quantity:        detailResponse.Quantity,
-			UserID:          detailResponse.UserID,
-			SaleID:          detailResponse.SaleID,
-		})
 	}
 
 	return
+}
+
+func CreateSaleDetails(sale *models.SDASale, item dto.SaleDetailRequest, parsedUserUUID uuid.UUID, updateStockMessage string, detailsChan chan models.SaleDetailRelation, errChan chan error) {
+	var parsedProductUUID uuid.UUID
+	parsedProductUUID, err := uuid.Parse(item.ProductID)
+	if err != nil {
+		errChan <- err
+		return
+	}
+
+	detail := models.SDASaleDetail{
+		ProductID: parsedProductUUID,
+		Price:     item.Price,
+		Quantity:  item.Quantity,
+		SaleID:    sale.ID,
+		UserID:    parsedUserUUID,
+	}
+
+	var detailResponse models.SDASaleDetail
+	detailResponse, err = repository.CreateSaleDetail(detail)
+	if err != nil {
+		errChan <- err
+		return
+	}
+
+	lastStock, _ := repository.GetLastProductStock(detailResponse.ProductID, []string{})
+	_, err = repository.CreateProductStock(models.SDAProductStock{
+		ProductID:   detailResponse.ProductID,
+		Reduction:   detailResponse.Quantity,
+		Current:     lastStock.Current - detailResponse.Quantity,
+		Description: updateStockMessage,
+		UserID:      sale.UserID,
+	})
+	if err != nil {
+		errChan <- err
+		return
+	}
+
+	detailResult := models.SaleDetailRelation{
+		CustomGormModel: detailResponse.CustomGormModel,
+		ProductID:       detailResponse.ProductID,
+		Price:           detailResponse.Price,
+		Quantity:        detailResponse.Quantity,
+		UserID:          detailResponse.UserID,
+		SaleID:          detailResponse.SaleID,
+	}
+
+	detailsChan <- detailResult
 }
 
 func GetSaleByID(id string, preloadFields []string) (response models.SDASale, err error) {
@@ -300,70 +324,44 @@ func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, er
 
 		if len(dataDetails) > 0 {
 			for _, item := range dataDetails {
-				err = repository.DeleteSaleDetail(item)
-				if err != nil {
-					return
-				}
-
-				lastStock, _ := repository.GetLastProductStock(item.ProductID, []string{})
-				_, err = repository.CreateProductStock(models.SDAProductStock{
-					ProductID:   item.ProductID,
-					Addition:    item.Quantity,
-					Current:     lastStock.Current + item.Quantity,
-					Description: "Stock addition from update sales " + data.InvoiceID,
-					UserID:      data.UserID,
-				})
-				if err != nil {
-					return
-				}
+				go UpdateSaleDetailDeleteExisting(item, data)
 			}
 		}
 
-		for _, item := range request.Details {
-			var parsedProductUUID uuid.UUID
-			parsedProductUUID, err = uuid.Parse(item.ProductID)
-			if err != nil {
-				return
-			}
+		detailsChan := make([]chan models.SaleDetailRelation, len(request.Details))
+		errChan := make([]chan error, len(request.Details))
+		for i, item := range request.Details {
+			detailsChan[i] = make(chan models.SaleDetailRelation)
+			errChan[i] = make(chan error)
+			go CreateSaleDetails(&response, item, response.UserID, "Stock reduction from update sales "+response.InvoiceID, detailsChan[i], errChan[i])
+		}
 
-			detail := models.SDASaleDetail{
-				ProductID: parsedProductUUID,
-				Price:     item.Price,
-				Quantity:  item.Quantity,
-				SaleID:    response.ID,
-				UserID:    response.UserID,
+		for i := range request.Details {
+			select {
+			case err = <-errChan[i]:
+				if err != nil {
+					return
+				}
+			case detail := <-detailsChan[i]:
+				response.Details = append(response.Details, detail)
 			}
-
-			var detailResponse models.SDASaleDetail
-			detailResponse, err = repository.CreateSaleDetail(detail)
-			if err != nil {
-				return
-			}
-
-			lastStock, _ := repository.GetLastProductStock(detailResponse.ProductID, []string{})
-			_, err = repository.CreateProductStock(models.SDAProductStock{
-				ProductID:   detailResponse.ProductID,
-				Reduction:   detailResponse.Quantity,
-				Current:     lastStock.Current - detailResponse.Quantity,
-				Description: "Stock reduction from update sales " + response.InvoiceID,
-				UserID:      response.UserID,
-			})
-			if err != nil {
-				return
-			}
-
-			response.Details = append(response.Details, models.SaleDetailRelation{
-				CustomGormModel: detailResponse.CustomGormModel,
-				ProductID:       detailResponse.ProductID,
-				Price:           detailResponse.Price,
-				Quantity:        detailResponse.Quantity,
-				UserID:          detailResponse.UserID,
-				SaleID:          detailResponse.SaleID,
-			})
 		}
 	}
 
 	return
+}
+
+func UpdateSaleDetailDeleteExisting(item models.SDASaleDetail, data models.SDASale) {
+	repository.DeleteSaleDetail(item)
+
+	lastStock, _ := repository.GetLastProductStock(item.ProductID, []string{})
+	repository.CreateProductStock(models.SDAProductStock{
+		ProductID:   item.ProductID,
+		Addition:    item.Quantity,
+		Current:     lastStock.Current + item.Quantity,
+		Description: "Stock addition from update sales " + data.InvoiceID,
+		UserID:      data.UserID,
+	})
 }
 
 func DeleteSale(id string) (err error) {
