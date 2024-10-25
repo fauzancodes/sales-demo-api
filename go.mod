@@ -17,6 +17,7 @@ require (
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/midtrans/midtrans-go v1.3.8
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
+	github.com/xendit/xendit-go/v6 v6.0.0-20240815053147-7132b34ff21b
 	github.com/xuri/excelize/v2 v2.8.1
 	golang.org/x/crypto v0.22.0
 	golang.org/x/exp v0.0.0-20241004190924-225e2abe05e6
@@ -44,7 +45,6 @@ require (
 	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
-	github.com/xendit/xendit-go/v6 v6.0.0-20240815053147-7132b34ff21b // indirect
 	github.com/xuri/efp v0.0.0-20231025114914-d1ff6096ae53 // indirect
 	github.com/xuri/nfp v0.0.0-20230919160717-d98342af3f05 // indirect
 	golang.org/x/net v0.24.0 // indirect

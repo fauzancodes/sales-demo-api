@@ -1339,7 +1339,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk5NTQ0NzQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CLp2vB7zzO8bBawWuxvPwyyIks2_qX3y4vY0OO_GK-Q",
 									"type": "string"
 								}
 							]
@@ -1866,7 +1866,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk1MDE2NDQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.S7Nuyk6kAscoSYpW_b7CIFynqkq7QTYWjJ0Q_HAdIXE",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk3NzA2MzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.TnkDcf7eismTau5FLEVBK3YjCMogxPm2O8ejLQzTFW0",
 											"type": "string"
 										}
 									]
@@ -1874,7 +1874,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/xendit/available-payment-method?code=&page&search=&limit=&offset&order=&sort=",
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/xendit/available-payment-method?code=BCA&page&search=&limit=&offset&order=&sort=",
 									"host": [
 										"{{PAYMENT_GATEWAY_BASE_URL}}"
 									],
@@ -1886,7 +1886,7 @@
 									"query": [
 										{
 											"key": "code",
-											"value": "",
+											"value": "BCA",
 											"description": "Payment Method Code"
 										},
 										{
@@ -1919,6 +1919,91 @@
 											"value": "",
 											"description": "Data will be sorted respectively, default: DESC"
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk5NTQ0NzQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CLp2vB7zzO8bBawWuxvPwyyIks2_qX3y4vY0OO_GK-Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV532116963469\",\r\n    \"payment_method_code\": \"SHOPEEPAY\",\r\n    \"success_return_url\": \"https://fauzancodes.id/\",\r\n    \"failed_return_url\": \"https://www.google.com/\",\r\n    \"card\": {\r\n        \"card_number\": \"\",\r\n        \"expiry_month\": \"\",\r\n        \"expiry_year\": \"\",\r\n        \"cardholder_name\": \"\",\r\n        \"cardholder_email\": \"\",\r\n        \"cardholder_phone_number\": \"\"\r\n    },\r\n    \"ewallet\": {\r\n        \"mobile_number\":\"\",\r\n        \"cashtag\":\"\"\r\n    },\r\n    \"direct_debit\": {\r\n        \"type\": \"\",\r\n        \"mobile_number\": \"\",\r\n        \"last_four_digit\": \"\",\r\n        \"card_expiry\": \"\",\r\n        \"email\": \"\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/xendit/charge",
+									"host": [
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"xendit",
+										"charge"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Payment Simulation",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"transfer_amount\": 12666,\r\n    \"bank_account_number\":\"381659999327212\",\r\n    \"bank_code\": \"BCA\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.xendit.co/pool_virtual_accounts/simulate_payment",
+									"protocol": "https",
+									"host": [
+										"api",
+										"xendit",
+										"co"
+									],
+									"path": [
+										"pool_virtual_accounts",
+										"simulate_payment"
 									]
 								}
 							},

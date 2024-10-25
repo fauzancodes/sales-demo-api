@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"strings"
 	"time"
 
@@ -257,11 +258,13 @@ func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (respon
 
 	location, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
+		err = errors.New("failed to get location time: " + err.Error())
 		return
 	}
 
 	rawResponse, err := json.Marshal(midtransResponse)
 	if err != nil {
+		err = errors.New("failed to marshal response: " + err.Error())
 		return
 	}
 
@@ -323,6 +326,7 @@ func MidtransHandleNotification(request dto.MidtransNotificationRequest) (err er
 	expectedSignatureKey := hex.EncodeToString(hash.Sum(nil))
 
 	if !(expectedSignatureKey == request.SignatureKey) {
+		fmt.Println("hmac doesn't match. Expected: ", expectedSignatureKey, ". Get: ", request.SignatureKey)
 		err = errors.New("unauthorized")
 		return
 	}

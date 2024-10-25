@@ -48,6 +48,7 @@ func RunAutoMigration() {
 		&models.SDAIPaymuPaymentMethod{},
 		&models.SDAIPaymuSalePayment{},
 		&models.SDAXenditPaymentMethod{},
+		&models.SDAXenditSalePayment{},
 	)
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)

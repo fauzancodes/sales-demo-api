@@ -15,6 +15,7 @@ type SDAUser struct {
 	SaleDetails       []SaleDetailRelation      `json:"sale_details,omitempty" gorm:"foreignKey:UserID"`
 	Midtrans          []SDAMidtransSalePayment  `json:"midtrans,omitempty" gorm:"foreignKey:UserID"`
 	IPaymu            []SDAIPaymuSalePayment    `json:"ipaymu,omitempty" gorm:"foreignKey:UserID"`
+	Xendit            []SDAXenditSalePayment    `json:"xendit,omitempty" gorm:"foreignKey:UserID"`
 }
 
 func (SDAUser) TableName() string {

@@ -11,6 +11,13 @@ type MidtransRequest struct {
 }
 
 func (request MidtransRequest) Validate() error {
+	if request.PaymentMethodCode == "credit_card" {
+		err := request.Card.Validate()
+		if err != nil {
+			return err
+		}
+	}
+
 	return validation.ValidateStruct(
 		&request,
 		validation.Field(&request.InvoiceID, validation.Required),

@@ -57,19 +57,6 @@ func MidtransCharge(c echo.Context) error {
 		)
 	}
 
-	if request.PaymentMethodCode == "credit_card" {
-		if err := request.Card.Validate(); err != nil {
-			return c.JSON(
-				http.StatusBadRequest,
-				dto.Response{
-					Status:  400,
-					Message: "Invalid card request value",
-					Error:   err.Error(),
-				},
-			)
-		}
-	}
-
 	response, err := service.MidtransCharge(userID, utils.GetBaseUrl(c), request)
 	if err != nil {
 		return c.JSON(
