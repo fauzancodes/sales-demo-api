@@ -29,7 +29,7 @@ type SDAMidtransSalePayment struct {
 	RedirectUrl       string                    `json:"redirect_url" gorm:"type:varchar(255);column:redirect_url"`
 	UserID            uuid.UUID                 `json:"user_id" gorm:"type:uuid;column:user_id"`
 	MerchantID        string                    `json:"merchant_id" gorm:"type:varchar(50);column:merchant_id"`
-	PaymentMethodID   uuid.UUID                 `json:"payment_method_id" gorm:"type:uuid;column:payment_method_id"`
+	PaymentMethodID   *uuid.UUID                `json:"payment_method_id" gorm:"type:uuid;column:payment_method_id"`
 	PaymentMethod     *SDAMidtransPaymentMethod `json:"payment_method,omitempty" gorm:"foreignKey:PaymentMethodID"`
 }
 

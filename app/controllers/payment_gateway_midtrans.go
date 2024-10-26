@@ -30,11 +30,11 @@ func GetMidtransPaymentMethods(c echo.Context) error {
 	return c.JSON(http.StatusOK, data)
 }
 
-func MidtransCharge(c echo.Context) error {
+func MidtransChargeCore(c echo.Context) error {
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
-	var request dto.MidtransRequest
+	var request dto.MidtransRequestCore
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
@@ -57,7 +57,56 @@ func MidtransCharge(c echo.Context) error {
 		)
 	}
 
-	response, err := service.MidtransCharge(userID, utils.GetBaseUrl(c), request)
+	response, err := service.MidtransChargeCore(userID, utils.GetBaseUrl(c), request)
+	if err != nil {
+		return c.JSON(
+			http.StatusInternalServerError,
+			dto.Response{
+				Status:  500,
+				Message: "Failed to charge payment to midtrans",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Success to charge payment to midtrans",
+			Data:    response,
+		},
+	)
+}
+
+func MidtransChargeSnap(c echo.Context) error {
+	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
+	log.Printf("Current user ID: %v", userID)
+
+	var request dto.MidtransRequestSnap
+	if err := c.Bind(&request); err != nil {
+		return c.JSON(
+			http.StatusUnprocessableEntity,
+			dto.Response{
+				Status:  422,
+				Message: "Invalid request body",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	if err := request.Validate(); err != nil {
+		return c.JSON(
+			http.StatusBadRequest,
+			dto.Response{
+				Status:  400,
+				Message: "Invalid request value",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	response, err := service.MidtransChargeSnap(userID, utils.GetBaseUrl(c), request)
 	if err != nil {
 		return c.JSON(
 			http.StatusInternalServerError,

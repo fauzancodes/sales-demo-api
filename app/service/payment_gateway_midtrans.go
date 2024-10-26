@@ -18,6 +18,7 @@ import (
 	"github.com/guregu/null"
 	"github.com/midtrans/midtrans-go"
 	"github.com/midtrans/midtrans-go/coreapi"
+	"github.com/midtrans/midtrans-go/snap"
 )
 
 func GetMidtransPaymentMethods(code string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAMidtransPaymentMethod, err error) {
@@ -47,7 +48,7 @@ func GetMidtransPaymentMethods(code string, param utils.PagingRequest) (response
 	return
 }
 
-func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (response models.SDAMidtransSalePayment, err error) {
+func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore) (response models.SDAMidtransSalePayment, err error) {
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
 		return
@@ -270,7 +271,7 @@ func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (respon
 
 	data := models.SDAMidtransSalePayment{
 		SaleID:          sale.ID,
-		PaymentMethodID: paymentMethod.ID,
+		PaymentMethodID: &paymentMethod.ID,
 		ReferenceCode:   midtransResponse.TransactionID,
 		ExpiryDate:      null.TimeFrom(time.Now().In(location).Add(24 * time.Hour)),
 		RawResponse:     string(rawResponse),
@@ -311,6 +312,149 @@ func MidtransCharge(userID, baseUrl string, request dto.MidtransRequest) (respon
 		if len(midtransResponse.VaNumbers) > 0 {
 			data.PaymentCode = midtransResponse.VaNumbers[0].VANumber
 		}
+	}
+
+	response, err = repository.CreateMidtransSalePayment(data)
+
+	return
+}
+
+func MidtransChargeSnap(userID, baseUrl string, request dto.MidtransRequestSnap) (response models.SDAMidtransSalePayment, err error) {
+	parsedUserUUID, err := uuid.Parse(userID)
+	if err != nil {
+		return
+	}
+
+	saleData, _, _, err := repository.GetSales(dto.FindParameter{
+		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
+	}, []string{"Details", "Details.Product", "Customer"})
+	if err != nil {
+		return
+	}
+	if len(saleData) == 0 {
+		err = errors.New("sale data not found")
+		return
+	}
+	if len(saleData[0].Details) == 0 {
+		err = errors.New("sale details data not found")
+		return
+	}
+
+	sale := saleData[0]
+
+	serverKey := config.LoadConfig().MidtransServerKey
+	env := midtrans.Sandbox
+	if strings.ToLower(config.LoadConfig().MidtransEnv) == "production" {
+		env = midtrans.Production
+	}
+
+	s := snap.Client{}
+	s.New(serverKey, env)
+	s.Options.SetPaymentOverrideNotification(baseUrl + "/payment-gateway/midtrans/notification")
+
+	chargeReq := &snap.Request{
+		TransactionDetails: midtrans.TransactionDetails{
+			OrderID:  sale.InvoiceID,
+			GrossAmt: int64(utils.RoundFloat(sale.TotalPaid)),
+		},
+		CustomerDetail: &midtrans.CustomerDetails{
+			FName: sale.Customer.FirstName,
+			LName: sale.Customer.LastName,
+			Email: sale.Customer.Email,
+			Phone: sale.Customer.Phone,
+		},
+		CreditCard: &snap.CreditCardDetails{
+			Secure: true,
+		},
+		Gopay: &snap.GopayDetails{
+			EnableCallback: true,
+			CallbackUrl:    baseUrl,
+		},
+		ShopeePay: &snap.ShopeePayDetails{
+			CallbackUrl: baseUrl,
+		},
+		Callbacks: &snap.Callbacks{
+			Finish: baseUrl,
+		},
+		Expiry: &snap.ExpiryDetails{
+			StartTime: time.Now().Format("2006-01-02 15:04:05 +0700"),
+			Duration:  1,
+			Unit:      "day",
+		},
+		Cstore: &snap.Cstore{
+			AlfamartFreeText1: "Invoice ID: " + sale.InvoiceID,
+			AlfamartFreeText2: "Generate By: Sales Demo API",
+		},
+	}
+
+	var totalQuantity int
+	for _, item := range sale.Details {
+		totalQuantity += item.Quantity
+	}
+
+	var items []midtrans.ItemDetails
+	for _, data := range sale.Details {
+		if sale.Discount > 0 {
+			discountAmount := (sale.Discount * sale.Subtotal) / 100
+			discountPerItem := discountAmount / float64(totalQuantity)
+			if discountPerItem > 0 {
+				data.Price -= discountPerItem
+			}
+		}
+		if sale.Tax > 0 {
+			taxAmount := (sale.Tax * sale.Subtotal) / 100
+			taxPerItem := taxAmount / float64(totalQuantity)
+			if taxPerItem > 0 {
+				data.Price += taxPerItem
+			}
+		}
+		if sale.MiscPrice > 0 {
+			miscPricePerItem := sale.MiscPrice / float64(totalQuantity)
+			if miscPricePerItem > 0 {
+				data.Price += miscPricePerItem
+			}
+		}
+
+		item := midtrans.ItemDetails{
+			ID:    data.ProductID.String(),
+			Name:  data.Product.Name,
+			Qty:   int32(data.Quantity),
+			Price: int64(utils.RoundFloat(data.Price)),
+		}
+
+		items = append(items, item)
+	}
+	if len(items) > 0 {
+		chargeReq.Items = &items
+	}
+
+	midtransResponse, midtransError := s.CreateTransaction(chargeReq)
+	if midtransError != nil {
+		err = errors.New("Failed to request payment to midtrans: " + midtransError.RawError.Error())
+		return
+	}
+
+	location, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		err = errors.New("failed to get location time: " + err.Error())
+		return
+	}
+
+	rawResponse, err := json.Marshal(midtransResponse)
+	if err != nil {
+		err = errors.New("failed to marshal response: " + err.Error())
+		return
+	}
+
+	data := models.SDAMidtransSalePayment{
+		SaleID:          sale.ID,
+		PaymentMethodID: nil,
+		ReferenceCode:   midtransResponse.Token,
+		ExpiryDate:      null.TimeFrom(time.Now().In(location).Add(24 * time.Hour)),
+		RawResponse:     string(rawResponse),
+		UserID:          parsedUserUUID,
+		MerchantID:      config.LoadConfig().MidtransMerchantID,
+		RedirectUrl:     midtransResponse.RedirectURL,
 	}
 
 	response, err = repository.CreateMidtransSalePayment(data)

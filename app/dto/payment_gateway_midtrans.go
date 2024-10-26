@@ -4,13 +4,13 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation"
 )
 
-type MidtransRequest struct {
+type MidtransRequestCore struct {
 	InvoiceID         string              `json:"invoice_id"`
 	PaymentMethodCode string              `json:"payment_method_code"`
 	Card              MidtransCardRequest `json:"card"`
 }
 
-func (request MidtransRequest) Validate() error {
+func (request MidtransRequestCore) Validate() error {
 	if request.PaymentMethodCode == "credit_card" {
 		err := request.Card.Validate()
 		if err != nil {
@@ -39,6 +39,17 @@ func (request MidtransCardRequest) Validate() error {
 		validation.Field(&request.ExpMonth, validation.Required, validation.Min(1), validation.Max(12)),
 		validation.Field(&request.ExpYear, validation.Required, validation.Min(2000)),
 		validation.Field(&request.CVV, validation.Required),
+	)
+}
+
+type MidtransRequestSnap struct {
+	InvoiceID string `json:"invoice_id"`
+}
+
+func (request MidtransRequestSnap) Validate() error {
+	return validation.ValidateStruct(
+		&request,
+		validation.Field(&request.InvoiceID, validation.Required),
 	)
 }
 

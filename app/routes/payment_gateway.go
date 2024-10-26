@@ -12,7 +12,8 @@ func PaymentGatewayRoute(app *echo.Echo) {
 		midtrans := paymentGateway.Group("/midtrans")
 		{
 			midtrans.GET("/available-payment-method", controllers.GetMidtransPaymentMethods, middlewares.Auth)
-			midtrans.POST("/charge", controllers.MidtransCharge, middlewares.Auth)
+			midtrans.POST("/charge/core", controllers.MidtransChargeCore, middlewares.Auth)
+			midtrans.POST("/charge/snap", controllers.MidtransChargeSnap, middlewares.Auth)
 			midtrans.POST("/notification", controllers.MidtransNotification)
 		}
 

@@ -571,7 +571,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk5NTQ0NzQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CLp2vB7zzO8bBawWuxvPwyyIks2_qX3y4vY0OO_GK-Q",
 											"type": "string"
 										}
 									]
@@ -580,7 +580,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"amount\": 50,\r\n    \"description\": \"Add stock\",\r\n    \"product_id\": \"ac7d1274-b5c1-4cfb-bae5-7a8bd3c351f7\",\r\n    \"action\": \"add\" //\"add\" or \"reduce\"\r\n}",
+									"raw": "{\r\n    \"amount\": 50,\r\n    \"description\": \"Add stock\",\r\n    \"product_id\": \"660fe2bb-079f-44cc-83ce-9527a917f41d\",\r\n    \"action\": \"add\" //\"add\" or \"reduce\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1375,7 +1375,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkwODQ0NTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7kowcWqCc0_bEkVEUZeT7e7di9S1wLUziuypioDmV5I",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAwNDI3NjIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.5AF6_Lng8CUb2W13RREmqzUwl9XSt8kRKrOSYs3ilPY",
 									"type": "string"
 								}
 							]
@@ -1693,7 +1693,7 @@
 							"response": []
 						},
 						{
-							"name": "Charge",
+							"name": "Charge Via Core API",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -1717,14 +1717,61 @@
 									}
 								},
 								"url": {
-									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/midtrans/charge",
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/midtrans/charge/core",
 									"host": [
 										"{{PAYMENT_GATEWAY_BASE_URL}}"
 									],
 									"path": [
 										"payment-gateway",
 										"midtrans",
-										"charge"
+										"charge",
+										"core"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge Via Snap API Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAwNDI3NjIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.5AF6_Lng8CUb2W13RREmqzUwl9XSt8kRKrOSYs3ilPY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV424867295208\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/midtrans/charge/snap",
+									"host": [
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"midtrans",
+										"charge",
+										"snap"
 									],
 									"query": [
 										{
