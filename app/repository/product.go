@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"errors"
-
 	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
@@ -12,9 +10,6 @@ import (
 
 func CreateProduct(data models.SDAProduct) (models.SDAProduct, error) {
 	err := config.DB.Create(&data).Error
-	if err != nil {
-		err = errors.New("failed to insert data to database: " + err.Error())
-	}
 
 	return data, err
 }
@@ -23,9 +18,6 @@ func GetProductByID(id uuid.UUID, preloadFields []string) (response models.SDAPr
 	db := utils.BuildPreload(config.DB, preloadFields)
 
 	err = db.Where("id = ?", id).First(&response).Error
-	if err != nil {
-		err = errors.New("failed to get data from database: " + err.Error())
-	}
 
 	return
 }
@@ -33,13 +25,11 @@ func GetProductByID(id uuid.UUID, preloadFields []string) (response models.SDAPr
 func GetProducts(param dto.FindParameter, preloadFields []string) (responses []models.SDAProduct, total int64, totalFiltered int64, err error) {
 	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
 	if err != nil {
-		err = errors.New("failed to count data from database: " + err.Error())
 		return
 	}
 
 	err = config.DB.Model(responses).Where(param.Filter).Count(&totalFiltered).Error
 	if err != nil {
-		err = errors.New("failed to count filtered data from database: " + err.Error())
 		return
 	}
 
@@ -50,27 +40,18 @@ func GetProducts(param dto.FindParameter, preloadFields []string) (responses []m
 	} else {
 		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
 	}
-	if err != nil {
-		err = errors.New("failed to get data list from database: " + err.Error())
-	}
 
 	return
 }
 
 func UpdateProduct(data models.SDAProduct) (models.SDAProduct, error) {
 	err := config.DB.Save(&data).Error
-	if err != nil {
-		err = errors.New("failed to update data in database: " + err.Error())
-	}
 
 	return data, err
 }
 
 func DeleteProduct(data models.SDAProduct) error {
 	err := config.DB.Delete(&data).Error
-	if err != nil {
-		err = errors.New("failed to delete data in from database: " + err.Error())
-	}
 
 	return err
 }

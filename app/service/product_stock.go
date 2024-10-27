@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+	"net/http"
 	"strings"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
@@ -8,16 +10,21 @@ import (
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
-func CreateProductStock(userID string, request dto.ProductStockRequest) (response models.SDAProductStock, err error) {
+func CreateProductStock(userID string, request dto.ProductStockRequest) (response models.SDAProductStock, statusCode int, err error) {
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
+		err = errors.New("failed to parse user UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	parsedProductUUID, err := uuid.Parse(request.ProductID)
 	if err != nil {
+		err = errors.New("failed to parse product UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -38,11 +45,17 @@ func CreateProductStock(userID string, request dto.ProductStockRequest) (respons
 	}
 
 	response, err = repository.CreateProductStock(data)
+	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusCreated
 	return
 }
 
-func GetProductStocks(productID, userID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAProductStock, err error) {
+func GetProductStocks(productID, userID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAProductStock, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	if userID != "" {
 		baseFilter += " AND user_id = '" + userID + "'"
@@ -61,10 +74,18 @@ func GetProductStocks(productID, userID string, param utils.PagingRequest, prelo
 		Offset:     param.Offset,
 	}, preloadFields)
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	response = utils.PopulateResPaging(&param, data, total, totalFiltered)
 
+	statusCode = http.StatusOK
 	return
 }

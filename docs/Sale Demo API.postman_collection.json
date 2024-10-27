@@ -1739,7 +1739,7 @@
 							"response": []
 						},
 						{
-							"name": "Charge Via Snap API Copy",
+							"name": "Charge Via Snap API",
 							"request": {
 								"auth": {
 									"type": "bearer",

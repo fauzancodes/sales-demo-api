@@ -25,9 +25,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null"
 	"github.com/skip2/go-qrcode"
+	"gorm.io/gorm"
 )
 
-func GetIPaymuPaymentMethods(code string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAIPaymuPaymentMethod, err error) {
+func GetIPaymuPaymentMethods(code string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAIPaymuPaymentMethod, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
 
@@ -46,11 +47,19 @@ func GetIPaymuPaymentMethods(code string, param utils.PagingRequest) (response u
 		Offset:     param.Offset,
 	})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	response = utils.PopulateResPaging(&param, data, total, totalFiltered)
 
+	statusCode = http.StatusOK
 	return
 }
 
@@ -120,7 +129,7 @@ func SendIPaymuRequest(method, path string, request []byte) (responseBody []byte
 	return
 }
 
-func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (response models.SDAIPaymuSalePayment, err error) {
+func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (response models.SDAIPaymuSalePayment, statusCode int, err error) {
 	location, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
 		location = time.Local
@@ -128,7 +137,8 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
-		err = errors.New("failed to parse user ID: " + err.Error())
+		err = errors.New("failed to parse user UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -136,10 +146,18 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 		Filter: "deleted_at IS NULL AND code = '" + strings.ToLower(request.PaymentMethodCode) + "'",
 	})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	if len(paymentMethodData) == 0 {
 		err = errors.New("payment method not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	paymentMethod := paymentMethodData[0]
@@ -148,14 +166,23 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	if len(saleData) == 0 {
 		err = errors.New("sale data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	if len(saleData[0].Details) == 0 {
 		err = errors.New("sale details data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 
@@ -240,11 +267,13 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 	postBody, err := json.Marshal(postBodyRaw)
 	if err != nil {
 		err = errors.New("failed to marshal post body: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	ipaymuResponse, err := SendIPaymuRequest("POST", "/payment/direct", postBody)
 	if err != nil {
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -252,6 +281,7 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 	err = json.Unmarshal(ipaymuResponse, &responseBody)
 	if err != nil {
 		err = errors.New("failed to unmarshal response body: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -281,6 +311,7 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 			qr, err = qrcode.New(responseBody.Data.PaymentCode, qrcode.Medium)
 			if err != nil {
 				err = errors.New("failed to generate qr code: " + err.Error())
+				statusCode = http.StatusInternalServerError
 				return
 			}
 
@@ -288,11 +319,13 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 			err = png.Encode(&buf, qr.Image(256))
 			if err != nil {
 				err = errors.New("failed to encode qr code to png: " + err.Error())
+				statusCode = http.StatusInternalServerError
 				return
 			}
 
 			data.QRCodeUrl, _, _, err = upload.UploadFile(bytes.NewReader(buf.Bytes()), userID, "")
 			if err != nil {
+				statusCode = http.StatusInternalServerError
 				return
 			}
 		} else {
@@ -300,16 +333,26 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 		}
 
 		response, err = repository.CreateIPaymuSalePayment(data)
+		if err != nil {
+			err = errors.New("failed to create data: " + err.Error())
+			statusCode = http.StatusInternalServerError
+			return
+		}
 	} else {
-		err = errors.New(responseBody.Message)
+		err = errors.New("failed to charge to ipaymu: " + responseBody.Message)
+		statusCode = http.StatusInternalServerError
+
+		return
 	}
 
+	statusCode = http.StatusCreated
 	return
 }
 
-func IPaymuHandleNotification(request dto.IPaymuNotificationRequest) (err error) {
+func IPaymuHandleNotification(request dto.IPaymuNotificationRequest) (statusCode int, err error) {
 	if request.StatusCode != "1" || request.Status != "berhasil" {
 		err = errors.New("transaction not yet settled")
+		statusCode = http.StatusBadRequest
 		return
 	}
 
@@ -318,10 +361,12 @@ func IPaymuHandleNotification(request dto.IPaymuNotificationRequest) (err error)
 	}, []string{})
 	if len(sale) == 0 {
 		err = errors.New("data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	if sale[0].ID == uuid.Nil {
 		err = errors.New("data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 
@@ -330,8 +375,11 @@ func IPaymuHandleNotification(request dto.IPaymuNotificationRequest) (err error)
 
 	_, err = repository.UpdateSale(sale[0])
 	if err != nil {
+		err = errors.New("failed to update data: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
+	statusCode = http.StatusOK
 	return
 }

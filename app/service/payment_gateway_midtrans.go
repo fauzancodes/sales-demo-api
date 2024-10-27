@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -19,9 +20,10 @@ import (
 	"github.com/midtrans/midtrans-go"
 	"github.com/midtrans/midtrans-go/coreapi"
 	"github.com/midtrans/midtrans-go/snap"
+	"gorm.io/gorm"
 )
 
-func GetMidtransPaymentMethods(code string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAMidtransPaymentMethod, err error) {
+func GetMidtransPaymentMethods(code string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAMidtransPaymentMethod, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
 
@@ -40,17 +42,27 @@ func GetMidtransPaymentMethods(code string, param utils.PagingRequest) (response
 		Offset:     param.Offset,
 	})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	response = utils.PopulateResPaging(&param, data, total, totalFiltered)
 
+	statusCode = http.StatusOK
 	return
 }
 
-func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore) (response models.SDAMidtransSalePayment, err error) {
+func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore) (response models.SDAMidtransSalePayment, statusCode int, err error) {
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
+		err = errors.New("failed to parse user UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -58,10 +70,18 @@ func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore)
 		Filter: "deleted_at IS NULL AND code = '" + strings.ToLower(request.PaymentMethodCode) + "'",
 	})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	if len(paymentMethodData) == 0 {
 		err = errors.New("payment method not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	paymentMethod := paymentMethodData[0]
@@ -70,14 +90,23 @@ func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore)
 		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	if len(saleData) == 0 {
 		err = errors.New("sale data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	if len(saleData[0].Details) == 0 {
 		err = errors.New("sale details data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 
@@ -115,7 +144,8 @@ func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore)
 	case "credit_card":
 		cardResponse, midtransError := c.CardToken(strings.ReplaceAll(request.Card.CardNumber, " ", ""), request.Card.ExpMonth, request.Card.ExpYear, request.Card.CVV, config.LoadConfig().MidtransClientKey)
 		if midtransError != nil {
-			err = midtransError
+			err = errors.New("failed to get card token: " + midtransError.RawError.Error())
+			statusCode = http.StatusInternalServerError
 			return
 		}
 
@@ -253,19 +283,22 @@ func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore)
 
 	midtransResponse, midtransError := c.ChargeTransaction(chargeReq)
 	if midtransError != nil {
-		err = midtransError.RawError
+		err = errors.New("failed to charge to midtrans: " + midtransError.RawError.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	location, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
 		err = errors.New("failed to get location time: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	rawResponse, err := json.Marshal(midtransResponse)
 	if err != nil {
 		err = errors.New("failed to marshal response: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -315,13 +348,21 @@ func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore)
 	}
 
 	response, err = repository.CreateMidtransSalePayment(data)
+	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusCreated
 	return
 }
 
-func MidtransChargeSnap(userID, baseUrl string, request dto.MidtransRequestSnap) (response models.SDAMidtransSalePayment, err error) {
+func MidtransChargeSnap(userID, baseUrl string, request dto.MidtransRequestSnap) (response models.SDAMidtransSalePayment, statusCode int, err error) {
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
+		err = errors.New("failed to parse user UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -329,14 +370,23 @@ func MidtransChargeSnap(userID, baseUrl string, request dto.MidtransRequestSnap)
 		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	if len(saleData) == 0 {
 		err = errors.New("sale data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	if len(saleData[0].Details) == 0 {
 		err = errors.New("sale details data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 
@@ -431,18 +481,21 @@ func MidtransChargeSnap(userID, baseUrl string, request dto.MidtransRequestSnap)
 	midtransResponse, midtransError := s.CreateTransaction(chargeReq)
 	if midtransError != nil {
 		err = errors.New("Failed to request payment to midtrans: " + midtransError.RawError.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	location, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
 		err = errors.New("failed to get location time: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	rawResponse, err := json.Marshal(midtransResponse)
 	if err != nil {
 		err = errors.New("failed to marshal response: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -458,11 +511,17 @@ func MidtransChargeSnap(userID, baseUrl string, request dto.MidtransRequestSnap)
 	}
 
 	response, err = repository.CreateMidtransSalePayment(data)
+	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusCreated
 	return
 }
 
-func MidtransHandleNotification(request dto.MidtransNotificationRequest) (err error) {
+func MidtransHandleNotification(request dto.MidtransNotificationRequest) (statusCode int, err error) {
 	expectedSignatureKeyRaw := request.OrderID + request.StatusCode + request.GrossAmount + config.LoadConfig().MidtransServerKey
 	hash := sha512.New()
 	hash.Write([]byte(expectedSignatureKeyRaw))
@@ -472,23 +531,27 @@ func MidtransHandleNotification(request dto.MidtransNotificationRequest) (err er
 	if !(expectedSignatureKey == request.SignatureKey) {
 		fmt.Println("hmac doesn't match. Expected: ", expectedSignatureKey, ". Get: ", request.SignatureKey)
 		err = errors.New("unauthorized")
+		statusCode = http.StatusUnauthorized
 		return
 	}
 
 	if request.FraudStatus != "" {
 		if request.FraudStatus != "accept" {
 			err = errors.New("transaction indicated as fraud")
+			statusCode = http.StatusBadRequest
 			return
 		}
 	}
 	if request.PaymentType == "credit_card" {
 		if request.TransactionStatus != "capture" && request.TransactionStatus != "settlement" {
 			err = errors.New("transaction not yet settled")
+			statusCode = http.StatusBadRequest
 			return
 		}
 	} else {
 		if request.TransactionStatus != "settlement" {
 			err = errors.New("transaction not yet settled")
+			statusCode = http.StatusBadRequest
 			return
 		}
 	}
@@ -498,10 +561,12 @@ func MidtransHandleNotification(request dto.MidtransNotificationRequest) (err er
 	}, []string{})
 	if len(sale) == 0 {
 		err = errors.New("data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	if sale[0].ID == uuid.Nil {
 		err = errors.New("data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 
@@ -510,8 +575,11 @@ func MidtransHandleNotification(request dto.MidtransNotificationRequest) (err er
 
 	_, err = repository.UpdateSale(sale[0])
 	if err != nil {
+		err = errors.New("failed to update data: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
+	statusCode = http.StatusOK
 	return
 }

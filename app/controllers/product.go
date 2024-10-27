@@ -39,12 +39,12 @@ func CreateProduct(c echo.Context) error {
 		)
 	}
 
-	result, err := service.CreateProduct(userID, request)
+	result, statusCode, err := service.CreateProduct(userID, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to create",
 				Error:   err.Error(),
 			},
@@ -52,9 +52,9 @@ func CreateProduct(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to create",
 			Data:    result,
 		},
@@ -70,31 +70,31 @@ func GetProducts(c echo.Context) error {
 	preloadFields := utils.GetBuildPreloadFields(c)
 
 	param := utils.PopulatePaging(c, "status")
-	data, _, err := service.GetProducts(name, userID, categoryID, param, preloadFields)
+	data, _, statusCode, err := service.GetProducts(name, userID, categoryID, param, preloadFields)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
 		)
 	}
 
-	return c.JSON(http.StatusOK, data)
+	return c.JSON(statusCode, data)
 }
 
 func GetProductByID(c echo.Context) error {
 	id := c.Param("id")
 	preloadFields := utils.GetBuildPreloadFields(c)
 
-	data, err := service.GetProductByID(id, preloadFields)
+	data, statusCode, err := service.GetProductByID(id, preloadFields)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
@@ -102,9 +102,9 @@ func GetProductByID(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to get data",
 			Data:    data,
 		},
@@ -126,12 +126,12 @@ func UpdateProduct(c echo.Context) error {
 		)
 	}
 
-	data, err := service.UpdateProduct(id, request)
+	data, statusCode, err := service.UpdateProduct(id, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to update data",
 				Error:   err.Error(),
 			},
@@ -139,9 +139,9 @@ func UpdateProduct(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to update data",
 			Data:    data,
 		},
@@ -151,12 +151,12 @@ func UpdateProduct(c echo.Context) error {
 func DeleteProduct(c echo.Context) error {
 	id := c.Param("id")
 
-	err := service.DeleteProduct(id)
+	statusCode, err := service.DeleteProduct(id)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to delete data",
 				Error:   err.Error(),
 			},
@@ -164,9 +164,9 @@ func DeleteProduct(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to delete data",
 		},
 	)
@@ -188,12 +188,12 @@ func UploadProductPicture(c echo.Context) error {
 		)
 	}
 
-	responseURL, err := service.UploadProductPicture(file, userID)
+	responseURL, statusCode, err := service.UploadProductPicture(file, userID)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to upload product picture",
 				Error:   err.Error(),
 			},
@@ -201,9 +201,9 @@ func UploadProductPicture(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to upload",
 			Data:    responseURL,
 		},
@@ -239,12 +239,12 @@ func ImportProduct(c echo.Context) error {
 		)
 	}
 
-	response, err := service.ImportProduct(file, userID)
+	response, statusCode, err := service.ImportProduct(file, userID)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to import data",
 				Error:   err.Error(),
 			},
@@ -252,9 +252,9 @@ func ImportProduct(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to import data",
 			Data:    response,
 		},

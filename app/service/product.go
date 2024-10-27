@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"mime/multipart"
+	"net/http"
 	"path/filepath"
 	"strconv"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 func BuildProductResponse(data models.SDAProduct) (response dto.ProductResponse, err error) {
@@ -26,6 +28,7 @@ func BuildProductResponse(data models.SDAProduct) (response dto.ProductResponse,
 
 	err = json.Unmarshal([]byte(data.Image), &response.Image)
 	if err != nil {
+		err = errors.New("failed to unmarshal image: " + err.Error())
 		return
 	}
 
@@ -35,9 +38,11 @@ func BuildProductResponse(data models.SDAProduct) (response dto.ProductResponse,
 	return
 }
 
-func CreateProduct(userID string, request dto.ProductRequest) (response models.SDAProduct, err error) {
+func CreateProduct(userID string, request dto.ProductRequest) (response models.SDAProduct, statusCode int, err error) {
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
+		err = errors.New("failed to parse user UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	if request.Code == "" || request.Code == "-" {
@@ -46,11 +51,15 @@ func CreateProduct(userID string, request dto.ProductRequest) (response models.S
 
 	parsedCategoryUUID, err := uuid.Parse(request.CategoryID)
 	if err != nil {
+		err = errors.New("failed to parse category UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	jsonImage, err := json.Marshal(request.Image)
 	if err != nil {
+		err = errors.New("failed to marshal image: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -66,30 +75,47 @@ func CreateProduct(userID string, request dto.ProductRequest) (response models.S
 	}
 
 	response, err = repository.CreateProduct(data)
+	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusCreated
 	return
 }
 
-func GetProductByID(id string, preloadFields []string) (response dto.ProductResponse, err error) {
+func GetProductByID(id string, preloadFields []string) (response dto.ProductResponse, statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	data, err := repository.GetProductByID(parsedUUID, preloadFields)
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	response, err = BuildProductResponse(data)
 	if err != nil {
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
+	statusCode = http.StatusOK
 	return
 }
 
-func GetProducts(name, userID, categoryID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAProduct, err error) {
+func GetProducts(name, userID, categoryID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAProduct, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	if userID != "" {
 		baseFilter += " AND user_id = '" + userID + "'"
@@ -117,6 +143,13 @@ func GetProducts(name, userID, categoryID string, param utils.PagingRequest, pre
 		Offset:     param.Offset,
 	}, preloadFields)
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -125,6 +158,7 @@ func GetProducts(name, userID, categoryID string, param utils.PagingRequest, pre
 	for _, item := range data {
 		result, err = BuildProductResponse(item)
 		if err != nil {
+			statusCode = http.StatusInternalServerError
 			return
 		}
 
@@ -133,17 +167,27 @@ func GetProducts(name, userID, categoryID string, param utils.PagingRequest, pre
 
 	response = utils.PopulateResPaging(&param, results, total, totalFiltered)
 
+	statusCode = http.StatusOK
 	return
 }
 
-func UpdateProduct(id string, request dto.ProductRequest) (response models.SDAProduct, err error) {
+func UpdateProduct(id string, request dto.ProductRequest) (response models.SDAProduct, statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	data, err := repository.GetProductByID(parsedUUID, []string{})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -164,6 +208,8 @@ func UpdateProduct(id string, request dto.ProductRequest) (response models.SDAPr
 	if request.CategoryID != "" {
 		parsedCategoryUUID, err = uuid.Parse(request.CategoryID)
 		if err != nil {
+			err = errors.New("failed to parse category UUID: " + err.Error())
+			statusCode = http.StatusInternalServerError
 			return
 		}
 		data.CategoryID = parsedCategoryUUID
@@ -175,6 +221,8 @@ func UpdateProduct(id string, request dto.ProductRequest) (response models.SDAPr
 	if len(request.Image) > 0 {
 		jsonImage, err = json.Marshal(request.Image)
 		if err != nil {
+			err = errors.New("failed to marshal image: " + err.Error())
+			statusCode = http.StatusInternalServerError
 			return
 		}
 
@@ -182,57 +230,84 @@ func UpdateProduct(id string, request dto.ProductRequest) (response models.SDAPr
 	}
 
 	response, err = repository.UpdateProduct(data)
+	if err != nil {
+		err = errors.New("failed to update data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+	}
 
+	statusCode = http.StatusOK
 	return
 }
 
-func DeleteProduct(id string) (err error) {
+func DeleteProduct(id string) (statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	data, err := repository.GetProductByID(parsedUUID, []string{})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	err = repository.DeleteProduct(data)
+	if err != nil {
+		err = errors.New("failed to delete data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusNoContent
 	return
 }
 
-func UploadProductPicture(file *multipart.FileHeader, userID string) (responseURL string, err error) {
+func UploadProductPicture(file *multipart.FileHeader, userID string) (responseURL string, statusCode int, err error) {
 	extension := filepath.Ext(file.Filename)
 	if extension != ".png" && extension != ".jpg" && extension != ".jpeg" && extension != ".webp" {
 		err = errors.New("the file extension is wrong. allowed file extensions are images (.png, .jpg, .jpeg, .webp)")
+		statusCode = http.StatusBadRequest
 		return
 	}
 
 	var src multipart.File
 	src, err = file.Open()
 	if err != nil {
+		err = errors.New("faield to open file: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	defer src.Close()
 
 	responseURL, _, _, err = upload.UploadFile(src, userID, "")
 	if err != nil {
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
+	statusCode = http.StatusOK
 	return
 }
 
-func ImportProduct(file *multipart.FileHeader, userID string) (responses []models.SDAProduct, err error) {
+func ImportProduct(file *multipart.FileHeader, userID string) (responses []models.SDAProduct, statusCode int, err error) {
 	rows, err := utils.ValidateImportFile(file, 6)
 	if err != nil {
+		statusCode = http.StatusBadRequest
 		return
 	}
 
 	rows = rows[1:]
 	if len(rows) == 0 {
 		err = errors.New("there is no data in the file")
+		statusCode = http.StatusBadRequest
 		return
 	}
 
@@ -263,7 +338,7 @@ func ImportProduct(file *multipart.FileHeader, userID string) (responses []model
 					input.Code = utils.GenerateRandomNumber(12)
 				}
 
-				category, err = CreateProductCategory(userID, input)
+				category, statusCode, err = CreateProductCategory(userID, input)
 				if err != nil {
 					return
 				}
@@ -301,7 +376,7 @@ func ImportProduct(file *multipart.FileHeader, userID string) (responses []model
 				input.Code = utils.GenerateRandomNumber(12)
 			}
 
-			response, err = CreateProduct(userID, input)
+			response, statusCode, err = CreateProduct(userID, input)
 			if err != nil {
 				return
 			}

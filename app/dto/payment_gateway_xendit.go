@@ -7,7 +7,7 @@ import (
 	"github.com/go-ozzo/ozzo-validation/is"
 )
 
-type XenditRequest struct {
+type XenditRequestPayment struct {
 	InvoiceID         string                   `json:"invoice_id"`
 	PaymentMethodCode string                   `json:"payment_method_code"`
 	SuccessReturnUrl  string                   `json:"success_return_url"`
@@ -17,7 +17,7 @@ type XenditRequest struct {
 	DirectDebit       XenditDirectDebitRequest `json:"direct_debit"`
 }
 
-func (request XenditRequest) Validate() error {
+func (request XenditRequestPayment) Validate() error {
 	var err error
 	if request.PaymentMethodCode == "DIRECT_DEBIT_BRI" || request.PaymentMethodCode == "DIRECT_DEBIT_MANDIRI" {
 		if request.PaymentMethodCode == "DIRECT_DEBIT_BRI" {
@@ -78,6 +78,17 @@ func (request XenditRequest) Validate() error {
 		validation.Field(&request.PaymentMethodCode, validation.Required),
 		validation.Field(&request.SuccessReturnUrl, validation.Required),
 		validation.Field(&request.FailedReturnUrl, validation.Required),
+	)
+}
+
+type XenditRequestInvoice struct {
+	InvoiceID string `json:"invoice_id"`
+}
+
+func (request XenditRequestInvoice) Validate() error {
+	return validation.ValidateStruct(
+		&request,
+		validation.Field(&request.InvoiceID, validation.Required),
 	)
 }
 

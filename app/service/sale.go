@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -17,6 +18,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null"
 	"github.com/jung-kurt/gofpdf"
+	"gorm.io/gorm"
 )
 
 func CheckSaleDetails(request dto.SaleRequest) (dto.SaleRequest, error) {
@@ -84,23 +86,30 @@ func CheckSaleDetails(request dto.SaleRequest) (dto.SaleRequest, error) {
 	return request, err
 }
 
-func CreateSale(userID string, request dto.SaleRequest) (response models.SDASale, err error) {
+func CreateSale(userID string, request dto.SaleRequest) (response models.SDASale, statusCode int, err error) {
 	request, err = CheckSaleDetails(request)
 	if err != nil {
+		statusCode = http.StatusBadRequest
 		return
 	}
 
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
+		err = errors.New("failed to parse user UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	parsedCustomerUUID, err := uuid.Parse(request.CustomerID)
 	if err != nil {
+		err = errors.New("failed to parse customer UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	transactionDate, err := time.Parse(time.DateOnly, request.TransactionDate)
 	if err != nil {
+		err = errors.New("invalid transaction date format: " + err.Error())
+		statusCode = http.StatusBadRequest
 		return
 	}
 
@@ -118,6 +127,8 @@ func CreateSale(userID string, request dto.SaleRequest) (response models.SDASale
 
 	response, err = repository.CreateSale(data)
 	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -133,6 +144,8 @@ func CreateSale(userID string, request dto.SaleRequest) (response models.SDASale
 		select {
 		case err = <-errChan[i]:
 			if err != nil {
+				err = errors.New("failed to create detail: " + err.Error())
+				statusCode = http.StatusInternalServerError
 				return
 			}
 		case detail := <-detailsChan[i]:
@@ -140,6 +153,7 @@ func CreateSale(userID string, request dto.SaleRequest) (response models.SDASale
 		}
 	}
 
+	statusCode = http.StatusCreated
 	return
 }
 
@@ -147,6 +161,7 @@ func CreateSaleDetails(sale *models.SDASale, item dto.SaleDetailRequest, parsedU
 	var parsedProductUUID uuid.UUID
 	parsedProductUUID, err := uuid.Parse(item.ProductID)
 	if err != nil {
+		err = errors.New("failed to parse product UUID: " + err.Error())
 		errChan <- err
 		return
 	}
@@ -162,6 +177,7 @@ func CreateSaleDetails(sale *models.SDASale, item dto.SaleDetailRequest, parsedU
 	var detailResponse models.SDASaleDetail
 	detailResponse, err = repository.CreateSaleDetail(detail)
 	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
 		errChan <- err
 		return
 	}
@@ -175,6 +191,7 @@ func CreateSaleDetails(sale *models.SDASale, item dto.SaleDetailRequest, parsedU
 		UserID:      sale.UserID,
 	})
 	if err != nil {
+		err = errors.New("failed to create product stock: " + err.Error())
 		errChan <- err
 		return
 	}
@@ -191,21 +208,31 @@ func CreateSaleDetails(sale *models.SDASale, item dto.SaleDetailRequest, parsedU
 	detailsChan <- detailResult
 }
 
-func GetSaleByID(id string, preloadFields []string) (response models.SDASale, err error) {
+func GetSaleByID(id string, preloadFields []string) (response models.SDASale, statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	response, err = repository.GetSaleByID(parsedUUID, preloadFields)
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
+	statusCode = http.StatusOK
 	return
 }
 
-func GetSales(invoiceID, userID, customerID, transactionDateMarginTop, transactionDateMarginBottom, productID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDASale, err error) {
+func GetSales(invoiceID, userID, customerID, transactionDateMarginTop, transactionDateMarginBottom, productID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDASale, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	if userID != "" {
 		baseFilter += " AND user_id = '" + userID + "'"
@@ -248,27 +275,45 @@ func GetSales(invoiceID, userID, customerID, transactionDateMarginTop, transacti
 		Offset:     param.Offset,
 	}, preloadFields)
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	response = utils.PopulateResPaging(&param, data, total, totalFiltered)
 
+	statusCode = http.StatusOK
 	return
 }
 
-func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, err error) {
+func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, statusCode int, err error) {
 	request, err = CheckSaleDetails(request)
 	if err != nil {
+		statusCode = http.StatusBadRequest
 		return
 	}
 
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed ot parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	data, err := repository.GetSaleByID(parsedUUID, []string{})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -279,6 +324,8 @@ func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, er
 		var parsedCustomerUUID uuid.UUID
 		parsedCustomerUUID, err = uuid.Parse(request.CustomerID)
 		if err != nil {
+			err = errors.New("failed to parse customer UUID: " + err.Error())
+			statusCode = http.StatusInternalServerError
 			return
 		}
 		data.CustomerID = parsedCustomerUUID
@@ -302,6 +349,8 @@ func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, er
 		var transactionDate time.Time
 		transactionDate, err = time.Parse(time.DateOnly, request.TransactionDate)
 		if err != nil {
+			err = errors.New("invalid transaction date format: " + err.Error())
+			statusCode = http.StatusBadRequest
 			return
 		}
 		data.TransactionDate = null.TimeFrom(transactionDate)
@@ -314,17 +363,14 @@ func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, er
 
 	if len(request.Details) > 0 {
 		var dataDetails []models.SDASaleDetail
-		dataDetails, _, _, err = repository.GetSaleDetails(dto.FindParameter{
+		dataDetails, _, _, _ = repository.GetSaleDetails(dto.FindParameter{
 			BaseFilter: "deleted_at IS NULL AND user_id = '" + response.UserID.String() + "'",
 			Filter:     "deleted_at IS NULL AND user_id = '" + data.UserID.String() + "' AND sale_id = '" + data.ID.String() + "'",
 		}, []string{})
-		if err != nil {
-			return
-		}
 
 		if len(dataDetails) > 0 {
 			for _, item := range dataDetails {
-				go UpdateSaleDetailDeleteExisting(item, data)
+				go DeleteExistingSaleDetail(item, data, "Stock addition from update sales "+data.InvoiceID)
 			}
 		}
 
@@ -340,6 +386,8 @@ func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, er
 			select {
 			case err = <-errChan[i]:
 				if err != nil {
+					err = errors.New("failed to create detail: " + err.Error())
+					statusCode = http.StatusInternalServerError
 					return
 				}
 			case detail := <-detailsChan[i]:
@@ -348,10 +396,11 @@ func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, er
 		}
 	}
 
+	statusCode = http.StatusOK
 	return
 }
 
-func UpdateSaleDetailDeleteExisting(item models.SDASaleDetail, data models.SDASale) {
+func DeleteExistingSaleDetail(item models.SDASaleDetail, data models.SDASale, message string) {
 	repository.DeleteSaleDetail(item)
 
 	lastStock, _ := repository.GetLastProductStock(item.ProductID, []string{})
@@ -359,52 +408,49 @@ func UpdateSaleDetailDeleteExisting(item models.SDASaleDetail, data models.SDASa
 		ProductID:   item.ProductID,
 		Addition:    item.Quantity,
 		Current:     lastStock.Current + item.Quantity,
-		Description: "Stock addition from update sales " + data.InvoiceID,
+		Description: message,
 		UserID:      data.UserID,
 	})
 }
 
-func DeleteSale(id string) (err error) {
+func DeleteSale(id string) (statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	data, err := repository.GetSaleByID(parsedUUID, []string{})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
-	dataDetails, _, _, err := repository.GetSaleDetails(dto.FindParameter{
+	dataDetails, _, _, _ := repository.GetSaleDetails(dto.FindParameter{
 		Filter: "deleted_at IS NULL AND user_id = '" + data.UserID.String() + "' AND sale_id = '" + data.ID.String() + "'",
 	}, []string{})
-	if err != nil {
-		return
-	}
 
 	if len(dataDetails) > 0 {
 		for _, item := range dataDetails {
-			err = repository.DeleteSaleDetail(item)
-			if err != nil {
-				return
-			}
-
-			lastStock, _ := repository.GetLastProductStock(item.ProductID, []string{})
-			_, err = repository.CreateProductStock(models.SDAProductStock{
-				ProductID:   item.ProductID,
-				Addition:    item.Quantity,
-				Current:     lastStock.Current + item.Quantity,
-				Description: "Stock addition from delete sales " + data.InvoiceID,
-				UserID:      data.UserID,
-			})
-			if err != nil {
-				return
-			}
+			go DeleteExistingSaleDetail(item, data, "Stock addition from delete sales "+data.InvoiceID)
 		}
 	}
 
 	err = repository.DeleteSale(data)
+	if err != nil {
+		err = errors.New("failed to delete data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusNoContent
 	return
 }
 

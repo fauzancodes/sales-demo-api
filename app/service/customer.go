@@ -3,17 +3,21 @@ package service
 import (
 	"errors"
 	"mime/multipart"
+	"net/http"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
-func CreateCustomer(userID string, request dto.CustomerRequest) (response models.SDACustomer, err error) {
+func CreateCustomer(userID string, request dto.CustomerRequest) (response models.SDACustomer, statusCode int, err error) {
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
+		err = errors.New("failed to parse user UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	if request.Code == "" || request.Code == "-" {
@@ -31,21 +35,41 @@ func CreateCustomer(userID string, request dto.CustomerRequest) (response models
 	}
 
 	response, err = repository.CreateCustomer(data)
-
-	return
-}
-
-func GetCustomerByID(id string, preloadFields []string) (data models.SDACustomer, err error) {
-	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
-	data, err = repository.GetCustomerByID(parsedUUID, preloadFields)
 
+	statusCode = http.StatusCreated
 	return
 }
 
-func GetCustomers(email, phone, userID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDACustomer, err error) {
+func GetCustomerByID(id string, preloadFields []string) (data models.SDACustomer, statusCode int, err error) {
+	parsedUUID, err := uuid.Parse(id)
+	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	data, err = repository.GetCustomerByID(parsedUUID, preloadFields)
+	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	statusCode = http.StatusOK
+	return
+}
+
+func GetCustomers(email, phone, userID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDACustomer, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	if userID != "" {
 		baseFilter += " AND user_id = '" + userID + "'"
@@ -73,22 +97,39 @@ func GetCustomers(email, phone, userID string, param utils.PagingRequest, preloa
 		Offset:     param.Offset,
 	}, preloadFields)
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	response = utils.PopulateResPaging(&param, data, total, totalFiltered)
 
+	statusCode = http.StatusOK
 	return
 }
 
-func UpdateCustomer(id string, request dto.CustomerRequest) (response models.SDACustomer, err error) {
+func UpdateCustomer(id string, request dto.CustomerRequest) (response models.SDACustomer, statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	data, err := repository.GetCustomerByID(parsedUUID, []string{})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -110,35 +151,58 @@ func UpdateCustomer(id string, request dto.CustomerRequest) (response models.SDA
 	data.Status = request.Status
 
 	response, err = repository.UpdateCustomer(data)
+	if err != nil {
+		err = errors.New("failed to update data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusOK
 	return
 }
 
-func DeleteCustomer(id string) (err error) {
+func DeleteCustomer(id string) (statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	data, err := repository.GetCustomerByID(parsedUUID, []string{})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	err = repository.DeleteCustomer(data)
+	if err != nil {
+		err = errors.New("failed to delete data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusNoContent
 	return
 }
 
-func ImportCustomer(file *multipart.FileHeader, userID string) (responses []models.SDACustomer, err error) {
+func ImportCustomer(file *multipart.FileHeader, userID string) (responses []models.SDACustomer, statusCode int, err error) {
 	rows, err := utils.ValidateImportFile(file, 5)
 	if err != nil {
+		statusCode = http.StatusBadRequest
 		return
 	}
 
 	rows = rows[1:]
 	if len(rows) == 0 {
 		err = errors.New("there is no data in the file")
+		statusCode = http.StatusBadRequest
 		return
 	}
 
@@ -174,7 +238,7 @@ func ImportCustomer(file *multipart.FileHeader, userID string) (responses []mode
 				input.Code = utils.GenerateRandomNumber(12)
 			}
 
-			response, err = CreateCustomer(userID, input)
+			response, statusCode, err = CreateCustomer(userID, input)
 			if err != nil {
 				return
 			}

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -16,10 +17,12 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null"
 	"github.com/xendit/xendit-go/v6"
+	"github.com/xendit/xendit-go/v6/invoice"
 	"github.com/xendit/xendit-go/v6/payment_request"
+	"gorm.io/gorm"
 )
 
-func GetXenditPaymentMethods(code string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAXenditPaymentMethod, err error) {
+func GetXenditPaymentMethods(code string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAXenditPaymentMethod, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
 
@@ -38,18 +41,27 @@ func GetXenditPaymentMethods(code string, param utils.PagingRequest) (response u
 		Offset:     param.Offset,
 	})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	response = utils.PopulateResPaging(&param, data, total, totalFiltered)
 
+	statusCode = http.StatusOK
 	return
 }
 
-func XenditCharge(userID, baseUrl string, request dto.XenditRequest) (response models.SDAXenditSalePayment, err error) {
+func XenditChargePayment(userID, baseUrl string, request dto.XenditRequestPayment) (response models.SDAXenditSalePayment, statusCode int, err error) {
 	parsedUserUUID, err := uuid.Parse(userID)
 	if err != nil {
-		err = errors.New("failed to parse userID: " + err.Error())
+		err = errors.New("failed to parse user UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -57,10 +69,18 @@ func XenditCharge(userID, baseUrl string, request dto.XenditRequest) (response m
 		Filter: "deleted_at IS NULL AND code = '" + strings.ToUpper(request.PaymentMethodCode) + "'",
 	})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	if len(paymentMethodData) == 0 {
 		err = errors.New("payment method not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	paymentMethod := paymentMethodData[0]
@@ -69,14 +89,23 @@ func XenditCharge(userID, baseUrl string, request dto.XenditRequest) (response m
 		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	if len(saleData) == 0 {
 		err = errors.New("sale data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	if len(saleData[0].Details) == 0 {
 		err = errors.New("sale details data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 
@@ -147,6 +176,13 @@ func XenditCharge(userID, baseUrl string, request dto.XenditRequest) (response m
 		var productCategory models.SDAProductCategory
 		productCategory, err = repository.GetProductCategoryByID(data.Product.CategoryID, []string{})
 		if err != nil {
+			err = errors.New("failed to get data: " + err.Error())
+			if err == gorm.ErrRecordNotFound {
+				statusCode = http.StatusNotFound
+				return
+			}
+
+			statusCode = http.StatusInternalServerError
 			return
 		}
 
@@ -355,6 +391,7 @@ func XenditCharge(userID, baseUrl string, request dto.XenditRequest) (response m
 	if xenditError != nil {
 		xenditErrorRawResponse, _ := json.Marshal(xenditError.RawResponse())
 		err = errors.New("Failed to request payment to xendit: " + string(xenditErrorRawResponse))
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	fmt.Println("xenditResponse:", xenditResponse)
@@ -369,11 +406,12 @@ func XenditCharge(userID, baseUrl string, request dto.XenditRequest) (response m
 	rawResponse, err := json.Marshal(xenditResponse)
 	if err != nil {
 		err = errors.New("failed to marshall response: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	data := models.SDAXenditSalePayment{
 		SaleID:          sale.ID,
-		PaymentMethodID: paymentMethod.ID,
+		PaymentMethodID: &paymentMethod.ID,
 		ReferenceCode:   xenditResponse.Id,
 		ExpiryDate:      null.TimeFrom(time.Now().Add(24 * time.Hour)),
 		RawResponse:     string(rawResponse),
@@ -404,25 +442,185 @@ func XenditCharge(userID, baseUrl string, request dto.XenditRequest) (response m
 	}
 
 	response, err = repository.CreateXenditSalePayment(data)
+	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusCreated
 	return
 }
 
-func XenditHandleNotification(request dto.XenditNotificationRequest, callbackToken string) (err error) {
+func XenditChargeInvoice(userID, baseUrl string, request dto.XenditRequestInvoice) (response models.SDAXenditSalePayment, statusCode int, err error) {
+	parsedUserUUID, err := uuid.Parse(userID)
+	if err != nil {
+		err = errors.New("failed to parse user UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	saleData, _, _, err := repository.GetSales(dto.FindParameter{
+		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
+	}, []string{"Details", "Details.Product", "Customer"})
+	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
+		return
+	}
+	if len(saleData) == 0 {
+		err = errors.New("sale data not found")
+		statusCode = http.StatusNotFound
+		return
+	}
+	if len(saleData[0].Details) == 0 {
+		err = errors.New("sale details data not found")
+		statusCode = http.StatusNotFound
+		return
+	}
+
+	sale := saleData[0]
+
+	client := xendit.NewClient(config.LoadConfig().XenditSecretKey)
+
+	amount := float64(utils.RoundFloat(sale.TotalPaid))
+
+	var customerPhone string
+	if sale.Customer.Phone[:2] == "08" {
+		customerPhone = "+62" + sale.Customer.Phone[1:]
+	} else if sale.Customer.Phone[:3] == "+62" {
+		customerPhone = sale.Customer.Phone
+	} else {
+		customerPhone = "+62" + sale.Customer.Phone
+	}
+
+	var totalQuantity int
+	for _, item := range sale.Details {
+		totalQuantity += item.Quantity
+	}
+
+	var paymentRequestItems []invoice.InvoiceItem
+	for _, data := range sale.Details {
+		if sale.Discount > 0 {
+			discountAmount := (sale.Discount * sale.Subtotal) / 100
+			discountPerItem := discountAmount / float64(totalQuantity)
+			if discountPerItem > 0 {
+				data.Price -= discountPerItem
+			}
+		}
+		if sale.Tax > 0 {
+			taxAmount := (sale.Tax * sale.Subtotal) / 100
+			taxPerItem := taxAmount / float64(totalQuantity)
+			if taxPerItem > 0 {
+				data.Price += taxPerItem
+			}
+		}
+		if sale.MiscPrice > 0 {
+			miscPricePerItem := sale.MiscPrice / float64(totalQuantity)
+			if miscPricePerItem > 0 {
+				data.Price += miscPricePerItem
+			}
+		}
+
+		var productCategory models.SDAProductCategory
+		productCategory, err = repository.GetProductCategoryByID(data.Product.CategoryID, []string{})
+		if err != nil {
+			err = errors.New("failed to get data: " + err.Error())
+			if err == gorm.ErrRecordNotFound {
+				statusCode = http.StatusNotFound
+				return
+			}
+
+			statusCode = http.StatusInternalServerError
+			return
+		}
+
+		productID := data.ProductID.String()
+		paymentRequestItems = append(paymentRequestItems, invoice.InvoiceItem{
+			ReferenceId: &productID,
+			Name:        data.Product.Name,
+			Category:    &productCategory.Name,
+			Quantity:    float32(data.Quantity),
+			Price:       float32(utils.RoundFloat(data.Price)),
+		})
+	}
+
+	currency := invoice.INVOICECURRENCY_IDR.String()
+	shouldAuthenticateCreditCard := true
+	xenditResponse, _, xenditError := client.InvoiceApi.CreateInvoice(context.Background()).
+		CreateInvoiceRequest(invoice.CreateInvoiceRequest{
+			ExternalId: sale.InvoiceID,
+			Amount:     amount,
+			Customer: &invoice.CustomerObject{
+				PhoneNumber:  *invoice.NewNullableString(&customerPhone),
+				GivenNames:   *invoice.NewNullableString(&sale.Customer.FirstName),
+				Surname:      *invoice.NewNullableString(&sale.Customer.LastName),
+				Email:        *invoice.NewNullableString(&sale.Customer.Email),
+				MobileNumber: *invoice.NewNullableString(&customerPhone),
+			},
+			SuccessRedirectUrl:           &baseUrl,
+			Currency:                     &currency,
+			Items:                        paymentRequestItems,
+			ShouldAuthenticateCreditCard: &shouldAuthenticateCreditCard,
+		}).
+		Execute()
+	if xenditError != nil {
+		xenditErrorRawResponse, _ := json.Marshal(xenditError.RawResponse())
+		err = errors.New("Failed to request payment to xendit: " + string(xenditErrorRawResponse))
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	rawResponse, err := json.Marshal(xenditResponse)
+	if err != nil {
+		err = errors.New("failed to marshall response: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
+	data := models.SDAXenditSalePayment{
+		SaleID:          sale.ID,
+		PaymentMethodID: nil,
+		ReferenceCode:   *xenditResponse.Id,
+		ExpiryDate:      null.TimeFrom(time.Now().Add(24 * time.Hour)),
+		RawResponse:     string(rawResponse),
+		UserID:          parsedUserUUID,
+		RedirectUrl:     xenditResponse.InvoiceUrl,
+	}
+
+	response, err = repository.CreateXenditSalePayment(data)
+	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	statusCode = http.StatusCreated
+	return
+}
+
+func XenditHandleNotification(request dto.XenditNotificationRequest, callbackToken string) (statusCode int, err error) {
 	if request.BusinessID != config.LoadConfig().XenditBusinessID {
 		fmt.Println("business_id doesn't match: ", request.BusinessID)
 		err = errors.New("unauthorized")
+		statusCode = http.StatusUnauthorized
 		return
 	}
 
 	if callbackToken != config.LoadConfig().XenditWebhookToken {
 		fmt.Println("x-callback-token doesn't match: ", callbackToken)
 		err = errors.New("unauthorized")
+		statusCode = http.StatusUnauthorized
 		return
 	}
 
 	if request.Event != "payment.succeeded" {
 		err = errors.New("transaction not yet settled")
+		statusCode = http.StatusBadRequest
 		return
 	}
 
@@ -431,10 +629,12 @@ func XenditHandleNotification(request dto.XenditNotificationRequest, callbackTok
 	}, []string{})
 	if len(sale) == 0 {
 		err = errors.New("data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 	if sale[0].ID == uuid.Nil {
 		err = errors.New("data not found")
+		statusCode = http.StatusNotFound
 		return
 	}
 
@@ -443,8 +643,11 @@ func XenditHandleNotification(request dto.XenditNotificationRequest, callbackTok
 
 	_, err = repository.UpdateSale(sale[0])
 	if err != nil {
+		err = errors.New("failed to update data: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
+	statusCode = http.StatusOK
 	return
 }

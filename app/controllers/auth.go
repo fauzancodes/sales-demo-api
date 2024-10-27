@@ -40,27 +40,27 @@ func Register(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, check, _ := service.GetUsers("", "", request.Email, param, []string{})
+	_, check, statusCode, _ := service.GetUsers("", "", request.Email, param, []string{})
 	if len(check) > 0 {
 		return c.JSON(
-			http.StatusBadRequest,
+			statusCode,
 			dto.Response{
-				Status:  400,
+				Status:  statusCode,
 				Message: "Email has been registered",
 				Error:   "",
 			},
 		)
 	}
 
-	result, err := service.CreateUser(dto.UserRequest{
+	result, statusCode, err := service.CreateUser(dto.UserRequest{
 		Email:    request.Email,
 		Password: request.Password,
 	})
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to register",
 				Error:   err.Error(),
 			},
@@ -70,9 +70,9 @@ func Register(c echo.Context) error {
 	go service.SendEmailVerification(result, request.SuccessVerificationUrl, request.FailedVerificationUrl, utils.GetBaseUrl(c))
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to register",
 			Data:    result,
 		},
@@ -104,12 +104,12 @@ func Login(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, user, _ := service.GetUsers("", "", request.Email, param, []string{})
+	_, user, statusCode, _ := service.GetUsers("", "", request.Email, param, []string{})
 	if len(user) == 0 {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Email not found",
 			},
 		)
@@ -144,9 +144,9 @@ func Login(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to login",
 			Data:    token,
 		},
@@ -157,7 +157,7 @@ func GetCurrentUser(c echo.Context) error {
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
-	data, err := service.GetUserByID(userID, []string{
+	data, statusCode, err := service.GetUserByID(userID, []string{
 		"Products",
 		"ProductCategories",
 		"ProductStocks",
@@ -170,9 +170,9 @@ func GetCurrentUser(c echo.Context) error {
 	})
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Data not found",
 				Error:   err.Error(),
 			},
@@ -180,9 +180,9 @@ func GetCurrentUser(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to get data",
 			Data:    data,
 		},
@@ -205,12 +205,12 @@ func UpdateProfile(c echo.Context) error {
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
-	data, err := service.UpdateUser(userID, request)
+	data, statusCode, err := service.UpdateUser(userID, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to update data",
 				Error:   err.Error(),
 			},
@@ -231,12 +231,12 @@ func RemoveAccount(c echo.Context) error {
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
-	err := service.DeleteUser(userID)
+	statusCode, err := service.DeleteUser(userID)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to delete data",
 				Error:   err.Error(),
 			},
@@ -244,9 +244,9 @@ func RemoveAccount(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to delete data",
 		},
 	)
@@ -428,12 +428,12 @@ func ResetPassword(c echo.Context) error {
 		)
 	}
 
-	data, err := service.ResetPassword(request)
+	data, statusCode, err := service.ResetPassword(request)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to verify user",
 				Error:   err.Error(),
 			},
@@ -441,9 +441,9 @@ func ResetPassword(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to reset password",
 			Data:    data,
 		},

@@ -39,12 +39,12 @@ func CreateProductCategory(c echo.Context) error {
 		)
 	}
 
-	result, err := service.CreateProductCategory(userID, request)
+	result, statusCode, err := service.CreateProductCategory(userID, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to create",
 				Error:   err.Error(),
 			},
@@ -52,9 +52,9 @@ func CreateProductCategory(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to create",
 			Data:    result,
 		},
@@ -69,31 +69,31 @@ func GetProductCategories(c echo.Context) error {
 	preloadFields := utils.GetBuildPreloadFields(c)
 
 	param := utils.PopulatePaging(c, "status")
-	data, _, err := service.GetProductCategories(name, userID, param, preloadFields)
+	data, _, statusCode, err := service.GetProductCategories(name, userID, param, preloadFields)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
 		)
 	}
 
-	return c.JSON(http.StatusOK, data)
+	return c.JSON(statusCode, data)
 }
 
 func GetProductCategoryByID(c echo.Context) error {
 	id := c.Param("id")
 	preloadFields := utils.GetBuildPreloadFields(c)
 
-	data, err := service.GetProductCategoryByID(id, preloadFields)
+	data, statusCode, err := service.GetProductCategoryByID(id, preloadFields)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
@@ -101,9 +101,9 @@ func GetProductCategoryByID(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to get data",
 			Data:    data,
 		},
@@ -125,12 +125,12 @@ func UpdateProductCategory(c echo.Context) error {
 		)
 	}
 
-	data, err := service.UpdateProductCategory(id, request)
+	data, statusCode, err := service.UpdateProductCategory(id, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to update data",
 				Error:   err.Error(),
 			},
@@ -138,9 +138,9 @@ func UpdateProductCategory(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to update data",
 			Data:    data,
 		},
@@ -150,12 +150,12 @@ func UpdateProductCategory(c echo.Context) error {
 func DeleteProductCategory(c echo.Context) error {
 	id := c.Param("id")
 
-	err := service.DeleteProductCategory(id)
+	statusCode, err := service.DeleteProductCategory(id)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to delete data",
 				Error:   err.Error(),
 			},
@@ -163,9 +163,9 @@ func DeleteProductCategory(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to delete data",
 		},
 	)
@@ -200,12 +200,12 @@ func ImportProductCategory(c echo.Context) error {
 		)
 	}
 
-	response, err := service.ImportProductCategory(file, userID)
+	response, statusCode, err := service.ImportProductCategory(file, userID)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to import data",
 				Error:   err.Error(),
 			},
@@ -213,9 +213,9 @@ func ImportProductCategory(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to import data",
 			Data:    response,
 		},

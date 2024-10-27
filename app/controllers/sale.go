@@ -39,12 +39,12 @@ func CreateSale(c echo.Context) error {
 		)
 	}
 
-	result, err := service.CreateSale(userID, request)
+	result, statusCode, err := service.CreateSale(userID, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to create",
 				Error:   err.Error(),
 			},
@@ -52,9 +52,9 @@ func CreateSale(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to create",
 			Data:    result,
 		},
@@ -73,31 +73,31 @@ func GetSales(c echo.Context) error {
 	preloadFields := utils.GetBuildPreloadFields(c)
 
 	param := utils.PopulatePaging(c, "status")
-	data, _, err := service.GetSales(invoiceID, userID, customerID, transactionDateMarginTop, transactionDateMarginBottom, productID, param, preloadFields)
+	data, _, statusCode, err := service.GetSales(invoiceID, userID, customerID, transactionDateMarginTop, transactionDateMarginBottom, productID, param, preloadFields)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
 		)
 	}
 
-	return c.JSON(http.StatusOK, data)
+	return c.JSON(statusCode, data)
 }
 
 func GetSaleByID(c echo.Context) error {
 	id := c.Param("id")
 	preloadFields := utils.GetBuildPreloadFields(c)
 
-	data, err := service.GetSaleByID(id, preloadFields)
+	data, statusCode, err := service.GetSaleByID(id, preloadFields)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
@@ -105,9 +105,9 @@ func GetSaleByID(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to get data",
 			Data:    data,
 		},
@@ -129,12 +129,12 @@ func UpdateSale(c echo.Context) error {
 		)
 	}
 
-	data, err := service.UpdateSale(id, request)
+	data, statusCode, err := service.UpdateSale(id, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to update data",
 				Error:   err.Error(),
 			},
@@ -142,9 +142,9 @@ func UpdateSale(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to update data",
 			Data:    data,
 		},
@@ -154,12 +154,12 @@ func UpdateSale(c echo.Context) error {
 func DeleteSale(c echo.Context) error {
 	id := c.Param("id")
 
-	err := service.DeleteSale(id)
+	statusCode, err := service.DeleteSale(id)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to delete data",
 				Error:   err.Error(),
 			},
@@ -167,9 +167,9 @@ func DeleteSale(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to delete data",
 		},
 	)

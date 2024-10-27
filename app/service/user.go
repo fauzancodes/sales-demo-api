@@ -1,15 +1,19 @@
 package service
 
 import (
+	"errors"
+	"net/http"
+
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/bcrypt"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
-func CreateUser(request dto.UserRequest) (response models.SDAUser, err error) {
+func CreateUser(request dto.UserRequest) (response models.SDAUser, statusCode int, err error) {
 	data := models.SDAUser{
 		FirstName: request.FirstName,
 		LastName:  request.LastName,
@@ -18,21 +22,40 @@ func CreateUser(request dto.UserRequest) (response models.SDAUser, err error) {
 	}
 
 	response, err = repository.CreateUser(data)
+	if err != nil {
+		err = errors.New("failed to create data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusCreated
 	return
 }
 
-func GetUserByID(id string, preloadFields []string) (data models.SDAUser, err error) {
+func GetUserByID(id string, preloadFields []string) (data models.SDAUser, statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	data, err = repository.GetUserByID(parsedUUID, preloadFields)
+	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
 
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	statusCode = http.StatusOK
 	return
 }
 
-func GetUsers(firstName, lastName, email string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAUser, err error) {
+func GetUsers(firstName, lastName, email string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAUser, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
 
@@ -57,21 +80,38 @@ func GetUsers(firstName, lastName, email string, param utils.PagingRequest, prel
 		Offset:     param.Offset,
 	}, preloadFields)
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	response = utils.PopulateResPaging(&param, data, total, totalFiltered)
 
+	statusCode = http.StatusOK
 	return
 }
 
-func UpdateUser(id string, request dto.UserRequest) (response models.SDAUser, err error) {
+func UpdateUser(id string, request dto.UserRequest) (response models.SDAUser, statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 	data, err := repository.GetUserByID(parsedUUID, []string{})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
@@ -89,22 +129,43 @@ func UpdateUser(id string, request dto.UserRequest) (response models.SDAUser, er
 	}
 
 	response, err = repository.UpdateUser(data)
+	if err != nil {
+		err = errors.New("failed to update data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusOK
 	return
 }
 
-func DeleteUser(id string) (err error) {
+func DeleteUser(id string) (statusCode int, err error) {
 	parsedUUID, err := uuid.Parse(id)
 	if err != nil {
+		err = errors.New("failed to parse UUID: " + err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	data, err := repository.GetUserByID(parsedUUID, []string{})
 	if err != nil {
+		err = errors.New("failed to get data: " + err.Error())
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	err = repository.DeleteUser(data)
+	if err != nil {
+		err = errors.New("failed to delete data: " + err.Error())
+		statusCode = http.StatusInternalServerError
+		return
+	}
 
+	statusCode = http.StatusNoContent
 	return
 }

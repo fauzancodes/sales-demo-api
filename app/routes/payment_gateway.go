@@ -27,7 +27,8 @@ func PaymentGatewayRoute(app *echo.Echo) {
 		xendit := paymentGateway.Group("/xendit")
 		{
 			xendit.GET("/available-payment-method", controllers.GetXenditPaymentMethods, middlewares.Auth)
-			xendit.POST("/charge", controllers.XenditCharge, middlewares.Auth)
+			xendit.POST("/charge/payment", controllers.XenditChargePayment, middlewares.Auth)
+			xendit.POST("/charge/invoice", controllers.XenditChargeInvoice, middlewares.Auth)
 			xendit.POST("/notification", controllers.XenditNotification)
 		}
 	}

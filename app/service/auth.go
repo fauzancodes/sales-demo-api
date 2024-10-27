@@ -3,6 +3,8 @@ package service
 import (
 	"errors"
 	"fmt"
+	"log"
+	"net/http"
 	"strings"
 	"time"
 
@@ -23,6 +25,7 @@ func SendEmailVerification(user models.SDAUser, successUrl, failedUrl, appUrl st
 	claims["failedUrl"] = failedUrl
 	token, err := webToken.GenerateToken(&claims)
 	if err != nil {
+		log.Println(err.Error())
 		return
 	}
 
@@ -50,6 +53,7 @@ func VerifyUser(token string) (user models.SDAUser, successUrl, failedUrl string
 
 	claims, err := webToken.DecodeToken(token)
 	if err != nil {
+		log.Println(err.Error())
 		return
 	}
 
@@ -57,14 +61,16 @@ func VerifyUser(token string) (user models.SDAUser, successUrl, failedUrl string
 	failedUrl = claims["failedUrl"].(string)
 
 	userID := claims["id"].(string)
-	user, err = GetUserByID(userID, []string{})
+	user, _, err = GetUserByID(userID, []string{})
 	if err != nil {
+		log.Println(err.Error())
 		return
 	}
 
 	user.IsVerified = true
 	user, err = repository.UpdateUser(user)
 	if err != nil {
+		log.Println("Failed to update user: " + err.Error())
 		return
 	}
 
@@ -78,6 +84,7 @@ func SendResetPasswordRequest(user models.SDAUser, redirectUrl, appUrl string) {
 	claims["redirectUrl"] = redirectUrl
 	token, err := webToken.GenerateToken(&claims)
 	if err != nil {
+		log.Println(err.Error())
 		return
 	}
 
@@ -102,14 +109,15 @@ func SendResetPasswordRequest(user models.SDAUser, redirectUrl, appUrl string) {
 	smtp.SendEmail("reset-password", "", user.Email, "Reset Your Password", "", fill)
 }
 
-func ResetPassword(request dto.ResetPasswordRequest) (user models.SDAUser, err error) {
+func ResetPassword(request dto.ResetPasswordRequest) (user models.SDAUser, statusCode int, err error) {
 	claims, err := webToken.DecodeToken(request.Token)
 	if err != nil {
+		statusCode = http.StatusInternalServerError
 		return
 	}
 
 	userID := claims["id"].(string)
-	user, err = GetUserByID(userID, []string{})
+	user, statusCode, err = GetUserByID(userID, []string{})
 	if err != nil {
 		return
 	}
@@ -117,6 +125,8 @@ func ResetPassword(request dto.ResetPasswordRequest) (user models.SDAUser, err e
 	user.Password = bcrypt.HashPassword(request.NewPassword)
 	user, err = repository.UpdateUser(user)
 	if err != nil {
+		log.Println("Failed to update user: ", err.Error())
+		statusCode = http.StatusInternalServerError
 		return
 	}
 

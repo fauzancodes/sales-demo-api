@@ -39,12 +39,12 @@ func CreateCustomer(c echo.Context) error {
 		)
 	}
 
-	result, err := service.CreateCustomer(userID, request)
+	result, statusCode, err := service.CreateCustomer(userID, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to create",
 				Error:   err.Error(),
 			},
@@ -52,9 +52,9 @@ func CreateCustomer(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to create",
 			Data:    result,
 		},
@@ -70,31 +70,31 @@ func GetCustomers(c echo.Context) error {
 	preloadFields := utils.GetBuildPreloadFields(c)
 
 	param := utils.PopulatePaging(c, "status")
-	data, _, err := service.GetCustomers(email, phone, userID, param, preloadFields)
+	data, _, statusCode, err := service.GetCustomers(email, phone, userID, param, preloadFields)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
 		)
 	}
 
-	return c.JSON(http.StatusOK, data)
+	return c.JSON(statusCode, data)
 }
 
 func GetCustomerByID(c echo.Context) error {
 	id := c.Param("id")
 	preloadFields := utils.GetBuildPreloadFields(c)
 
-	data, err := service.GetCustomerByID(id, preloadFields)
+	data, statusCode, err := service.GetCustomerByID(id, preloadFields)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
@@ -102,9 +102,9 @@ func GetCustomerByID(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to get data",
 			Data:    data,
 		},
@@ -126,12 +126,12 @@ func UpdateCustomer(c echo.Context) error {
 		)
 	}
 
-	data, err := service.UpdateCustomer(id, request)
+	data, statusCode, err := service.UpdateCustomer(id, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to update data",
 				Error:   err.Error(),
 			},
@@ -139,9 +139,9 @@ func UpdateCustomer(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to update data",
 			Data:    data,
 		},
@@ -151,12 +151,12 @@ func UpdateCustomer(c echo.Context) error {
 func DeleteCustomer(c echo.Context) error {
 	id := c.Param("id")
 
-	err := service.DeleteCustomer(id)
+	statusCode, err := service.DeleteCustomer(id)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to delete data",
 				Error:   err.Error(),
 			},
@@ -164,9 +164,9 @@ func DeleteCustomer(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to delete data",
 		},
 	)
@@ -201,12 +201,12 @@ func ImportCustomer(c echo.Context) error {
 		)
 	}
 
-	response, err := service.ImportCustomer(file, userID)
+	response, statusCode, err := service.ImportCustomer(file, userID)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to import data",
 				Error:   err.Error(),
 			},
@@ -214,9 +214,9 @@ func ImportCustomer(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to import data",
 			Data:    response,
 		},

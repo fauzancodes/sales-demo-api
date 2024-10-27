@@ -38,12 +38,12 @@ func CreateProductStock(c echo.Context) error {
 		)
 	}
 
-	result, err := service.CreateProductStock(userID, request)
+	result, statusCode, err := service.CreateProductStock(userID, request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to add stock",
 				Error:   err.Error(),
 			},
@@ -51,9 +51,9 @@ func CreateProductStock(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to add stock",
 			Data:    result,
 		},
@@ -68,17 +68,17 @@ func GetProductStocks(c echo.Context) error {
 	preloadFields := utils.GetBuildPreloadFields(c)
 
 	param := utils.PopulatePaging(c, "status")
-	data, _, err := service.GetProductStocks(productID, userID, param, preloadFields)
+	data, _, statusCode, err := service.GetProductStocks(productID, userID, param, preloadFields)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
 		)
 	}
 
-	return c.JSON(http.StatusOK, data)
+	return c.JSON(statusCode, data)
 }

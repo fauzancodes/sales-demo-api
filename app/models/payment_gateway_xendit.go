@@ -26,7 +26,7 @@ type SDAXenditSalePayment struct {
 	QRCodeUrl       string                  `json:"qr_code_url" gorm:"type:varchar(255);column:qr_code_url"`
 	RedirectUrl     string                  `json:"redirect_url" gorm:"type:varchar(255);column:redirect_url"`
 	UserID          uuid.UUID               `json:"user_id" gorm:"type:uuid;column:user_id"`
-	PaymentMethodID uuid.UUID               `json:"payment_method_id" gorm:"type:uuid;column:payment_method_id"`
+	PaymentMethodID *uuid.UUID              `json:"payment_method_id" gorm:"type:uuid;column:payment_method_id"`
 	PaymentMethod   *SDAXenditPaymentMethod `json:"payment_method,omitempty" gorm:"foreignKey:PaymentMethodID"`
 }
 

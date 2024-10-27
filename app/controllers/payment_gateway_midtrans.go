@@ -15,19 +15,19 @@ func GetMidtransPaymentMethods(c echo.Context) error {
 	code := c.QueryParam("code")
 
 	param := utils.PopulatePaging(c, "")
-	data, _, err := service.GetMidtransPaymentMethods(code, param)
+	data, _, statusCode, err := service.GetMidtransPaymentMethods(code, param)
 	if err != nil {
 		return c.JSON(
-			http.StatusNotFound,
+			statusCode,
 			dto.Response{
-				Status:  404,
+				Status:  statusCode,
 				Message: "Failed to get data",
 				Error:   err.Error(),
 			},
 		)
 	}
 
-	return c.JSON(http.StatusOK, data)
+	return c.JSON(statusCode, data)
 }
 
 func MidtransChargeCore(c echo.Context) error {
@@ -57,12 +57,12 @@ func MidtransChargeCore(c echo.Context) error {
 		)
 	}
 
-	response, err := service.MidtransChargeCore(userID, utils.GetBaseUrl(c), request)
+	response, statusCode, err := service.MidtransChargeCore(userID, utils.GetBaseUrl(c), request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to charge payment to midtrans",
 				Error:   err.Error(),
 			},
@@ -70,9 +70,9 @@ func MidtransChargeCore(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to charge payment to midtrans",
 			Data:    response,
 		},
@@ -106,12 +106,12 @@ func MidtransChargeSnap(c echo.Context) error {
 		)
 	}
 
-	response, err := service.MidtransChargeSnap(userID, utils.GetBaseUrl(c), request)
+	response, statusCode, err := service.MidtransChargeSnap(userID, utils.GetBaseUrl(c), request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to charge payment to midtrans",
 				Error:   err.Error(),
 			},
@@ -119,9 +119,9 @@ func MidtransChargeSnap(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to charge payment to midtrans",
 			Data:    response,
 		},
@@ -141,12 +141,12 @@ func MidtransNotification(c echo.Context) error {
 		)
 	}
 
-	err := service.MidtransHandleNotification(request)
+	statusCode, err := service.MidtransHandleNotification(request)
 	if err != nil {
 		return c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			dto.Response{
-				Status:  500,
+				Status:  statusCode,
 				Message: "Failed to handle midtrans notification",
 				Error:   err.Error(),
 			},
@@ -154,9 +154,9 @@ func MidtransNotification(c echo.Context) error {
 	}
 
 	return c.JSON(
-		http.StatusOK,
+		statusCode,
 		dto.Response{
-			Status:  200,
+			Status:  statusCode,
 			Message: "Success to process midtrans notification",
 			Data:    c.Request().Body,
 		},
