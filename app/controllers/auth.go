@@ -40,12 +40,12 @@ func Register(c echo.Context) error {
 	}
 
 	param := utils.PopulatePaging(c, "")
-	_, check, statusCode, _ := service.GetUsers("", "", request.Email, param, []string{})
+	_, check, _, _ := service.GetUsers("", "", request.Email, param, []string{})
 	if len(check) > 0 {
 		return c.JSON(
-			statusCode,
+			http.StatusBadRequest,
 			dto.Response{
-				Status:  statusCode,
+				Status:  http.StatusBadRequest,
 				Message: "Email has been registered",
 				Error:   "",
 			},
