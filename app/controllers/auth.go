@@ -434,7 +434,7 @@ func ResetPassword(c echo.Context) error {
 			statusCode,
 			dto.Response{
 				Status:  statusCode,
-				Message: "Failed to verify user",
+				Message: "Failed to reset password",
 				Error:   err.Error(),
 			},
 		)
