@@ -154,8 +154,8 @@ func GetProducts(name, userID, categoryID string, param utils.PagingRequest, pre
 	}
 
 	var results []dto.ProductResponse
-	var result dto.ProductResponse
 	for _, item := range data {
+		var result dto.ProductResponse
 		result, err = BuildProductResponse(item)
 		if err != nil {
 			statusCode = http.StatusInternalServerError
