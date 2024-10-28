@@ -21,7 +21,7 @@ func CreateProductCategory(c echo.Context) error {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
 			dto.Response{
-				Status:  422,
+				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request body",
 				Error:   err.Error(),
 			},
@@ -32,7 +32,7 @@ func CreateProductCategory(c echo.Context) error {
 		return c.JSON(
 			http.StatusBadRequest,
 			dto.Response{
-				Status:  400,
+				Status:  http.StatusBadRequest,
 				Message: "Invalid request value",
 				Error:   err.Error(),
 			},
@@ -118,7 +118,7 @@ func UpdateProductCategory(c echo.Context) error {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
 			dto.Response{
-				Status:  422,
+				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request body",
 				Error:   err.Error(),
 			},

@@ -21,7 +21,7 @@ func Register(c echo.Context) error {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
 			dto.Response{
-				Status:  422,
+				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request body",
 				Error:   err.Error(),
 			},
@@ -32,7 +32,7 @@ func Register(c echo.Context) error {
 		return c.JSON(
 			http.StatusBadRequest,
 			dto.Response{
-				Status:  400,
+				Status:  http.StatusBadRequest,
 				Message: "Invalid request value",
 				Error:   err.Error(),
 			},
@@ -85,7 +85,7 @@ func Login(c echo.Context) error {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
 			dto.Response{
-				Status:  422,
+				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request body",
 				Error:   err.Error(),
 			},
@@ -96,7 +96,7 @@ func Login(c echo.Context) error {
 		return c.JSON(
 			http.StatusBadRequest,
 			dto.Response{
-				Status:  400,
+				Status:  http.StatusBadRequest,
 				Message: "Invalid request value",
 				Error:   err.Error(),
 			},
@@ -120,7 +120,7 @@ func Login(c echo.Context) error {
 		return c.JSON(
 			http.StatusBadRequest,
 			dto.Response{
-				Status:  400,
+				Status:  http.StatusBadRequest,
 				Message: "Failed to verify password",
 				Error:   err.Error(),
 			},
@@ -195,7 +195,7 @@ func UpdateProfile(c echo.Context) error {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
 			dto.Response{
-				Status:  422,
+				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request body",
 				Error:   err.Error(),
 			},
@@ -289,7 +289,7 @@ func ResendEmailVerification(c echo.Context) error {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
 			dto.Response{
-				Status:  422,
+				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request body",
 				Error:   err.Error(),
 			},
@@ -300,7 +300,7 @@ func ResendEmailVerification(c echo.Context) error {
 		return c.JSON(
 			http.StatusBadRequest,
 			dto.Response{
-				Status:  400,
+				Status:  http.StatusBadRequest,
 				Message: "Invalid request value",
 				Error:   err.Error(),
 			},
@@ -325,7 +325,7 @@ func ResendEmailVerification(c echo.Context) error {
 		return c.JSON(
 			http.StatusBadRequest,
 			dto.Response{
-				Status:  400,
+				Status:  http.StatusBadRequest,
 				Message: "User has been verified",
 			},
 		)
@@ -348,7 +348,7 @@ func SendForgotPasswordRequest(c echo.Context) error {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
 			dto.Response{
-				Status:  422,
+				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request body",
 				Error:   err.Error(),
 			},
@@ -359,7 +359,7 @@ func SendForgotPasswordRequest(c echo.Context) error {
 		return c.JSON(
 			http.StatusBadRequest,
 			dto.Response{
-				Status:  400,
+				Status:  http.StatusBadRequest,
 				Message: "Invalid request value",
 				Error:   err.Error(),
 			},
@@ -410,7 +410,7 @@ func ResetPassword(c echo.Context) error {
 		return c.JSON(
 			http.StatusUnprocessableEntity,
 			dto.Response{
-				Status:  422,
+				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request body",
 				Error:   err.Error(),
 			},
@@ -421,7 +421,7 @@ func ResetPassword(c echo.Context) error {
 		return c.JSON(
 			http.StatusBadRequest,
 			dto.Response{
-				Status:  400,
+				Status:  http.StatusBadRequest,
 				Message: "Invalid request value",
 				Error:   err.Error(),
 			},
