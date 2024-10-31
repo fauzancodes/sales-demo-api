@@ -7,7 +7,7 @@ import (
 )
 
 func AuthRoute(app *echo.Echo) {
-	auth := app.Group("/auth", middlewares.StripHTMLMiddleware)
+	auth := app.Group("/auth", middlewares.CheckAPIKey, middlewares.StripHTMLMiddleware)
 	{
 		auth.POST("/register", controllers.Register)
 		auth.POST("/login", controllers.Login)

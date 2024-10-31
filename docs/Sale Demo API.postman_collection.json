@@ -42,7 +42,13 @@
 					"name": "Login",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "Uh/UB%SKft3CU3e0zJAvBhp3cyo/un2021/zLQf1BKGZZuQ6w5P9VAM6Sj0CcQCm",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\",\r\n    \"password\":\"Password@123\"\r\n}",

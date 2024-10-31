@@ -7,7 +7,7 @@ import (
 )
 
 func CustomerRoute(app *echo.Echo) {
-	customer := app.Group("/customer", middlewares.Auth, middlewares.StripHTMLMiddleware)
+	customer := app.Group("/customer", middlewares.CheckAPIKey, middlewares.StripHTMLMiddleware, middlewares.Auth)
 	{
 		customer.POST("", controllers.CreateCustomer)
 		customer.GET("", controllers.GetCustomers)

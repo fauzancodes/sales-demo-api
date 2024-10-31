@@ -13,3 +13,15 @@ type CustomGormModel struct {
 	UpdatedAt time.Time       `json:"updated_at" gorm:"default:CURRENT_TIMESTAMP"`
 	DeletedAt *gorm.DeletedAt `gorm:"index" json:"-"`
 }
+
+type SDAUsedApiKey struct {
+	gorm.Model
+	SecretKey    string `json:"-" gorm:"type: text"`
+	Base64Key    string `json:"-" gorm:"type: text"`
+	ReceivedHMAC string `json:"-" gorm:"type: text"`
+	ExpectedHMAC string `json:"-" gorm:"type: text"`
+}
+
+func (SDAUsedApiKey) TableName() string {
+	return "sda_used_api_keys"
+}

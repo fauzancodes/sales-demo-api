@@ -7,7 +7,7 @@ import (
 )
 
 func ProductRoute(app *echo.Echo) {
-	product := app.Group("/product", middlewares.Auth, middlewares.StripHTMLMiddleware)
+	product := app.Group("/product", middlewares.CheckAPIKey, middlewares.StripHTMLMiddleware, middlewares.Auth)
 	{
 		category := product.Group("/category")
 		{

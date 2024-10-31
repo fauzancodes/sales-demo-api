@@ -7,7 +7,7 @@ import (
 )
 
 func SaleRoute(app *echo.Echo) {
-	sale := app.Group("/sale", middlewares.Auth, middlewares.StripHTMLMiddleware)
+	sale := app.Group("/sale", middlewares.CheckAPIKey, middlewares.StripHTMLMiddleware, middlewares.Auth)
 	{
 		sale.POST("", controllers.CreateSale)
 		sale.GET("", controllers.GetSales)

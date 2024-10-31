@@ -39,6 +39,9 @@ type Config struct {
 	XenditSecretKey             string
 	XenditPublicKey             string
 	XenditWebhookToken          string
+	EnableAPIKey                bool
+	SpecialApiKey               string
+	HMACKey                     string
 }
 
 func LoadConfig() (config *Config) {
@@ -75,6 +78,9 @@ func LoadConfig() (config *Config) {
 	xenditSecretKey := os.Getenv("XENDIT_SECRET_KEY")
 	xenditPublicKey := os.Getenv("XENDIT_PUBLIC_KEY")
 	xenditWebhookToken := os.Getenv("XENDIT_WEBHOOK_TOKEN")
+	enableApiKey, _ := strconv.ParseBool(os.Getenv("ENABLE_API_KEY"))
+	specialApiKey := os.Getenv("SPECIAL_API_KEY")
+	hmacKey := os.Getenv("HMAC_KEY")
 
 	return &Config{
 		SecretKey:                   secretKey,
@@ -110,5 +116,8 @@ func LoadConfig() (config *Config) {
 		XenditPublicKey:             xenditPublicKey,
 		XenditWebhookToken:          xenditWebhookToken,
 		XenditBusinessID:            xenditBusinessID,
+		EnableAPIKey:                enableApiKey,
+		SpecialApiKey:               specialApiKey,
+		HMACKey:                     hmacKey,
 	}
 }

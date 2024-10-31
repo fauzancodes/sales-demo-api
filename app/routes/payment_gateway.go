@@ -11,24 +11,24 @@ func PaymentGatewayRoute(app *echo.Echo) {
 	{
 		midtrans := paymentGateway.Group("/midtrans")
 		{
-			midtrans.GET("/available-payment-method", controllers.GetMidtransPaymentMethods, middlewares.Auth)
-			midtrans.POST("/charge/core", controllers.MidtransChargeCore, middlewares.Auth)
-			midtrans.POST("/charge/snap", controllers.MidtransChargeSnap, middlewares.Auth)
+			midtrans.GET("/available-payment-method", controllers.GetMidtransPaymentMethods, middlewares.CheckAPIKey, middlewares.Auth)
+			midtrans.POST("/charge/core", controllers.MidtransChargeCore, middlewares.CheckAPIKey, middlewares.Auth)
+			midtrans.POST("/charge/snap", controllers.MidtransChargeSnap, middlewares.CheckAPIKey, middlewares.Auth)
 			midtrans.POST("/notification", controllers.MidtransNotification)
 		}
 
 		ipaymu := paymentGateway.Group("/ipaymu")
 		{
-			ipaymu.GET("/available-payment-method", controllers.GetIPaymuPaymentMethods, middlewares.Auth)
-			ipaymu.POST("/charge", controllers.IPaymuCharge, middlewares.Auth)
+			ipaymu.GET("/available-payment-method", controllers.GetIPaymuPaymentMethods, middlewares.CheckAPIKey, middlewares.Auth)
+			ipaymu.POST("/charge", controllers.IPaymuCharge, middlewares.CheckAPIKey, middlewares.Auth)
 			ipaymu.POST("/notification", controllers.IPaymuNotification)
 		}
 
 		xendit := paymentGateway.Group("/xendit")
 		{
-			xendit.GET("/available-payment-method", controllers.GetXenditPaymentMethods, middlewares.Auth)
-			xendit.POST("/charge/payment", controllers.XenditChargePayment, middlewares.Auth)
-			xendit.POST("/charge/invoice", controllers.XenditChargeInvoice, middlewares.Auth)
+			xendit.GET("/available-payment-method", controllers.GetXenditPaymentMethods, middlewares.CheckAPIKey, middlewares.Auth)
+			xendit.POST("/charge/payment", controllers.XenditChargePayment, middlewares.CheckAPIKey, middlewares.Auth)
+			xendit.POST("/charge/invoice", controllers.XenditChargeInvoice, middlewares.CheckAPIKey, middlewares.Auth)
 			xendit.POST("/notification", controllers.XenditNotification)
 		}
 	}
