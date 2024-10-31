@@ -1,64 +1,64 @@
 services:
   index:
     build:
-      context: .
+      context: ../../
       dockerfile: build/docker/index.dockerfile
     image: sales-demo-api-index:v1
     container_name: sales-demo-api-index
     ports:
       - "8000:8000"
     env_file:
-      - .env
+      - ../../.env
   auth:
     build:
-      context: .
+      context: ../../
       dockerfile: build/docker/auth.dockerfile
     image: sales-demo-api-auth:v1
     container_name: sales-demo-api-auth
     ports:
       - "8001:8001"
     env_file:
-      - .env
+      - ../../.env
   product:
     build:
-      context: .
+      context: ../../
       dockerfile: build/docker/product.dockerfile
     image: sales-demo-api-product:v1
     container_name: sales-demo-api-product
     ports:
       - "8002:8002"
     env_file:
-      - .env
+      - ../../.env
   customer:
     build:
-      context: .
+      context: ../../
       dockerfile: build/docker/customer.dockerfile
     image: sales-demo-api-customer:v1
     container_name: sales-demo-api-customer
     ports:
       - "8003:8003"
     env_file:
-      - .env
+      - ../../.env
   sale:
     build:
-      context: .
+      context: ../../
       dockerfile: build/docker/sale.dockerfile
     image: sales-demo-api-sale:v1
     container_name: sales-demo-api-sale
     ports:
       - "8004:8004"
     env_file:
-      - .env
+      - ../../.env
   payment_gateway:
     build:
-      context: .
+      context: ../../
       dockerfile: build/docker/payment_gateway.dockerfile
     image: sales-demo-api-payment-gateway:v1
     container_name: sales-demo-api-payment-gateway
     ports:
       - "8005:8005"
     env_file:
-      - .env
+      - ../../.env
 
-#docker-compose -f microservice-compose.yaml up -d --build
-#docker-compose -f microservice-compose.yaml down --rmi all
+#docker-compose -f build/docker/microservice-compose.yaml up -d --build
+#docker-compose -f build/docker/microservice-compose.yaml down --rmi all

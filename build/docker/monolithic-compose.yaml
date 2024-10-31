@@ -1,0 +1,14 @@
+services:
+  monolithic:
+    build:
+      context: ../../
+      dockerfile: build/docker/monolithic.dockerfile
+    image: sales-demo-api:v1
+    container_name: sales-demo-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../../.env
+
+#docker-compose -f build/docker/monolithic-compose.yaml up -d --build
+#docker-compose -f build/docker/monolithic-compose.yaml down --rmi all

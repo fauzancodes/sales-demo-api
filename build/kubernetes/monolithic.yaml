@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sales-demo-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sales-demo-api
+  template:
+    metadata:
+      labels:
+        app: sales-demo-api
+    spec:
+      containers:
+        - name: sales-demo-api
+          image: <dockerhub-username>/sales-demo-api:v1
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: sales-demo-api-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sales-demo-api-service
+spec:
+  selector:
+    app: sales-demo-api
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: LoadBalancer
+
+#docker build -t sales-demo-api:v1 -f build/docker/monolithic.dockerfile .
+#docker tag sales-demo-api:v1 <dockerhub-username>/sales-demo-api:v1
+#docker push <dockerhub-username>/sales-demo-api:v1
+#kubectl create configmap sales-demo-api-config --from-env-file=.env;kubectl apply -f build/kubernetes/monolithic.yaml
+#kubectl delete configmap sales-demo-api-config;kubectl delete -f build/kubernetes/monolithic.yaml
