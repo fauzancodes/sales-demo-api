@@ -15,7 +15,7 @@ func main() {
 	config.Database()
 	routes.ProductRoute(app)
 
-	port := config.LoadConfig().CustomerPort
+	port := config.LoadConfig().ProductPort
 
 	log.Printf("Server: " + config.LoadConfig().BaseUrl + ":" + port)
 	app.Logger.Fatal(app.Start(":" + port))

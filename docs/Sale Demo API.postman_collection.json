@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "d211a606-1b1d-4793-ba30-180ee9f3412c",
 		"name": "Sale Demo API",
+		"description": "# **Features**:\n\n- **Secure Authentication:** Effortlessly manage user access with robust login and registration endpoints, powered by [JWT](https://jwt.io/) authentication for a seamless user experience.\n    \n- **Password Protection:** Safeguard sensitive information with industry-standard [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) hashing, ensuring user passwords are encrypted and secure.\n    \n- **Comprehensive User Management:** Empower users with endpoints for email verification, password recovery, accessing personal data, updating profiles, and deleting accounts with ease.\n    \n- **Email Verification Made Easy:** Automatically send verification emails to users and seamlessly check their verification status to enhance security and trust.\n    \n- **Password Recovery Simplified:** Streamline the password reset process by sending users a secure verification token via email, enabling them to create new passwords effortlessly.\n    \n- **Product Management at Your Fingertips:** Enjoy complete control with CRUD endpoints for managing product categories, individual products, stock levels, and image uploads.\n    \n- **Stock Monitoring with History:** Keep track of inventory changes with a comprehensive stock change history, ensuring accurate product management.\n    \n- **Seamless Product Image Uploads:** Effortlessly upload product images to [Cloudinary](https://cloudinary.com/), ensuring your images are stored securely in the cloud while optimizing load times for a smooth and lightweight user experience.\n    \n- **Customer Management:** Easily manage customer information with dedicated CRUD endpoints, allowing you to maintain detailed records.\n    \n- **Sales Management Made Simple:** Handle sales and detailed transactions with ease through dedicated CRUD endpoints for streamlined operations.\n    \n- **Sales Validation Built-In:** Ensure accurate calculations with validation for subtotals, discounts, taxes, and totals, so you can focus on what matters most.\n    \n- **Real-Time Stock Validation:** Stay informed with product stock validation and automatic stock reduction during sales, preventing overselling and enhancing customer satisfaction.\n    \n- **Invoicing Made Effortless:** Automatically send invoices to customers via email, complete with downloadable links for easy access.\n    \n- **Effortless Data Import:** Seamlessly import product categories, products, and customer data using Excel or CSV files, simplifying data entry and migration for a smoother workflow.\n    \n- **Trusted Payment Gateway Integration:** Leverage [Midtrans](https://midtrans.com/), [IPaymu](https://ipaymu.com/), and [Xendit](https://www.xendit.co/), Indonesia’s most complete payment gateways, to provide a secure and reliable payment solution, making transactions seamless and hassle-free for your customers.\n    \n- **Dynamic Data Retrieval:** All GET endpoints feature dynamic pagination, filtering, searching, and sorting options, making data retrieval intuitive and efficient.\n    \n- **Robust Input Validation:** Ensure data integrity with comprehensive validation on all POST endpoints, preventing errors and enhancing user experience.\n    \n- **SQL Injection Prevention:** All endpoints are protected with query parameter sanitization, guarding against SQL injection attacks for enhanced security.\n    \n- **Automatic Database Migration:** Enjoy worry-free database management with automatic migration, ensuring your table structures and relationships stay perfectly in sync.\n    \n- **Modular Design for Flexibility:** Crafted with modularity in mind, our functions can be easily copied and adapted for use in your own [Golang](https://go.dev/) projects, or even translated into other programming languages with ease.\n    \n- **Comprehensive Documentation:** Navigate through the API with ease using clear, organized [Postman](https://www.postman.com/) documentation designed to simplify testing and integration, ensuring a smooth development experience for all users.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25300027",
 		"_collection_link": "https://fauzancodes.postman.co/workspace/Team-Workspace~34d91d2f-9cc2-4352-8a90-0b3e69f8e68e/collection/25300027-d211a606-1b1d-4793-ba30-180ee9f3412c?action=share&source=collection_link&creator=25300027"
@@ -17,7 +18,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"greybyte0222@gmail.com\",\r\n    \"password\":\"Password@123\",\r\n    \"success_verification_url\": \"https://fauzancodes.id\",\r\n    \"failed_verification_url\": \"https://sales-demo-api.vercel.app\"\r\n}",
+							"raw": "{\r\n    \"email\":\"user@mail.com\",\r\n    \"password\":\"Password@123\",\r\n    \"success_verification_url\": \"https://www.google.com/\",\r\n    \"failed_verification_url\": \"https://www.google.com/\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -821,7 +822,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA0NTYzMTMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.D0pk9IWDuf_uvRM_zQwXEYfo1zKJ9UPra6hQ2-9wWuI",
 									"type": "string"
 								}
 							]
@@ -1134,7 +1135,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NjIwMDQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Tz_bGP9unoh0C500rRjXdLvJsArI3ZecK2Wm79FmeyY",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAzOTE4ODgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.gvSotPHr3_a0ifyS7zOy8R4vYRwiIr1TlOu7fNKVjN4",
 									"type": "string"
 								}
 							]
@@ -1972,7 +1973,7 @@
 							"response": []
 						},
 						{
-							"name": "Charge",
+							"name": "Charge Via Payment API",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -1996,14 +1997,61 @@
 									}
 								},
 								"url": {
-									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/xendit/charge",
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/xendit/charge/payment",
 									"host": [
 										"{{PAYMENT_GATEWAY_BASE_URL}}"
 									],
 									"path": [
 										"payment-gateway",
 										"xendit",
-										"charge"
+										"charge",
+										"payment"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge Via Invoice API",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk5NTQ0NzQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CLp2vB7zzO8bBawWuxvPwyyIks2_qX3y4vY0OO_GK-Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV532116963469\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PAYMENT_GATEWAY_BASE_URL}}/payment-gateway/xendit/charge/invoice",
+									"host": [
+										"{{PAYMENT_GATEWAY_BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"xendit",
+										"charge",
+										"invoice"
 									],
 									"query": [
 										{
