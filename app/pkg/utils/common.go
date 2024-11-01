@@ -67,12 +67,12 @@ func ValidateImportFile(file *multipart.FileHeader, numberOfColumns int) (rows [
 	defer src.Close()
 
 	extension := filepath.Ext(file.Filename)
-	if extension != ".xls" && extension != ".xlsx" && extension != ".csv" {
-		err = errors.New("the file format only accepts .xls, .xlsx, .csv")
+	if extension != ".xlsx" && extension != ".csv" {
+		err = errors.New("the file format only accepts .xlsx and .csv")
 		return
 	}
 
-	if extension == ".xls" || extension == ".xlsx" {
+	if extension == ".xlsx" {
 		var f *excelize.File
 		f, err = excelize.OpenReader(src)
 		if err != nil {

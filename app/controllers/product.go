@@ -260,3 +260,42 @@ func ImportProduct(c echo.Context) error {
 		},
 	)
 }
+
+func ExportProduct(c echo.Context) error {
+	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
+	log.Printf("Current user ID: %v", userID)
+
+	fileExtension := c.QueryParam("file_extension")
+	if fileExtension != "xlsx" && fileExtension != "csv" {
+		return c.JSON(
+			http.StatusBadRequest,
+			dto.Response{
+				Status:  http.StatusBadRequest,
+				Message: "the file format only accepts .xlsx and .csv",
+			},
+		)
+	}
+
+	downloadUrl, statusCode, err := service.ExportProduct(userID, fileExtension)
+	if err != nil {
+		return c.JSON(
+			statusCode,
+			dto.Response{
+				Status:  statusCode,
+				Message: "Failed to export customer",
+				Error:   err.Error(),
+			},
+		)
+	}
+
+	url := fmt.Sprintf("%v/%v", utils.GetBaseUrl(c), downloadUrl)
+
+	return c.JSON(
+		http.StatusOK,
+		dto.Response{
+			Status:  200,
+			Message: "Download Exported Customers Url",
+			Data:    url,
+		},
+	)
+}

@@ -1,15 +1,19 @@
 package service
 
 import (
+	"encoding/csv"
 	"errors"
+	"fmt"
 	"mime/multipart"
 	"net/http"
+	"os"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
+	"github.com/xuri/excelize/v2"
 	"gorm.io/gorm"
 )
 
@@ -82,7 +86,7 @@ func GetCustomers(email, phone, userID string, param utils.PagingRequest, preloa
 	if phone != "" {
 		filter += " AND phone = '" + phone + "'"
 	}
-	if param.Custom.(string) != "" {
+	if param.Custom != "" {
 		filter += " AND status = " + param.Custom.(string)
 	}
 	if param.Search != "" {
@@ -245,6 +249,122 @@ func ImportCustomer(file *multipart.FileHeader, userID string) (responses []mode
 		}
 
 		responses = append(responses, response)
+	}
+
+	return
+}
+
+func ExportCustomer(userID, fileExtentison string) (filename string, statusCode int, err error) {
+	filename = fmt.Sprintf("assets/download/customers_%v.%v", userID, fileExtentison)
+
+	customers, _, _, err := repository.GetCustomers(dto.FindParameter{
+		BaseFilter: "deleted_at IS NULL AND user_id = '" + userID + "'",
+	}, []string{})
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	if fileExtentison == "xlsx" {
+		f := excelize.NewFile()
+		sheetName := "Customers"
+		f.SetSheetName("Sheet1", sheetName)
+
+		f.SetCellValue(sheetName, "A1", "First Name")
+		f.SetCellValue(sheetName, "B1", "Last Name")
+		f.SetCellValue(sheetName, "C1", "Email")
+		f.SetCellValue(sheetName, "D1", "Phone")
+		f.SetCellValue(sheetName, "E1", "Code")
+
+		for i, item := range customers {
+			row := i + 2
+			f.SetCellValue(sheetName, fmt.Sprintf("A%d", row), "-")
+			f.SetCellValue(sheetName, fmt.Sprintf("B%d", row), "-")
+			f.SetCellValue(sheetName, fmt.Sprintf("C%d", row), "-")
+			f.SetCellValue(sheetName, fmt.Sprintf("D%d", row), "-")
+			f.SetCellValue(sheetName, fmt.Sprintf("E%d", row), "-")
+
+			if item.FirstName != "" {
+				f.SetCellValue(sheetName, fmt.Sprintf("A%d", row), item.FirstName)
+			}
+			if item.LastName != "" {
+				f.SetCellValue(sheetName, fmt.Sprintf("B%d", row), item.LastName)
+			}
+			if item.Email != "" {
+				f.SetCellValue(sheetName, fmt.Sprintf("C%d", row), item.Email)
+			}
+			if item.Phone != "" {
+				f.SetCellValue(sheetName, fmt.Sprintf("D%d", row), item.Phone)
+			}
+			if item.Code != "" {
+				f.SetCellValue(sheetName, fmt.Sprintf("E%d", row), item.Code)
+			}
+		}
+
+		err = f.SaveAs(filename)
+		if err != nil {
+			statusCode = http.StatusInternalServerError
+			err = errors.New("failed to save excel file: " + err.Error())
+		}
+	}
+
+	if fileExtentison == "csv" {
+		var file *os.File
+		file, err = os.Create(filename)
+		if err != nil {
+			statusCode = http.StatusInternalServerError
+			err = errors.New("failed to create csv file: " + err.Error())
+			return
+		}
+		defer file.Close()
+
+		writer := csv.NewWriter(file)
+		defer writer.Flush()
+
+		header := []string{"First Name", "Last Name", "Email", "Phone", "Code"}
+		err = writer.Write(header)
+		if err != nil {
+			statusCode = http.StatusInternalServerError
+			err = errors.New("failed to write header into csv file: " + err.Error())
+			return
+		}
+
+		for _, item := range customers {
+			firstName := "-"
+			lastName := "-"
+			email := "-"
+			phone := "-"
+			code := "-"
+
+			if item.FirstName != "" {
+				firstName = item.FirstName
+			}
+			if item.LastName != "" {
+				lastName = item.LastName
+			}
+			if item.Email != "" {
+				email = item.Email
+			}
+			if item.Phone != "" {
+				phone = item.Phone
+			}
+			if item.Code != "" {
+				code = item.Code
+			}
+
+			row := []string{firstName, lastName, email, phone, code}
+			err = writer.Write(row)
+			if err != nil {
+				statusCode = http.StatusInternalServerError
+				err = errors.New("failed to write data into csv file: " + err.Error())
+				return
+			}
+		}
 	}
 
 	return

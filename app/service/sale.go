@@ -260,7 +260,7 @@ func GetSales(invoiceID, userID, customerID, transactionDateMarginTop, transacti
 			)
 		`
 	}
-	if param.Custom.(string) != "" {
+	if param.Custom != "" {
 		filter += " AND status = " + param.Custom.(string)
 	}
 	if param.Search != "" {

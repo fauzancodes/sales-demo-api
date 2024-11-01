@@ -161,13 +161,19 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1NTg1MDMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0._6vAcKCKNKf1xfzL_6cDe95Q6LQAwYQ7AKSWN6WIm4g",
 									"type": "string"
 								}
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "Uh/UB%SKft3CU3e0zJAvBhp3cyo/un2021/zLQf1BKGZZuQ6w5P9VAM6Sj0CcQCm",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{BASE_URL}}/auth/user",
 							"host": [
@@ -321,6 +327,52 @@
 												"product",
 												"category",
 												"import"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Export",
+							"item": [
+								{
+									"name": "Export Data",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1NTg1MDMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0._6vAcKCKNKf1xfzL_6cDe95Q6LQAwYQ7AKSWN6WIm4g",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "Uh/UB%SKft3CU3e0zJAvBhp3cyo/un2021/zLQf1BKGZZuQ6w5P9VAM6Sj0CcQCm",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{BASE_URL}}/product/category/export?file_extension=xlsx",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"product",
+												"category",
+												"export"
+											],
+											"query": [
+												{
+													"key": "file_extension",
+													"value": "xlsx"
+												}
 											]
 										}
 									},
@@ -746,6 +798,51 @@
 					]
 				},
 				{
+					"name": "Export",
+					"item": [
+						{
+							"name": "Export Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1NTg1MDMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0._6vAcKCKNKf1xfzL_6cDe95Q6LQAwYQ7AKSWN6WIm4g",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "Uh/UB%SKft3CU3e0zJAvBhp3cyo/un2021/zLQf1BKGZZuQ6w5P9VAM6Sj0CcQCm",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/product/export?file_extension=xlsx",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"export"
+									],
+									"query": [
+										{
+											"key": "file_extension",
+											"value": "xlsx"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Create Product",
 					"request": {
 						"auth": {
@@ -1097,6 +1194,51 @@
 					]
 				},
 				{
+					"name": "Export",
+					"item": [
+						{
+							"name": "Export Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1NTg1MDMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0._6vAcKCKNKf1xfzL_6cDe95Q6LQAwYQ7AKSWN6WIm4g",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "Uh/UB%SKft3CU3e0zJAvBhp3cyo/un2021/zLQf1BKGZZuQ6w5P9VAM6Sj0CcQCm",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/customer/export?file_extension=xlsx",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"customer",
+										"export"
+									],
+									"query": [
+										{
+											"key": "file_extension",
+											"value": "xlsx"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Create Customer",
 					"request": {
 						"auth": {
@@ -1140,13 +1282,19 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAzOTE4ODgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.gvSotPHr3_a0ifyS7zOy8R4vYRwiIr1TlOu7fNKVjN4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1NTg1MDMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0._6vAcKCKNKf1xfzL_6cDe95Q6LQAwYQ7AKSWN6WIm4g",
 									"type": "string"
 								}
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "Uh/UB%SKft3CU3e0zJAvBhp3cyo/un2021/zLQf1BKGZZuQ6w5P9VAM6Sj0CcQCm",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{BASE_URL}}/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Sales",
 							"host": [

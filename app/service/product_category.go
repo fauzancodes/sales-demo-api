@@ -1,15 +1,19 @@
 package service
 
 import (
+	"encoding/csv"
 	"errors"
+	"fmt"
 	"mime/multipart"
 	"net/http"
+	"os"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
+	"github.com/xuri/excelize/v2"
 	"gorm.io/gorm"
 )
 
@@ -75,7 +79,7 @@ func GetProductCategories(name, userID string, param utils.PagingRequest, preloa
 	if name != "" {
 		filter += " AND name = '" + name + "'"
 	}
-	if param.Custom.(string) != "" {
+	if param.Custom != "" {
 		filter += " AND status = " + param.Custom.(string)
 	}
 	if param.Search != "" {
@@ -230,6 +234,104 @@ func ImportProductCategory(file *multipart.FileHeader, userID string) (responses
 		}
 
 		responses = append(responses, response)
+	}
+
+	return
+}
+
+func ExportProductCategory(userID, fileExtentison string) (filename string, statusCode int, err error) {
+	filename = fmt.Sprintf("assets/download/product_categories_%v.%v", userID, fileExtentison)
+
+	productCategories, _, _, err := repository.GetProductCategories(dto.FindParameter{
+		BaseFilter: "deleted_at IS NULL AND user_id = '" + userID + "'",
+	}, []string{})
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			statusCode = http.StatusNotFound
+			return
+		}
+
+		statusCode = http.StatusInternalServerError
+		return
+	}
+
+	if fileExtentison == "xlsx" {
+		f := excelize.NewFile()
+		sheetName := "Product Categories"
+		f.SetSheetName("Sheet1", sheetName)
+
+		f.SetCellValue(sheetName, "A1", "Name")
+		f.SetCellValue(sheetName, "B1", "Description")
+		f.SetCellValue(sheetName, "C1", "Code")
+
+		for i, item := range productCategories {
+			row := i + 2
+			f.SetCellValue(sheetName, fmt.Sprintf("A%d", row), "-")
+			f.SetCellValue(sheetName, fmt.Sprintf("B%d", row), "-")
+			f.SetCellValue(sheetName, fmt.Sprintf("C%d", row), "-")
+
+			if item.Name != "" {
+				f.SetCellValue(sheetName, fmt.Sprintf("A%d", row), item.Name)
+			}
+			if item.Description != "" {
+				f.SetCellValue(sheetName, fmt.Sprintf("B%d", row), item.Description)
+			}
+			if item.Code != "" {
+				f.SetCellValue(sheetName, fmt.Sprintf("C%d", row), item.Code)
+			}
+		}
+
+		err = f.SaveAs(filename)
+		if err != nil {
+			statusCode = http.StatusInternalServerError
+			err = errors.New("failed to save excel file: " + err.Error())
+		}
+	}
+
+	if fileExtentison == "csv" {
+		var file *os.File
+		file, err = os.Create(filename)
+		if err != nil {
+			statusCode = http.StatusInternalServerError
+			err = errors.New("failed to create csv file: " + err.Error())
+			return
+		}
+		defer file.Close()
+
+		writer := csv.NewWriter(file)
+		defer writer.Flush()
+
+		header := []string{"Name", "Description", "Code"}
+		err = writer.Write(header)
+		if err != nil {
+			statusCode = http.StatusInternalServerError
+			err = errors.New("failed to write header into csv file: " + err.Error())
+			return
+		}
+
+		for _, item := range productCategories {
+			name := "-"
+			description := "-"
+			code := "-"
+
+			if item.Name != "" {
+				name = item.Name
+			}
+			if item.Description != "" {
+				description = item.Description
+			}
+			if item.Code != "" {
+				code = item.Code
+			}
+
+			row := []string{name, description, code}
+			err = writer.Write(row)
+			if err != nil {
+				statusCode = http.StatusInternalServerError
+				err = errors.New("failed to write data into csv file: " + err.Error())
+				return
+			}
+		}
 	}
 
 	return

@@ -22,6 +22,8 @@ func ProductRoute(app *echo.Echo) {
 				importData.GET("/template", controllers.GetProductCategoryImportTemplate)
 				importData.POST("", controllers.ImportProductCategory)
 			}
+
+			category.GET("/export", controllers.ExportProductCategory)
 		}
 
 		product.POST("/upload-image", controllers.UploadProductPicture)
@@ -42,5 +44,7 @@ func ProductRoute(app *echo.Echo) {
 			stock.POST("", controllers.CreateProductStock)
 			stock.GET("", controllers.GetProductStocks)
 		}
+
+		product.GET("/export", controllers.ExportProduct)
 	}
 }

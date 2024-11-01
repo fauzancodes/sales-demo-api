@@ -20,5 +20,7 @@ func CustomerRoute(app *echo.Echo) {
 			importData.GET("/template", controllers.GetCustomerImportTemplate)
 			importData.POST("", controllers.ImportCustomer)
 		}
+
+		customer.GET("/export", controllers.ExportCustomer)
 	}
 }
