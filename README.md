@@ -20,7 +20,7 @@ Welcome to the Sales Demo API documentation. This API is built using the [Go](ht
 - **SQL Injection Prevention**: All endpoints are protected with query parameter sanitization, guarding against SQL injection attacks for enhanced security.
 - **Secure One-Time API Key**: Each request to the endpoints is protected with a single-use API key generated using [HMAC](https://en.wikipedia.org/wiki/HMAC) and [SHA-256](https://en.wikipedia.org/wiki/SHA-2) methods, ensuring robust security and integrity for every transaction while safeguarding your data from unauthorized access.
 - **Automatic Database Migration**: Enjoy worry-free database management with automatic migration, ensuring your table structures and relationships stay perfectly in sync.
-- **Modular And Flexible Architecture Support**: Crafted with modularity in mind, choose between monolithic or microservice architectures, each designed for scalability and flexibility, easily managed through [Docker](https://www.docker.com/) and [Kubernetes](https://kubernetes.io/) for a streamlined deployment and maintenance experience.
+- **Modular And Flexible Architecture Support**: Crafted with modularity in mind, automating deployment, scaling, and management of containerized applications, easily managed through [Docker](https://www.docker.com/) and [Kubernetes](https://kubernetes.io/) for a streamlined deployment and maintenance experience.
 - **Comprehensive Documentation**: Navigate through the API with ease using clear, organized [Postman](https://www.postman.com/) documentation designed to simplify testing and ensure a smooth development experience for all developers.
 
 ## Downloads and Resources
