@@ -13,7 +13,7 @@ import (
 func main() {
 	app := Init()
 
-	port := config.LoadConfig().IndexPort
+	port := config.LoadConfig().Port
 
 	log.Printf("Server: " + config.LoadConfig().BaseUrl + ":" + port)
 	app.Logger.Fatal(app.Start(":" + port))
@@ -30,12 +30,7 @@ func Init() *echo.Echo {
 
 	config.Database()
 
-	routes.IndexRoute(app)
-	routes.AuthRoute(app)
-	routes.ProductRoute(app)
-	routes.CustomerRoute(app)
-	routes.SaleRoute(app)
-	routes.PaymentGatewayRoute(app)
+	routes.Route(app)
 
 	return app
 }

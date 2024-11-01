@@ -6,9 +6,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func IndexRoute(app *echo.Echo) {
+func Route(app *echo.Echo) {
 	app.Static("/assets", "assets")
 	app.Static("/docs", "docs")
 
 	app.GET("/", controllers.Index, middlewares.StripHTMLMiddleware)
+
+	AuthRoute(app)
+	CustomerRoute(app)
+	ProductRoute(app)
+	SaleRoute(app)
+	PaymentGatewayRoute(app)
 }

@@ -7,12 +7,7 @@ import (
 
 type Config struct {
 	SecretKey                   string
-	IndexPort                   string
-	AuthPort                    string
-	ProductPort                 string
-	CustomerPort                string
-	SalePort                    string
-	PaymentGatewayPort          string
+	Port                        string
 	BaseUrl                     string
 	DatabaseUsername            string
 	DatabasePassword            string
@@ -46,12 +41,7 @@ type Config struct {
 
 func LoadConfig() (config *Config) {
 	secretKey := os.Getenv("SECRET_KEY")
-	indexPort := os.Getenv("INDEX_PORT")
-	authPort := os.Getenv("AUTH_PORT")
-	productPort := os.Getenv("PRODUCT_PORT")
-	customerPort := os.Getenv("CUSTOMER_PORT")
-	salePort := os.Getenv("SALE_PORT")
-	paymentGatewayPort := os.Getenv("PAYMENT_GATEWAY_PORT")
+	port := os.Getenv("PORT")
 	baseUrl := os.Getenv("BASE_URL")
 	databaseUsername := os.Getenv("DATABASE_USERNAME")
 	databasePassword := os.Getenv("DATABASE_PASSWORD")
@@ -95,12 +85,7 @@ func LoadConfig() (config *Config) {
 		CloudinaryCloudName:         cloudinaryCloudName,
 		CloudinaryAPIKey:            cloudinaryAPIKey,
 		CLoudinaryAPISecret:         cLoudinaryAPISecret,
-		IndexPort:                   indexPort,
-		AuthPort:                    authPort,
-		ProductPort:                 productPort,
-		CustomerPort:                customerPort,
-		SalePort:                    salePort,
-		PaymentGatewayPort:          paymentGatewayPort,
+		Port:                        port,
 		SmtpHost:                    smtpHost,
 		SmtpUsername:                smtpUsername,
 		SmtpPassword:                smtpPassword,

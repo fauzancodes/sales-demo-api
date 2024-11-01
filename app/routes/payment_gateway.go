@@ -7,7 +7,7 @@ import (
 )
 
 func PaymentGatewayRoute(app *echo.Echo) {
-	paymentGateway := app.Group("/payment-gateway", middlewares.StripHTMLMiddleware)
+	paymentGateway := app.Group("/payment-gateway")
 	{
 		midtrans := paymentGateway.Group("/midtrans")
 		{
