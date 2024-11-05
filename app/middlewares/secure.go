@@ -14,6 +14,7 @@ import (
 	"github.com/fauzancodes/sales-demo-api/app/config"
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
+	"github.com/google/uuid"
 	strip "github.com/grokify/html-strip-tags-go"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -98,7 +99,7 @@ func CheckAPIKey(next echo.HandlerFunc) echo.HandlerFunc {
 			if err != nil {
 				fmt.Println("Check api key:", err.Error())
 			}
-			if usedApiKey.ID > 0 {
+			if usedApiKey.ID != uuid.Nil {
 				fmt.Println("Failed to check api key: api key already used")
 				return c.JSON(http.StatusForbidden, dto.Response{
 					Status:  http.StatusForbidden,

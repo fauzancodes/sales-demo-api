@@ -121,30 +121,40 @@ func GetProductByID(id string, preloadFields []string) (response dto.ProductResp
 
 func GetProducts(name, userID, categoryID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAProduct, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
+	var baseFilterValues []any
 	if userID != "" {
-		baseFilter += " AND user_id = '" + userID + "'"
+		baseFilter += " AND user_id = ?"
+		baseFilterValues = append(baseFilterValues, userID)
 	}
 	filter := baseFilter
+	filterValues := baseFilterValues
 
 	if name != "" {
-		filter += " AND name = '" + name + "'"
+		filter += " AND name = ?"
+		filterValues = append(filterValues, name)
 	}
 	if categoryID != "" {
-		filter += " AND category_id = '" + categoryID + "'"
+		filter += " AND category_id = ?"
+		filterValues = append(filterValues, categoryID)
 	}
 	if param.Custom != "" {
-		filter += " AND status = " + param.Custom.(string)
+		filter += " AND status = ?"
+		filterValues = append(filterValues, param.Custom.(string))
 	}
 	if param.Search != "" {
-		filter += " AND (name ILIKE '%" + param.Search + "%' OR description ILIKE '%" + param.Search + "%')"
+		filter += " AND (name ILIKE ? OR description ILIKE ?)"
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
 	}
 
 	data, total, totalFiltered, err := repository.GetProducts(dto.FindParameter{
-		BaseFilter: baseFilter,
-		Filter:     filter,
-		Limit:      param.Limit,
-		Order:      param.Order,
-		Offset:     param.Offset,
+		BaseFilter:       baseFilter,
+		BaseFilterValues: baseFilterValues,
+		Filter:           filter,
+		FilterValues:     filterValues,
+		Limit:            param.Limit,
+		Order:            param.Order,
+		Offset:           param.Offset,
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -320,14 +330,16 @@ func ImportProduct(file *multipart.FileHeader, userID string) (responses []model
 
 		var category models.SDAProductCategory
 		existingCategories, _, _, _ := repository.GetProductCategories(dto.FindParameter{
-			Filter: "deleted_at IS NULL AND code = '" + data[5] + "'",
+			Filter:       "deleted_at IS NULL AND code = ?",
+			FilterValues: []any{data[5]},
 		}, []string{})
 
 		if len(existingCategories) > 0 {
 			category = existingCategories[0]
 		} else {
 			existingCategories, _, _, _ = repository.GetProductCategories(dto.FindParameter{
-				Filter: "deleted_at IS NULL AND name = '" + data[4] + "'",
+				Filter:       "deleted_at IS NULL AND name = ?",
+				FilterValues: []any{data[4]},
 			}, []string{})
 
 			if len(existingCategories) > 0 {
@@ -350,14 +362,16 @@ func ImportProduct(file *multipart.FileHeader, userID string) (responses []model
 		}
 
 		check, _, _, _ := repository.GetProducts(dto.FindParameter{
-			Filter: "deleted_at IS NULL AND code = '" + data[2] + "'",
+			Filter:       "deleted_at IS NULL AND code = ?",
+			FilterValues: []any{data[2]},
 		}, []string{})
 
 		if len(check) > 0 {
 			response = check[0]
 		} else {
 			check, _, _, _ = repository.GetProducts(dto.FindParameter{
-				Filter: "deleted_at IS NULL AND name = '" + data[0] + "'",
+				Filter:       "deleted_at IS NULL AND name = ?",
+				FilterValues: []any{data[0]},
 			}, []string{})
 
 			if len(check) > 0 {
@@ -396,7 +410,8 @@ func ExportProduct(userID, fileExtentison string) (filename string, statusCode i
 	filename = fmt.Sprintf("assets/download/products_%v.%v", userID, fileExtentison)
 
 	products, _, _, err := repository.GetProducts(dto.FindParameter{
-		BaseFilter: "deleted_at IS NULL AND user_id = '" + userID + "'",
+		BaseFilter:       "deleted_at IS NULL AND user_id = ?",
+		BaseFilterValues: []any{userID},
 	}, []string{})
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {

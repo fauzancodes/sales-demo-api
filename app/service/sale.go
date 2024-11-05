@@ -234,45 +234,57 @@ func GetSaleByID(id string, preloadFields []string) (response models.SDASale, st
 
 func GetSales(invoiceID, userID, customerID, transactionDateMarginTop, transactionDateMarginBottom, productID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDASale, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
+	var baseFilterValues []any
 	if userID != "" {
-		baseFilter += " AND user_id = '" + userID + "'"
+		baseFilter += " AND user_id = ?"
+		baseFilterValues = append(baseFilterValues, userID)
 	}
 	filter := baseFilter
+	filterValues := baseFilterValues
 
 	if invoiceID != "" {
-		filter += " AND invoice_id = '" + invoiceID + "'"
+		filter += " AND invoice_id = ?"
+		filterValues = append(filterValues, invoiceID)
 	}
 	if customerID != "" {
-		filter += " AND customer_id = '" + customerID + "'"
+		filter += " AND customer_id = ?"
+		filterValues = append(filterValues, customerID)
 	}
 	if transactionDateMarginTop != "" {
-		filter += " AND transaction_date::DATE <= '" + transactionDateMarginTop + "'"
+		filter += " AND transaction_date::DATE <= ?"
+		filterValues = append(filterValues, transactionDateMarginTop)
 	}
 	if transactionDateMarginBottom != "" {
-		filter += " AND transaction_date::DATE >= '" + transactionDateMarginBottom + "'"
+		filter += " AND transaction_date::DATE >= ?"
+		filterValues = append(filterValues, transactionDateMarginBottom)
 	}
 	if productID != "" {
 		filter += `
 			AND id IN(
 				SELECT sale_id
 				FROM ` + models.SDASaleDetail{}.TableName() + `
-				WHERE product_id = '` + productID + `'
+				WHERE product_id = ?
 			)
 		`
+		filterValues = append(filterValues, productID)
 	}
 	if param.Custom != "" {
-		filter += " AND status = " + param.Custom.(string)
+		filter += " AND status = ?"
+		filterValues = append(filterValues, param.Custom.(string))
 	}
 	if param.Search != "" {
-		filter += " AND invoice_id ILIKE '%" + param.Search + "%')"
+		filter += " AND invoice_id ILIKE ?)"
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
 	}
 
 	data, total, totalFiltered, err := repository.GetSales(dto.FindParameter{
-		BaseFilter: baseFilter,
-		Filter:     filter,
-		Limit:      param.Limit,
-		Order:      param.Order,
-		Offset:     param.Offset,
+		BaseFilter:       baseFilter,
+		BaseFilterValues: baseFilterValues,
+		Filter:           filter,
+		FilterValues:     filterValues,
+		Limit:            param.Limit,
+		Order:            param.Order,
+		Offset:           param.Offset,
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -364,8 +376,10 @@ func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, st
 	if len(request.Details) > 0 {
 		var dataDetails []models.SDASaleDetail
 		dataDetails, _, _, _ = repository.GetSaleDetails(dto.FindParameter{
-			BaseFilter: "deleted_at IS NULL AND user_id = '" + response.UserID.String() + "'",
-			Filter:     "deleted_at IS NULL AND user_id = '" + data.UserID.String() + "' AND sale_id = '" + data.ID.String() + "'",
+			BaseFilter:       "deleted_at IS NULL AND user_id = ?",
+			BaseFilterValues: []any{response.UserID.String()},
+			Filter:           "deleted_at IS NULL AND user_id = ? AND sale_id = ?",
+			FilterValues:     []any{data.UserID.String(), data.ID.String()},
 		}, []string{})
 
 		if len(dataDetails) > 0 {
@@ -434,7 +448,8 @@ func DeleteSale(id string) (statusCode int, err error) {
 	}
 
 	dataDetails, _, _, _ := repository.GetSaleDetails(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND user_id = '" + data.UserID.String() + "' AND sale_id = '" + data.ID.String() + "'",
+		Filter:       "deleted_at IS NULL AND user_id = ? AND sale_id = ?",
+		FilterValues: []any{data.UserID.String(), data.ID.String()},
 	}, []string{})
 
 	if len(dataDetails) > 0 {

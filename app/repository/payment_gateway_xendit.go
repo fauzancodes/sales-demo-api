@@ -8,12 +8,12 @@ import (
 )
 
 func GetXenditPaymentMethods(param dto.FindParameter) (responses []models.SDAXenditPaymentMethod, total int64, totalFiltered int64, err error) {
-	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
+	err = config.DB.Model(responses).Where(param.BaseFilter, param.BaseFilterValues...).Count(&total).Error
 	if err != nil {
 		return
 	}
 
-	err = config.DB.Model(responses).Where(param.Filter).Count(&totalFiltered).Error
+	err = config.DB.Model(responses).Where(param.Filter, param.FilterValues...).Count(&totalFiltered).Error
 	if err != nil {
 		return
 	}
@@ -21,9 +21,9 @@ func GetXenditPaymentMethods(param dto.FindParameter) (responses []models.SDAXen
 	db := config.DB
 
 	if param.Limit == 0 {
-		err = db.Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
+		err = db.Offset(param.Offset).Order(param.Order).Where(param.Filter, param.FilterValues...).Find(&responses).Error
 	} else {
-		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
+		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter, param.FilterValues...).Find(&responses).Error
 	}
 
 	return
@@ -41,12 +41,12 @@ func CreateXenditSalePayment(data models.SDAXenditSalePayment) (models.SDAXendit
 }
 
 func GetXenditSalePayments(param dto.FindParameter) (responses []models.SDAXenditSalePayment, total int64, totalFiltered int64, err error) {
-	err = config.DB.Model(responses).Where(param.BaseFilter).Count(&total).Error
+	err = config.DB.Model(responses).Where(param.BaseFilter, param.BaseFilterValues...).Count(&total).Error
 	if err != nil {
 		return
 	}
 
-	err = config.DB.Model(responses).Where(param.Filter).Count(&totalFiltered).Error
+	err = config.DB.Model(responses).Where(param.Filter, param.FilterValues...).Count(&totalFiltered).Error
 	if err != nil {
 		return
 	}
@@ -54,9 +54,9 @@ func GetXenditSalePayments(param dto.FindParameter) (responses []models.SDAXendi
 	db := utils.BuildPreload(config.DB, []string{"PaymentMethod"})
 
 	if param.Limit == 0 {
-		err = db.Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
+		err = db.Offset(param.Offset).Order(param.Order).Where(param.Filter, param.FilterValues...).Find(&responses).Error
 	} else {
-		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter).Find(&responses).Error
+		err = db.Limit(param.Limit).Offset(param.Offset).Order(param.Order).Where(param.Filter, param.FilterValues...).Find(&responses).Error
 	}
 
 	return

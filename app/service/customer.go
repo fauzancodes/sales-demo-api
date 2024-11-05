@@ -75,30 +75,40 @@ func GetCustomerByID(id string, preloadFields []string) (data models.SDACustomer
 
 func GetCustomers(email, phone, userID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDACustomer, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
+	var baseFilterValues []any
 	if userID != "" {
-		baseFilter += " AND user_id = '" + userID + "'"
+		baseFilter += " AND user_id = ?"
+		baseFilterValues = append(baseFilterValues, userID)
 	}
 	filter := baseFilter
+	filterValues := baseFilterValues
 
 	if email != "" {
-		filter += " AND email = '" + email + "'"
+		filter += " AND email = ?"
+		filterValues = append(filterValues, email)
 	}
 	if phone != "" {
-		filter += " AND phone = '" + phone + "'"
+		filter += " AND phone = ?"
+		filterValues = append(filterValues, phone)
 	}
 	if param.Custom != "" {
-		filter += " AND status = " + param.Custom.(string)
+		filter += " AND status = ?"
+		filterValues = append(filterValues, param.Custom.(string))
 	}
 	if param.Search != "" {
-		filter += " AND (first_name ILIKE '%" + param.Search + "%' OR last_name ILIKE '%" + param.Search + "%')"
+		filter += " AND (first_name ILIKE ? OR last_name ILIKE ?)"
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
 	}
 
 	data, total, totalFiltered, err := repository.GetCustomers(dto.FindParameter{
-		BaseFilter: baseFilter,
-		Filter:     filter,
-		Limit:      param.Limit,
-		Order:      param.Order,
-		Offset:     param.Offset,
+		BaseFilter:       baseFilter,
+		BaseFilterValues: baseFilterValues,
+		Filter:           filter,
+		FilterValues:     filterValues,
+		Limit:            param.Limit,
+		Order:            param.Order,
+		Offset:           param.Offset,
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())

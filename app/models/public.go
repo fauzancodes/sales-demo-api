@@ -15,7 +15,7 @@ type CustomGormModel struct {
 }
 
 type SDAUsedApiKey struct {
-	gorm.Model
+	CustomGormModel
 	SecretKey    string `json:"-" gorm:"type: text"`
 	Base64Key    string `json:"-" gorm:"type: text"`
 	ReceivedHMAC string `json:"-" gorm:"type: text"`

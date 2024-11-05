@@ -10,11 +10,13 @@ type Response struct {
 }
 
 type FindParameter struct {
-	BaseFilter string
-	Filter     string
-	Order      string
-	Limit      int
-	Offset     int
+	BaseFilter       string
+	BaseFilterValues []any
+	Filter           string
+	FilterValues     []any
+	Order            string
+	Limit            int
+	Offset           int
 }
 
 type GlobalIDNameResponse struct {

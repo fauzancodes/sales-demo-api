@@ -25,20 +25,24 @@ import (
 func GetXenditPaymentMethods(code string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAXenditPaymentMethod, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
+	var fileterValues []any
 
 	if code != "" {
-		filter += " AND code = '" + code + "'"
+		filter += " AND code = ?"
+		fileterValues = append(fileterValues, code)
 	}
 	if param.Search != "" {
-		filter += " AND (name ILIKE '%" + param.Search + "%' OR description ILIKE '%" + param.Search + "%')"
+		filter += " AND (name ILIKE ? OR description ILIKE ?)"
+		fileterValues = append(fileterValues, fmt.Sprintf("%%%s%%", param.Search))
 	}
 
 	data, total, totalFiltered, err := repository.GetXenditPaymentMethods(dto.FindParameter{
-		BaseFilter: baseFilter,
-		Filter:     filter,
-		Limit:      param.Limit,
-		Order:      param.Order,
-		Offset:     param.Offset,
+		BaseFilter:   baseFilter,
+		Filter:       filter,
+		FilterValues: fileterValues,
+		Limit:        param.Limit,
+		Order:        param.Order,
+		Offset:       param.Offset,
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -66,7 +70,8 @@ func XenditChargePayment(userID, baseUrl string, request dto.XenditRequestPaymen
 	}
 
 	paymentMethodData, _, _, err := repository.GetXenditPaymentMethods(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND code = '" + strings.ToUpper(request.PaymentMethodCode) + "'",
+		Filter:       "deleted_at IS NULL AND code = ?",
+		FilterValues: []any{strings.ToUpper(request.PaymentMethodCode)},
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -86,7 +91,8 @@ func XenditChargePayment(userID, baseUrl string, request dto.XenditRequestPaymen
 	paymentMethod := paymentMethodData[0]
 
 	saleData, _, _, err := repository.GetSales(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
+		Filter:       "deleted_at IS NULL AND invoice_id = ?",
+		FilterValues: []any{request.InvoiceID},
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -461,7 +467,8 @@ func XenditChargeInvoice(userID, baseUrl string, request dto.XenditRequestInvoic
 	}
 
 	saleData, _, _, err := repository.GetSales(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
+		Filter:       "deleted_at IS NULL AND invoice_id = ?",
+		FilterValues: []any{request.InvoiceID},
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -625,7 +632,8 @@ func XenditHandleNotification(request dto.XenditNotificationRequest, callbackTok
 	}
 
 	sale, _, _, _ := repository.GetSales(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND invoice_id = '" + request.Data.ReferenceID + "'",
+		Filter:       "deleted_at IS NULL AND invoice_id = ?",
+		FilterValues: []any{request.Data.ReferenceID},
 	}, []string{})
 	if len(sale) == 0 {
 		err = errors.New("data not found")

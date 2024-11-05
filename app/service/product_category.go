@@ -71,27 +71,36 @@ func GetProductCategoryByID(id string, preloadFields []string) (data models.SDAP
 
 func GetProductCategories(name, userID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAProductCategory, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
+	var baseFilterValues []any
 	if userID != "" {
-		baseFilter += " AND user_id = '" + userID + "'"
+		baseFilter += " AND user_id = ?"
+		baseFilterValues = append(baseFilterValues, userID)
 	}
 	filter := baseFilter
+	filterValues := baseFilterValues
 
 	if name != "" {
-		filter += " AND name = '" + name + "'"
+		filter += " AND name = ?"
+		filterValues = append(filterValues, name)
 	}
 	if param.Custom != "" {
-		filter += " AND status = " + param.Custom.(string)
+		filter += " AND status = ?"
+		filterValues = append(filterValues, param.Custom.(string))
 	}
 	if param.Search != "" {
-		filter += " AND (name ILIKE '%" + param.Search + "%' OR description ILIKE '%" + param.Search + "%')"
+		filter += " AND (name ILIKE ? OR description ILIKE ?)"
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
 	}
 
 	data, total, totalFiltered, err := repository.GetProductCategories(dto.FindParameter{
-		BaseFilter: baseFilter,
-		Filter:     filter,
-		Limit:      param.Limit,
-		Order:      param.Order,
-		Offset:     param.Offset,
+		BaseFilter:       baseFilter,
+		BaseFilterValues: baseFilterValues,
+		Filter:           filter,
+		FilterValues:     filterValues,
+		Limit:            param.Limit,
+		Order:            param.Order,
+		Offset:           param.Offset,
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -201,14 +210,16 @@ func ImportProductCategory(file *multipart.FileHeader, userID string) (responses
 		var response models.SDAProductCategory
 
 		check, _, _, _ := repository.GetProductCategories(dto.FindParameter{
-			Filter: "deleted_at IS NULL AND code = '" + data[2] + "'",
+			Filter:       "deleted_at IS NULL AND code = ?",
+			FilterValues: []any{data[2]},
 		}, []string{})
 
 		if len(check) > 0 {
 			response = check[0]
 		} else {
 			check, _, _, _ = repository.GetProductCategories(dto.FindParameter{
-				Filter: "deleted_at IS NULL AND name = '" + data[0] + "'",
+				Filter:       "deleted_at IS NULL AND name = ?",
+				FilterValues: []any{data[0]},
 			}, []string{})
 
 			if len(check) > 0 {
@@ -243,7 +254,8 @@ func ExportProductCategory(userID, fileExtentison string) (filename string, stat
 	filename = fmt.Sprintf("assets/download/product_categories_%v.%v", userID, fileExtentison)
 
 	productCategories, _, _, err := repository.GetProductCategories(dto.FindParameter{
-		BaseFilter: "deleted_at IS NULL AND user_id = '" + userID + "'",
+		BaseFilter:       "deleted_at IS NULL AND user_id = ?",
+		BaseFilterValues: []any{userID},
 	}, []string{})
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {

@@ -31,20 +31,25 @@ import (
 func GetIPaymuPaymentMethods(code string, param utils.PagingRequest) (response utils.PagingResponse, data []models.SDAIPaymuPaymentMethod, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
+	var filterValues []any
 
 	if code != "" {
-		filter += " AND code = '" + code + "'"
+		filter += " AND code = ?"
+		filterValues = append(filterValues, code)
 	}
 	if param.Search != "" {
-		filter += " AND (name ILIKE '%" + param.Search + "%' OR description ILIKE '%" + param.Search + "%')"
+		filter += " AND (name ILIKE ? OR description ILIKE ?)"
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
 	}
 
 	data, total, totalFiltered, err := repository.GetIPaymuPaymentMethods(dto.FindParameter{
-		BaseFilter: baseFilter,
-		Filter:     filter,
-		Limit:      param.Limit,
-		Order:      param.Order,
-		Offset:     param.Offset,
+		BaseFilter:   baseFilter,
+		Filter:       filter,
+		FilterValues: filterValues,
+		Limit:        param.Limit,
+		Order:        param.Order,
+		Offset:       param.Offset,
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -143,7 +148,8 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 	}
 
 	paymentMethodData, _, _, err := repository.GetIPaymuPaymentMethods(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND code = '" + strings.ToLower(request.PaymentMethodCode) + "'",
+		Filter:       "deleted_at IS NULL AND code = ?",
+		FilterValues: []any{strings.ToLower(request.PaymentMethodCode)},
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -163,7 +169,8 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 	paymentMethod := paymentMethodData[0]
 
 	saleData, _, _, err := repository.GetSales(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND invoice_id = '" + request.InvoiceID + "'",
+		Filter:       "deleted_at IS NULL AND invoice_id = ?",
+		FilterValues: []any{request.InvoiceID},
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
@@ -357,7 +364,8 @@ func IPaymuHandleNotification(request dto.IPaymuNotificationRequest) (statusCode
 	}
 
 	sale, _, _, _ := repository.GetSales(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND invoice_id = '" + request.ReferenceID + "'",
+		Filter:       "deleted_at IS NULL AND invoice_id = ?",
+		FilterValues: []any{request.ReferenceID},
 	}, []string{})
 	if len(sale) == 0 {
 		err = errors.New("data not found")

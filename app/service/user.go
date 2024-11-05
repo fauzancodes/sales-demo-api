@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
@@ -58,26 +59,34 @@ func GetUserByID(id string, preloadFields []string) (data models.SDAUser, status
 func GetUsers(firstName, lastName, email string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAUser, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
 	filter := baseFilter
+	var filterValues []any
 
 	if firstName != "" {
-		filter += " AND first_name = '" + firstName + "'"
+		filter += " AND first_name = ?"
+		filterValues = append(filterValues, firstName)
 	}
 	if lastName != "" {
-		filter += " AND last_name = '" + lastName + "'"
+		filter += " AND last_name = ?"
+		filterValues = append(filterValues, lastName)
 	}
 	if email != "" {
-		filter += " AND email = '" + email + "'"
+		filter += " AND email = ?"
+		filterValues = append(filterValues, email)
 	}
 	if param.Search != "" {
-		filter += " AND (first_name ILIKE '%" + param.Search + "%' OR last_name ILIKE '%" + param.Search + "%' OR email ILIKE '%" + param.Search + "%')"
+		filter += " AND (first_name ILIKE ? OR last_name ILIKE ? OR email ILIKE ?)"
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
+		filterValues = append(filterValues, fmt.Sprintf("%%%s%%", param.Search))
 	}
 
 	data, total, totalFiltered, err := repository.GetUsers(dto.FindParameter{
-		BaseFilter: baseFilter,
-		Filter:     filter,
-		Limit:      param.Limit,
-		Order:      param.Order,
-		Offset:     param.Offset,
+		BaseFilter:   baseFilter,
+		Filter:       filter,
+		FilterValues: filterValues,
+		Limit:        param.Limit,
+		Order:        param.Order,
+		Offset:       param.Offset,
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())

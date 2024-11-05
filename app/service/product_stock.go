@@ -57,21 +57,27 @@ func CreateProductStock(userID string, request dto.ProductStockRequest) (respons
 
 func GetProductStocks(productID, userID string, param utils.PagingRequest, preloadFields []string) (response utils.PagingResponse, data []models.SDAProductStock, statusCode int, err error) {
 	baseFilter := "deleted_at IS NULL"
+	var baseFilterValues []any
 	if userID != "" {
-		baseFilter += " AND user_id = '" + userID + "'"
+		baseFilter += " AND user_id = ?"
+		baseFilterValues = append(baseFilterValues, userID)
 	}
 	filter := baseFilter
+	filterValues := baseFilterValues
 
 	if productID != "" {
-		filter += " AND product_id = '" + productID + "'"
+		filter += " AND product_id = ?"
+		filterValues = append(filterValues, productID)
 	}
 
 	data, total, totalFiltered, err := repository.GetProductStocks(dto.FindParameter{
-		BaseFilter: baseFilter,
-		Filter:     filter,
-		Limit:      param.Limit,
-		Order:      param.Order,
-		Offset:     param.Offset,
+		BaseFilter:       baseFilter,
+		BaseFilterValues: baseFilterValues,
+		Filter:           filter,
+		FilterValues:     filterValues,
+		Limit:            param.Limit,
+		Order:            param.Order,
+		Offset:           param.Offset,
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())

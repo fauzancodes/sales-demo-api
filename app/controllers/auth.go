@@ -308,7 +308,8 @@ func ResendEmailVerification(c echo.Context) error {
 	}
 
 	user, _, _, err := repository.GetUsers(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND email = '" + request.Email + "'",
+		Filter:       "deleted_at IS NULL AND email = ?",
+		FilterValues: []any{request.Email},
 	}, []string{})
 	if err != nil || len(user) == 0 {
 		return c.JSON(
@@ -367,7 +368,8 @@ func SendForgotPasswordRequest(c echo.Context) error {
 	}
 
 	user, _, _, err := repository.GetUsers(dto.FindParameter{
-		Filter: "deleted_at IS NULL AND email = '" + request.Email + "'",
+		Filter:       "deleted_at IS NULL AND email = ?",
+		FilterValues: []any{request.Email},
 	}, []string{})
 	if err != nil || len(user) == 0 {
 		return c.JSON(
