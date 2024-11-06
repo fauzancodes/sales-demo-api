@@ -162,11 +162,15 @@ func GetCurrentUser(c echo.Context) error {
 		"ProductCategories",
 		"ProductStocks",
 		"Customers",
-		"Sale",
+		"Sales",
 		"SaleDetails",
 		"SaleDetails.Product",
-		"Payment",
-		"Payment.PaymentMethod",
+		"Midtrans",
+		"Midtrans.PaymentMethod",
+		"IPaymu",
+		"IPaymu.PaymentMethod",
+		"Xendit",
+		"Xendit.PaymentMethod",
 	})
 	if err != nil {
 		return c.JSON(
