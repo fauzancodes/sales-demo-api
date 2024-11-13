@@ -202,7 +202,7 @@ func DeleteCustomer(id string) (statusCode int, err error) {
 		return
 	}
 
-	statusCode = http.StatusNoContent
+	statusCode = http.StatusOK
 	return
 }
 
