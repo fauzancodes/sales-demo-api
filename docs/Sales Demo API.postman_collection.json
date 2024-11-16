@@ -1,0 +1,2288 @@
+{
+	"info": {
+		"_postman_id": "d211a606-1b1d-4793-ba30-180ee9f3412c",
+		"name": "Sales Demo API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25300027",
+		"_collection_link": "https://fauzancodes.postman.co/workspace/Team-Workspace~34d91d2f-9cc2-4352-8a90-0b3e69f8e68e/collection/25300027-d211a606-1b1d-4793-ba30-180ee9f3412c?action=share&source=collection_link&creator=25300027"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"user@mail.com\",\r\n    \"password\":\"Password@123\",\r\n    \"success_verification_url\": \"https://www.google.com/\",\r\n    \"failed_verification_url\": \"https://www.google.com/\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"ulfric.stormcloak@windhelm.gov\",\r\n    \"password\":\"Password@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend Email Verification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"user@gmail.com\",\r\n    \"success_verification_url\": \"https://www.google.com/\",\r\n    \"failed_verification_url\": \"https://www.google.com/\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/email-verification/resend",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"email-verification",
+								"resend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Reset Password Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"user@gmail.com\",\r\n    \"redirect_url\": \"https://www.google.com/\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/reset-password/send",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"reset-password",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"new_password\":\"Password@123\",\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg0MDIwMTIsImlkIjoiMGUzZTY3NjctNzM1ZC00MGZiLWIyN2MtMmVkODM3MzY1NjM1IiwicmVkaXJlY3RVcmwiOiIifQ.ijol44Lck_lB-F1OiB9aEhxmQvAYVn-rZsfoOhMKmsw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/reset-password",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA5Nzk5NjcsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.zKUye3tf43Cd72Ik4M61QGPd81EReIkrRs8X34YCTM0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/user",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxMDc4NDMsImlkIjoiOGI5MDI2NDgtYzc3Yy00Mjc2LTk3ZDAtMTNjZDJjZTE0NzEzIn0.b1y4FYp5QOZZkCcFGIJ-1-icKyDTBA2_XPqBIBF37qk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/remove-account",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"remove-account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgzMTI2MDYsImlkIjoiMGUzZTY3NjctNzM1ZC00MGZiLWIyN2MtMmVkODM3MzY1NjM1In0.I1trQy8C1pkLbZO-kGwkB5UrX3vYsU0vpXTI2Eawkmc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"Ulfric\",\r\n    \"last_name\":\"Stormcloak\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/update-profile",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"update-profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "Import",
+							"item": [
+								{
+									"name": "Template",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg4OTU5OTIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.S1gOxLSlojVAlthetvd95u_ZmCHfcVt-cSFb8VpZVaM",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/product/category/import/template",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"product",
+												"category",
+												"import",
+												"template"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Import Data",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg2NTY2MTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.dd_L2cYdqBqvE_aNLlt69PBLIgK3r6KkTZxX4qbWFUk",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"type": "file",
+													"src": "/D:/Personal Project/sales-demo-api/assets/template/product_category.xlsx"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/product/category/import",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"product",
+												"category",
+												"import"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Export",
+							"item": [
+								{
+									"name": "Export Data",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1NTg1MDMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0._6vAcKCKNKf1xfzL_6cDe95Q6LQAwYQ7AKSWN6WIm4g",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{BASE_URL}}/product/category/export?file_extension=xlsx",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"product",
+												"category",
+												"export"
+											],
+											"query": [
+												{
+													"key": "file_extension",
+													"value": "xlsx"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Create Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Iron Weapon\",\r\n    \"description\":\"Weapon made from iron\",\r\n    \"status\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/product/category",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"category"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Categories",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/product/category?name=&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Products",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"category"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "",
+											"description": "Category Name"
+										},
+										{
+											"key": "page",
+											"value": null,
+											"description": "Page, default: 1"
+										},
+										{
+											"key": "search",
+											"value": "",
+											"description": "Search by name and description"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "Number of data returned, default: 10"
+										},
+										{
+											"key": "offset",
+											"value": null,
+											"description": "Number of data to be skipped, default: 0"
+										},
+										{
+											"key": "order",
+											"value": "",
+											"description": "Data will be ordered respectively, default: created_at"
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"description": "Data will be sorted respectively, default: DESC"
+										},
+										{
+											"key": "status",
+											"value": null,
+											"description": "Status of data (true = active, false = inactive)"
+										},
+										{
+											"key": "preload_fields",
+											"value": "User,Products",
+											"description": "Accepted Value (seperated by comma): User, Products"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/product/category/:id?preload_fields=User,Products",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"category",
+										":id"
+									],
+									"query": [
+										{
+											"key": "preload_fields",
+											"value": "User,Products",
+											"description": "Accepted Value (seperated by comma): User, Products"
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "58c1d7d7-07f8-4e90-94b9-5acb6ac05833",
+											"description": "id of product category"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Dragon Bone Weapon\",\r\n    \"description\":\"Weapon made from the bone of the dragon\",\r\n    \"status\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/product/category/:id",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"category",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "bcc6f9f7-4a5d-4aff-b7d6-2b7f91477d04",
+											"description": "id of product category"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxOTQwOTMsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.ANOfr2L7rXAjn5ePMYTS-HfepHyxMBGA3EXM85L5Trc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/product/category/:id",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"category",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "303c67ee-ba01-411d-9f3c-4ed562684ee0",
+											"description": "id of product category"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Stock",
+					"item": [
+						{
+							"name": "Create Stock",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk5NTQ0NzQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CLp2vB7zzO8bBawWuxvPwyyIks2_qX3y4vY0OO_GK-Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 50,\r\n    \"description\": \"Add stock\",\r\n    \"product_id\": \"660fe2bb-079f-44cc-83ce-9527a917f41d\",\r\n    \"action\": \"add\" //\"add\" or \"reduce\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/product/stock",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"stock"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Stocks",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21&preload_fields=Category,User,Stocks",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"stock"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": null,
+											"description": "Page, default: 1"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "Number of data returned, default: 10"
+										},
+										{
+											"key": "offset",
+											"value": null,
+											"description": "Number of data to be skipped, default: 0"
+										},
+										{
+											"key": "order",
+											"value": "",
+											"description": "Data will be ordered respectively, default: created_at"
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"description": "Data will be sorted respectively, default: DESC"
+										},
+										{
+											"key": "product_id",
+											"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+											"description": "ID of product"
+										},
+										{
+											"key": "preload_fields",
+											"value": "Category,User,Stocks",
+											"description": "Accepted Value (seperated by comma): Category, User, Stocks"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Import",
+					"item": [
+						{
+							"name": "Template",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg3Mzk1NzIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.XVlKFxcJ0PvWutJXTdL7wbyli1T9jRxo3jD8ZGEnN2c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/product/import/template",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"import",
+										"template"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Import Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg3Mzk1NzIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.XVlKFxcJ0PvWutJXTdL7wbyli1T9jRxo3jD8ZGEnN2c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/Personal Project/sales-demo-api/assets/template/product.xlsx"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/product/import",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"import"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Export",
+					"item": [
+						{
+							"name": "Export Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1NTg1MDMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0._6vAcKCKNKf1xfzL_6cDe95Q6LQAwYQ7AKSWN6WIm4g",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/product/export?file_extension=xlsx",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"product",
+										"export"
+									],
+									"query": [
+										{
+											"key": "file_extension",
+											"value": "xlsx"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Steal Sword\",\r\n    \"description\":\"A sword made from steal\",\r\n    \"price\": 5000,\r\n    \"status\": true,\r\n    \"category_id\": \"37dd1cd5-988d-44b8-a9d1-b91a59911907\",\r\n    \"image\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/product",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Product Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg2NTY2MTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.dd_L2cYdqBqvE_aNLlt69PBLIgK3r6KkTZxX4qbWFUk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/ASUS/Downloads/Picture/ezgif-2-401d601d74.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/product/upload-image",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								"upload-image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA0NTYzMTMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.D0pk9IWDuf_uvRM_zQwXEYfo1zKJ9UPra6hQ2-9wWuI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status&preload_fields=Category,User,Stocks",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "",
+									"description": "Product Name"
+								},
+								{
+									"key": "page",
+									"value": null,
+									"description": "Page, default: 1"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name and description"
+								},
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Number of data returned, default: 10"
+								},
+								{
+									"key": "offset",
+									"value": null,
+									"description": "Number of data to be skipped, default: 0"
+								},
+								{
+									"key": "order",
+									"value": "",
+									"description": "Data will be ordered respectively, default: created_at"
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"description": "Data will be sorted respectively, default: DESC"
+								},
+								{
+									"key": "category_id",
+									"value": null,
+									"description": "ID of product category"
+								},
+								{
+									"key": "status",
+									"value": null,
+									"description": "Status of data (true = active, false = inactive)"
+								},
+								{
+									"key": "preload_fields",
+									"value": "Category,User,Stocks",
+									"description": "Accepted Value (seperated by comma): Category, User, Stocks"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/product/:id?preload_fields=Category,User,Stocks",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								":id"
+							],
+							"query": [
+								{
+									"key": "preload_fields",
+									"value": "Category,User,Stocks",
+									"description": "Accepted Value (seperated by comma): Category, User, Stocks"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+									"description": "id of product category"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\":\"Weapon made by best nord blacksmith\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/product/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+									"description": "id of product category"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/product/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4c057ef7-24ed-4cb3-a3a4-316780e62c21",
+									"description": "id of product category"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Import",
+					"item": [
+						{
+							"name": "Template",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg3Mzk1NzIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.XVlKFxcJ0PvWutJXTdL7wbyli1T9jRxo3jD8ZGEnN2c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/customer/import/template",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"customer",
+										"import",
+										"template"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Import Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg3Mzk1NzIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.XVlKFxcJ0PvWutJXTdL7wbyli1T9jRxo3jD8ZGEnN2c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/Personal Project/sales-demo-api/assets/template/customer.xlsx"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/customer/import",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"customer",
+										"import"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Export",
+					"item": [
+						{
+							"name": "Export Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1NTg1MDMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0._6vAcKCKNKf1xfzL_6cDe95Q6LQAwYQ7AKSWN6WIm4g",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/customer/export?file_extension=xlsx",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"customer",
+										"export"
+									],
+									"query": [
+										{
+											"key": "file_extension",
+											"value": "xlsx"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NjIwMDQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Tz_bGP9unoh0C500rRjXdLvJsArI3ZecK2Wm79FmeyY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"Vilkas\",\r\n    \"last_name\":\"\",\r\n    \"email\": \"vilkas@whiterun.com\",\r\n    \"phone\": \"089977665544\",\r\n    \"status\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/customer",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA5MDY2MzgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7EUiRw7qHEn4UcppDrO8a4PE1bxNDy5alfV5p7LNOh8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Sales",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"customer"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "",
+									"description": "Customer email"
+								},
+								{
+									"key": "phone",
+									"value": null,
+									"description": "Customer phone"
+								},
+								{
+									"key": "page",
+									"value": null,
+									"description": "Page, default: 1"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name and description"
+								},
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Number of data returned, default: 10"
+								},
+								{
+									"key": "offset",
+									"value": null,
+									"description": "Number of data to be skipped, default: 0"
+								},
+								{
+									"key": "order",
+									"value": "",
+									"description": "Data will be ordered respectively, default: created_at"
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"description": "Data will be sorted respectively, default: DESC"
+								},
+								{
+									"key": "status",
+									"value": null,
+									"description": "Status of data (true = active, false = inactive)"
+								},
+								{
+									"key": "preload_fields",
+									"value": "User,Sales",
+									"description": "Accepted Value (seperated by comma): User, Sales"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/customer/:id?preload_fields=User,Sales",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"customer",
+								":id"
+							],
+							"query": [
+								{
+									"key": "preload_fields",
+									"value": "User,Sales",
+									"description": "Accepted Value (seperated by comma): User, Sales"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a72271b3-33ce-4c1a-9954-cd6e7dae7b8e",
+									"description": "id of cutomer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"Eorlund\",\r\n    \"last_name\":\"The Whitemane\",\r\n    \"email\": \"eorlund@whiterun.skyrim\",\r\n    \"phone\": \"089977665544\",\r\n    \"status\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/customer/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a72271b3-33ce-4c1a-9954-cd6e7dae7b8e",
+									"description": "id of customer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjc2ODAyMTEsImlkIjoiNjIyYzMxNjktOGJkMi00NmFmLTkwOWEtZGVmNTY0NTBlZTk0In0.QBWtdmd-pvxB-LA-XriKYAyNh0Fn7NB9XPnOTY7QWO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/customer/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a72271b3-33ce-4c1a-9954-cd6e7dae7b8e",
+									"description": "id of customer"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sale",
+			"item": [
+				{
+					"name": "Create Sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk5NTQ0NzQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CLp2vB7zzO8bBawWuxvPwyyIks2_qX3y4vY0OO_GK-Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"invoice_id\": \"\",\r\n    \"tax\": 11.0,\r\n    \"discount\": 10.0,\r\n    \"misc_price\": 1000.0,\r\n    \"subtotal\": 0.0,\r\n    \"total_paid\": 0.0,\r\n    \"customer_id\": \"27ad138f-9653-4539-a7de-5583c3291d0f\",\r\n    \"transaction_date\": \"\",\r\n    \"status\": true,\r\n    \"details\": [\r\n        {\r\n            \"product_id\": \"660fe2bb-079f-44cc-83ce-9527a917f41d\",\r\n            \"price\": 1350.0,\r\n            \"quantity\": 3\r\n        },\r\n        {\r\n            \"product_id\": \"0bf1d22c-2146-405b-9a41-49953c1b10cc\",\r\n            \"price\": 1500.0,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"product_id\": \"ac7d1274-b5c1-4cfb-bae5-7a8bd3c351f7\",\r\n            \"price\": 3000.0,\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/sale",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sale"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sales",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1NTUzNzMsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.MaluKn6aUnN8W5V07EfOBrpEeVo6rkJwLqmjc6GMvvw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/sale?invoice_id=&transaction_date_margin_top&transaction_date_margin_bottom&product_id&customer_id&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sale"
+							],
+							"query": [
+								{
+									"key": "invoice_id",
+									"value": "",
+									"description": "Invoice ID"
+								},
+								{
+									"key": "transaction_date_margin_top",
+									"value": null,
+									"description": "Margin top of transaction date"
+								},
+								{
+									"key": "transaction_date_margin_bottom",
+									"value": null,
+									"description": "Margin bottom of transaction date"
+								},
+								{
+									"key": "product_id",
+									"value": null,
+									"description": "ID of product"
+								},
+								{
+									"key": "customer_id",
+									"value": null,
+									"description": "ID of customer"
+								},
+								{
+									"key": "page",
+									"value": null,
+									"description": "Page, default: 1"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name and description"
+								},
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Number of data returned, default: 10"
+								},
+								{
+									"key": "offset",
+									"value": null,
+									"description": "Number of data to be skipped, default: 0"
+								},
+								{
+									"key": "order",
+									"value": "",
+									"description": "Data will be ordered respectively, default: created_at"
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"description": "Data will be sorted respectively, default: DESC"
+								},
+								{
+									"key": "status",
+									"value": null,
+									"description": "Status of data (true = active, false = inactive)"
+								},
+								{
+									"key": "preload_fields",
+									"value": "User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
+									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product, Midtrans, Midtrans.PaymentMethod, IPaymu, IPaymu.PaymentMethod"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/sale/:id?preload_fields=User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sale",
+								":id"
+							],
+							"query": [
+								{
+									"key": "preload_fields",
+									"value": "User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
+									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product, Payment, Payment.PaymentMethod, IPaymu, IPaymu.PaymentMethod"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4a0d3a1a-4864-489b-9e05-6ce1be5ad8d7",
+									"description": "id of sale"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Invoice",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjg1NzExNTksImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.sgpMSheVMCq5UTSJy0txphHXp25Arg_4_HtcFN86j8U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/sale/send-invoice/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sale",
+								"send-invoice",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "367492f4-3163-4a4f-b4b4-377d93344881",
+									"description": "id of sale"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"invoice_id\": \"\",\r\n    \"tax\": 11.0,\r\n    \"discount\": 10.0,\r\n    \"misc_price\": 1000.0,\r\n    \"subtotal\": 0.0,\r\n    \"total_paid\": 0.0,\r\n    \"customer_id\": \"27ad138f-9653-4539-a7de-5583c3291d0f\",\r\n    \"transaction_date\": \"\",\r\n    \"status\": true,\r\n    \"details\": [\r\n        {\r\n            \"product_id\": \"f0224a0e-8471-446a-97df-c7cf59a92c70\",\r\n            \"price\": 5000.0,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/sale/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sale",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9d3a3cdc-8fad-4c4f-b3cc-49e6a0e9542e",
+									"description": "id of sale"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Sale",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyNDgyMzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Fwf0es1lBsk65OpSgpuOvErrLLi9hDFwW0AvJMxu148",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/sale/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"sale",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a448c48a-717e-48bf-b319-f2d0663c6051",
+									"description": "id of sale"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment Gateway",
+			"item": [
+				{
+					"name": "Midtrans",
+					"item": [
+						{
+							"name": "Available Payment Method",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkwODQ0NTgsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7kowcWqCc0_bEkVEUZeT7e7di9S1wLUziuypioDmV5I",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/payment-gateway/midtrans/available-payment-method?code=&page&search=&limit=&offset&order=&sort=",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"midtrans",
+										"available-payment-method"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "",
+											"description": "Payment Method Code"
+										},
+										{
+											"key": "page",
+											"value": null,
+											"description": "Page, default: 1"
+										},
+										{
+											"key": "search",
+											"value": "",
+											"description": "Search by name and description"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "Number of data returned, default: 10"
+										},
+										{
+											"key": "offset",
+											"value": null,
+											"description": "Number of data to be skipped, default: 0"
+										},
+										{
+											"key": "order",
+											"value": "",
+											"description": "Data will be ordered respectively, default: created_at"
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"description": "Data will be sorted respectively, default: DESC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge Via Core API",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkxODc3NTksImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.Qj4M-csynslIG-6zUcuaWxPlnZdNIvo2sJPEYJ83Cwk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV927074881578\",\r\n    \"payment_method_code\": \"bca\",\r\n    \"card\": {\r\n        \"card_number\": \"\",\r\n        \"exp_month\": 0,\r\n        \"exp_year\": 0,\r\n        \"cvv\": \"\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/payment-gateway/midtrans/charge/core",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"midtrans",
+										"charge",
+										"core"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge Via Snap API",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAwNDI3NjIsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.5AF6_Lng8CUb2W13RREmqzUwl9XSt8kRKrOSYs3ilPY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV424867295208\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/payment-gateway/midtrans/charge/snap",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"midtrans",
+										"charge",
+										"snap"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "IPaymu",
+					"item": [
+						{
+							"name": "Available Payment Method",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/payment-gateway/ipaymu/available-payment-method?code=&page&search=&limit=&offset&order=&sort=",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"ipaymu",
+										"available-payment-method"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "",
+											"description": "Payment Method Code"
+										},
+										{
+											"key": "page",
+											"value": null,
+											"description": "Page, default: 1"
+										},
+										{
+											"key": "search",
+											"value": "",
+											"description": "Search by name and description"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "Number of data returned, default: 10"
+										},
+										{
+											"key": "offset",
+											"value": null,
+											"description": "Number of data to be skipped, default: 0"
+										},
+										{
+											"key": "order",
+											"value": "",
+											"description": "Data will be ordered respectively, default: created_at"
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"description": "Data will be sorted respectively, default: DESC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk0NDE4MDUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.7knaUy_DPMnc4hY9Y1DaMhJ79qdKGwxCNmaErPxI9s4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV384546549040\",\r\n    \"payment_method_code\": \"bsi\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/payment-gateway/ipaymu/charge",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"ipaymu",
+										"charge"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Xendit",
+					"item": [
+						{
+							"name": "Available Payment Method",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk3NzA2MzUsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.TnkDcf7eismTau5FLEVBK3YjCMogxPm2O8ejLQzTFW0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/payment-gateway/xendit/available-payment-method?code=BCA&page&search=&limit=&offset&order=&sort=",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"xendit",
+										"available-payment-method"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "BCA",
+											"description": "Payment Method Code"
+										},
+										{
+											"key": "page",
+											"value": null,
+											"description": "Page, default: 1"
+										},
+										{
+											"key": "search",
+											"value": "",
+											"description": "Search by name and description"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "Number of data returned, default: 10"
+										},
+										{
+											"key": "offset",
+											"value": null,
+											"description": "Number of data to be skipped, default: 0"
+										},
+										{
+											"key": "order",
+											"value": "",
+											"description": "Data will be ordered respectively, default: created_at"
+										},
+										{
+											"key": "sort",
+											"value": "",
+											"description": "Data will be sorted respectively, default: DESC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge Via Payment API",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk5NTQ0NzQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CLp2vB7zzO8bBawWuxvPwyyIks2_qX3y4vY0OO_GK-Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV532116963469\",\r\n    \"payment_method_code\": \"SHOPEEPAY\",\r\n    \"success_return_url\": \"https://fauzancodes.id/\",\r\n    \"failed_return_url\": \"https://www.google.com/\",\r\n    \"card\": {\r\n        \"card_number\": \"\",\r\n        \"expiry_month\": \"\",\r\n        \"expiry_year\": \"\",\r\n        \"cardholder_name\": \"\",\r\n        \"cardholder_email\": \"\",\r\n        \"cardholder_phone_number\": \"\"\r\n    },\r\n    \"ewallet\": {\r\n        \"mobile_number\":\"\",\r\n        \"cashtag\":\"\"\r\n    },\r\n    \"direct_debit\": {\r\n        \"type\": \"\",\r\n        \"mobile_number\": \"\",\r\n        \"last_four_digit\": \"\",\r\n        \"card_expiry\": \"\",\r\n        \"email\": \"\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/payment-gateway/xendit/charge/payment",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"xendit",
+										"charge",
+										"payment"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Charge Via Invoice API",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mjk5NTQ0NzQsImlkIjoiNGI3ZjQ1MzMtODhlMC00NDQ3LTgzZGMtMmU4MjUyN2Q3OGY0In0.CLp2vB7zzO8bBawWuxvPwyyIks2_qX3y4vY0OO_GK-Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"invoice_id\": \"INV532116963469\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/payment-gateway/xendit/charge/invoice",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"payment-gateway",
+										"xendit",
+										"charge",
+										"invoice"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Payment Simulation",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"transfer_amount\": 12666,\r\n    \"bank_account_number\":\"381659999327212\",\r\n    \"bank_code\": \"BCA\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.xendit.co/pool_virtual_accounts/simulate_payment",
+									"protocol": "https",
+									"host": [
+										"api",
+										"xendit",
+										"co"
+									],
+									"path": [
+										"pool_virtual_accounts",
+										"simulate_payment"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
