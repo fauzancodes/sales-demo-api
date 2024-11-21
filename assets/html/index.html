@@ -65,6 +65,14 @@
         a.button:hover {
             background: #004bb3;
         }
+        section.note {
+            padding: 40px;
+        }
+        section.note code {
+            background-color: #E0E0E0;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
         footer {
             background-color: #E0E0E0;
             color: #333;
@@ -101,22 +109,22 @@
             <li><strong>Comprehensive Documentation:</strong> Navigate through the API with ease using clear, organized <a href="https://www.postman.com/" target="_blank">Postman</a> documentation designed to simplify testing and ensuring a smooth development experience for all developers.</li>
         </ul>
         <div class="button-group">
-            <a href="/docs/Sale Demo API.postman_collection.json" download="Sale Demo API.postman_collection.json" class="button">Download Postman Collection</a>
-            <a href="/docs/Sales Demo API.postman_environment.json" download="Sales Demo API.postman_environment.json" class="button">Download Postman Environment</a>
+            <a href="/postman/collection" download="Sale Demo API.postman_collection.json" class="button">Download Postman Collection</a>
+            <a href="/postman/environment" download="Sales Demo API.postman_environment.json" class="button">Download Postman Environment</a>
             <a href="https://github.com/fauzancodes/sales-demo-api" class="button" target="_blank">Go to GitHub Repository</a>
         </div>
-        <div>
-            <strong>Additional Note:</strong> 
-            <ul>
-                <li>
-                    For frontend developers who want to connect to this API: You can use SPECIAL_API_KEY (Uh/UB%SKft3CU3e0zJAvBhp3cyo/un2021/zLQf1BKGZZuQ6w5P9VAM6Sj0CcQCm), put it directly in the http request header as X-Api-Key. Or, if you want to try the One-Time API Key feature, the way to create the X-Api-Key is to generate a random string, then calculate the HMAC signature between the random string and the HMAC_KEY (dI62Fk_8wb2uL8CLmSLFkDoAO/tfDeod) with the SHA-256 algorithm, the result of the HMAC calculation is combined with the random string with the pattern "random_string:hmac_result", then encode the pattern with the Base64 algorithm, the endcode result is the X-Api-key
-                </li>
-                <li>
-                    For backend developers who want to learn the coding of this project, if you don't want to use the API key feature, don't forget to set SPECIAL_API_KEY in .env to the request header as X-Api-Key or change ENABLE_API_KEY in .env to false or you will not be able to access all endpoints at all. And don't forget to create a <a href="https://cloudinary.com/" target="_blank">Cloudinary</a> account for image upload needs, a <a href="https://www.backblaze.com/" target="_blank">Backblaze</a> account for file system needs, and set up <a href="https://www.digitalocean.com/community/tutorials/how-to-use-google-s-smtp-server" target="_blank">gmail smtp</a> for sending emails.
-                </li>
-            </ul>
-        </div>
     </main>
+    <section class="note">
+        <strong>Additional Note:</strong> 
+        <ul>
+            <li>
+                For frontend developers who want to connect to this API: You can use <code>SPECIAL_API_KEY (Uh/UB%SKft3CU3e0zJAvBhp3cyo/un2021/zLQf1BKGZZuQ6w5P9VAM6Sj0CcQCm)</code>, put it directly in the http request header as <code>X-Api-Key</code>. Or, if you want to try the One-Time API Key feature, the way to create the X-Api-Key is to generate a random string, then calculate the HMAC signature between the random string and the <code>HMAC_KEY (dI62Fk_8wb2uL8CLmSLFkDoAO/tfDeod)</code> with the SHA-256 algorithm, the result of the HMAC calculation is combined with the random string with the pattern "random_string:hmac_result", then encode the pattern with the Base64 algorithm, the endcode result is the <code> X-Api-Key</code>
+            </li>
+            <li>
+                For backend developers who want to learn the coding of this project, if you don't want to use the API key feature, don't forget to set <code>SPECIAL_API_KEY</code> in .env to the request header as <code>X-Api-Key</code> or change <code>ENABLE_API_KEY</code> in .env to false or you will not be able to access all endpoints at all. And don't forget to create a <a href="https://cloudinary.com/" target="_blank">Cloudinary</a> account for image upload needs, a <a href="https://www.backblaze.com/" target="_blank">Backblaze</a> account for file system needs, and set up <a href="https://www.digitalocean.com/community/tutorials/how-to-use-google-s-smtp-server" target="_blank">gmail smtp</a> for sending emails.
+            </li>
+        </ul>
+    </section>
     <footer>
         <p>&copy; 2024 Sales Demo API Project. All rights reserved. By <a href="https://fauzancodes.id/" target="_blank">fauzancodes</a></p>
     </footer>

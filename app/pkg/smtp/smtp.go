@@ -3,11 +3,11 @@ package smtp
 import (
 	"bytes"
 	"log"
-	"os"
 	"strings"
 	"text/template"
 
 	"github.com/fauzancodes/sales-demo-api/app/config"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/upload"
 	"github.com/go-gomail/gomail"
 )
 
@@ -26,15 +26,15 @@ func SendEmail(htmlTemplate, senderEmail, targetEmail, subjectMessage, attachmen
 	mailer.SetHeader("To", strings.ToLower(targetEmail))
 	mailer.SetHeader("Subject", subjectMessage)
 
-	htmlFile, err := os.ReadFile("assets/html/" + htmlTemplate + ".html")
+	htmlFile, _, err := upload.GetRemoteFile("/assets/html/" + htmlTemplate + ".html")
 	if err != nil {
-		log.Println("Failed to read file:", err.Error())
+		log.Println("Failed to get file from Backblaze:", err.Error())
 		return
 	} else {
-		log.Println("Success to read file")
+		log.Println("Success to get file from Backblaze")
 	}
 
-	tmpl, err := template.New("emailTemplate").Parse(string(htmlFile))
+	tmpl, err := template.New("emailTemplate").Parse(htmlFile.String())
 	if err != nil {
 		log.Println("Failed to parse template:", err.Error())
 		return

@@ -1,13 +1,13 @@
 package service
 
 import (
+	"bytes"
 	"encoding/csv"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"mime/multipart"
 	"net/http"
-	"os"
 	"path/filepath"
 	"strconv"
 
@@ -406,8 +406,9 @@ func ImportProduct(file *multipart.FileHeader, userID string) (responses []model
 	return
 }
 
-func ExportProduct(userID, fileExtentison string) (filename string, statusCode int, err error) {
-	filename = fmt.Sprintf("assets/download/products_%v.%v", userID, fileExtentison)
+func ExportProduct(userID, fileExtentison string) (remoteFile bytes.Buffer, filename string, statusCode int, err error) {
+	filename = fmt.Sprintf("products_%v.%v", userID, fileExtentison)
+	directory := fmt.Sprintf("/assets/download/%v", filename)
 
 	products, _, _, err := repository.GetProducts(dto.FindParameter{
 		BaseFilter:       "deleted_at IS NULL AND user_id = ?",
@@ -422,6 +423,8 @@ func ExportProduct(userID, fileExtentison string) (filename string, statusCode i
 		statusCode = http.StatusInternalServerError
 		return
 	}
+
+	var file bytes.Buffer
 
 	if fileExtentison == "xlsx" {
 		f := excelize.NewFile()
@@ -467,7 +470,7 @@ func ExportProduct(userID, fileExtentison string) (filename string, statusCode i
 			}
 		}
 
-		err = f.SaveAs(filename)
+		err = f.Write(&file)
 		if err != nil {
 			statusCode = http.StatusInternalServerError
 			err = errors.New("failed to save excel file: " + err.Error())
@@ -475,16 +478,7 @@ func ExportProduct(userID, fileExtentison string) (filename string, statusCode i
 	}
 
 	if fileExtentison == "csv" {
-		var file *os.File
-		file, err = os.Create(filename)
-		if err != nil {
-			statusCode = http.StatusInternalServerError
-			err = errors.New("failed to create csv file: " + err.Error())
-			return
-		}
-		defer file.Close()
-
-		writer := csv.NewWriter(file)
+		writer := csv.NewWriter(&file)
 		defer writer.Flush()
 
 		header := []string{"Name", "Description", "Code"}
@@ -534,6 +528,15 @@ func ExportProduct(userID, fileExtentison string) (filename string, statusCode i
 			}
 		}
 	}
+
+	statusCode, err = upload.WriteRemoteFile(file, directory)
+	if err != nil {
+		statusCode = http.StatusInternalServerError
+		err = errors.New("failed to write remote data: " + err.Error())
+		return
+	}
+
+	remoteFile, statusCode, err = upload.GetRemoteFile(directory)
 
 	return
 }

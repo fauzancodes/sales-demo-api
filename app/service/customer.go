@@ -1,15 +1,16 @@
 package service
 
 import (
+	"bytes"
 	"encoding/csv"
 	"errors"
 	"fmt"
 	"mime/multipart"
 	"net/http"
-	"os"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/upload"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/repository"
 	"github.com/google/uuid"
@@ -264,8 +265,9 @@ func ImportCustomer(file *multipart.FileHeader, userID string) (responses []mode
 	return
 }
 
-func ExportCustomer(userID, fileExtentison string) (filename string, statusCode int, err error) {
-	filename = fmt.Sprintf("assets/download/customers_%v.%v", userID, fileExtentison)
+func ExportCustomer(userID, fileExtentison string) (remoteFile bytes.Buffer, filename string, statusCode int, err error) {
+	filename = fmt.Sprintf("customers_%v.%v", userID, fileExtentison)
+	directory := fmt.Sprintf("/assets/download/%v", filename)
 
 	customers, _, _, err := repository.GetCustomers(dto.FindParameter{
 		BaseFilter: "deleted_at IS NULL AND user_id = '" + userID + "'",
@@ -279,6 +281,8 @@ func ExportCustomer(userID, fileExtentison string) (filename string, statusCode 
 		statusCode = http.StatusInternalServerError
 		return
 	}
+
+	var file bytes.Buffer
 
 	if fileExtentison == "xlsx" {
 		f := excelize.NewFile()
@@ -316,7 +320,7 @@ func ExportCustomer(userID, fileExtentison string) (filename string, statusCode 
 			}
 		}
 
-		err = f.SaveAs(filename)
+		err = f.Write(&file)
 		if err != nil {
 			statusCode = http.StatusInternalServerError
 			err = errors.New("failed to save excel file: " + err.Error())
@@ -324,16 +328,7 @@ func ExportCustomer(userID, fileExtentison string) (filename string, statusCode 
 	}
 
 	if fileExtentison == "csv" {
-		var file *os.File
-		file, err = os.Create(filename)
-		if err != nil {
-			statusCode = http.StatusInternalServerError
-			err = errors.New("failed to create csv file: " + err.Error())
-			return
-		}
-		defer file.Close()
-
-		writer := csv.NewWriter(file)
+		writer := csv.NewWriter(&file)
 		defer writer.Flush()
 
 		header := []string{"First Name", "Last Name", "Email", "Phone", "Code"}
@@ -376,6 +371,15 @@ func ExportCustomer(userID, fileExtentison string) (filename string, statusCode 
 			}
 		}
 	}
+
+	statusCode, err = upload.WriteRemoteFile(file, directory)
+	if err != nil {
+		statusCode = http.StatusInternalServerError
+		err = errors.New("failed to write remote data: " + err.Error())
+		return
+	}
+
+	remoteFile, statusCode, err = upload.GetRemoteFile(directory)
 
 	return
 }

@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
+	"github.com/fauzancodes/sales-demo-api/app/pkg/upload"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
 	"github.com/fauzancodes/sales-demo-api/app/service"
 	"github.com/golang-jwt/jwt/v5"
@@ -211,16 +211,21 @@ func UploadProductPicture(c echo.Context) error {
 }
 
 func GetProductImportTemplate(c echo.Context) error {
-	url := fmt.Sprintf("%v/assets/template/product.xlsx", utils.GetBaseUrl(c))
+	buf, statusCode, err := upload.GetRemoteFile("/assets/template/product.xlsx")
+	if err != nil {
+		return c.JSON(
+			statusCode,
+			dto.Response{
+				Status:  statusCode,
+				Message: "Failed to get file",
+				Error:   err.Error(),
+			},
+		)
+	}
 
-	return c.JSON(
-		http.StatusOK,
-		dto.Response{
-			Status:  200,
-			Message: "Download Template Url",
-			Data:    url,
-		},
-	)
+	c.Response().Header().Set("Content-Disposition", `attachment; filename="product.xlsx"`)
+	c.Response().Header().Set("Content-Type", "application/octet-stream")
+	return c.Blob(http.StatusOK, "application/octet-stream", buf.Bytes())
 }
 
 func ImportProduct(c echo.Context) error {
@@ -276,26 +281,20 @@ func ExportProduct(c echo.Context) error {
 		)
 	}
 
-	downloadUrl, statusCode, err := service.ExportProduct(userID, fileExtension)
+	remoteFile, filename, statusCode, err := service.ExportProduct(userID, fileExtension)
 	if err != nil {
 		return c.JSON(
 			statusCode,
 			dto.Response{
 				Status:  statusCode,
-				Message: "Failed to export customer",
+				Message: "Failed to export product",
 				Error:   err.Error(),
 			},
 		)
 	}
 
-	url := fmt.Sprintf("%v/%v", utils.GetBaseUrl(c), downloadUrl)
+	c.Response().Header().Set("Content-Disposition", `attachment; filename="`+filename+`"`)
+	c.Response().Header().Set("Content-Type", "application/octet-stream")
 
-	return c.JSON(
-		http.StatusOK,
-		dto.Response{
-			Status:  200,
-			Message: "Download Exported Customers Url",
-			Data:    url,
-		},
-	)
+	return c.Blob(http.StatusOK, "application/octet-stream", remoteFile.Bytes())
 }

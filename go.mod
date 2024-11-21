@@ -5,6 +5,7 @@ go 1.22.0
 toolchain go1.22.8
 
 require (
+	github.com/Backblaze/blazer v0.7.1
 	github.com/cloudinary/cloudinary-go/v2 v2.9.0
 	github.com/go-gomail/gomail v0.0.0-20160411212932-81ebce5c23df
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible

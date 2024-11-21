@@ -37,6 +37,10 @@ type Config struct {
 	EnableAPIKey                bool
 	SpecialApiKey               string
 	HMACKey                     string
+	BackblazeFolder             string
+	BackblazeBucketName         string
+	BackblazeKeyID              string
+	BackblazeApplicationKey     string
 }
 
 func LoadConfig() (config *Config) {
@@ -71,6 +75,10 @@ func LoadConfig() (config *Config) {
 	enableApiKey, _ := strconv.ParseBool(os.Getenv("ENABLE_API_KEY"))
 	specialApiKey := os.Getenv("SPECIAL_API_KEY")
 	hmacKey := os.Getenv("HMAC_KEY")
+	backblazeFolder := os.Getenv("BACKBLAZE_FOLDER")
+	backblazeBucketName := os.Getenv("BACKBLAZE_BUCKET_NAME")
+	backblazeKeyID := os.Getenv("BACKBLAZE_KEY_ID")
+	backblazeApplicationKey := os.Getenv("BACKBLAZE_APPLICATION_KEY")
 
 	return &Config{
 		SecretKey:                   secretKey,
@@ -104,5 +112,9 @@ func LoadConfig() (config *Config) {
 		EnableAPIKey:                enableApiKey,
 		SpecialApiKey:               specialApiKey,
 		HMACKey:                     hmacKey,
+		BackblazeFolder:             backblazeFolder,
+		BackblazeBucketName:         backblazeBucketName,
+		BackblazeKeyID:              backblazeKeyID,
+		BackblazeApplicationKey:     backblazeApplicationKey,
 	}
 }
