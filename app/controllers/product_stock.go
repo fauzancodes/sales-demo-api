@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
@@ -61,11 +62,21 @@ func CreateProductStock(c echo.Context) error {
 }
 
 func GetProductStocks(c echo.Context) error {
+	withUser, _ := strconv.ParseBool(c.QueryParam("with_user"))
+	withProduct, _ := strconv.ParseBool(c.QueryParam("with_product"))
+
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
 	productID := c.QueryParam("product_id")
-	preloadFields := utils.GetBuildPreloadFields(c)
+
+	var preloadFields []string
+	if withUser {
+		preloadFields = append(preloadFields, "User")
+	}
+	if withProduct {
+		preloadFields = append(preloadFields, "Product")
+	}
 
 	param := utils.PopulatePaging(c, "status")
 	data, _, statusCode, err := service.GetProductStocks(productID, userID, param, preloadFields)

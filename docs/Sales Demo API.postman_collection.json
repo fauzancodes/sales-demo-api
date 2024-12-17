@@ -199,13 +199,60 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/auth/user",
+							"raw": "{{BASE_URL}}/auth/user?with_products=false&with_product_categories=false&with_product_stocks=false&with_customers=false&with_sales=false&with_sale_details=false&with_midtrans_transactions=false&with_ipaymu_transactions=false&with_xendit_transactions=false",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"auth",
 								"user"
+							],
+							"query": [
+								{
+									"key": "with_products",
+									"value": "false",
+									"description": "Will display all products that have been created"
+								},
+								{
+									"key": "with_product_categories",
+									"value": "false",
+									"description": "Will display all product categories that have been created"
+								},
+								{
+									"key": "with_product_stocks",
+									"value": "false",
+									"description": "Will display all product stock histories that have been created"
+								},
+								{
+									"key": "with_customers",
+									"value": "false",
+									"description": "Will display all customers that have been created"
+								},
+								{
+									"key": "with_sales",
+									"value": "false",
+									"description": "Will display all sales that have been created"
+								},
+								{
+									"key": "with_sale_details",
+									"value": "false",
+									"description": "Will display all sale details that have been created"
+								},
+								{
+									"key": "with_midtrans_transactions",
+									"value": "false",
+									"description": "Will display all midtrans transactions that have been created"
+								},
+								{
+									"key": "with_ipaymu_transactions",
+									"value": "false",
+									"description": "Will display all ipaymu transactions that have been created"
+								},
+								{
+									"key": "with_xendit_transactions",
+									"value": "false",
+									"description": "Will display all xendit transactions that have been created"
+								}
 							]
 						}
 					},
@@ -499,7 +546,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{BASE_URL}}/product/category?name=&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Products",
+									"raw": "{{BASE_URL}}/product/category?name=&page&search=&limit=&offset&order=&sort=&status&with_user=false&with_products=false",
 									"host": [
 										"{{BASE_URL}}"
 									],
@@ -549,9 +596,14 @@
 											"description": "Status of data (true = active, false = inactive)"
 										},
 										{
-											"key": "preload_fields",
-											"value": "User,Products",
-											"description": "Accepted Value (seperated by comma): User, Products"
+											"key": "with_user",
+											"value": "false",
+											"description": "Will display the user who owns the category"
+										},
+										{
+											"key": "with_products",
+											"value": "false",
+											"description": "Will display all products in the category"
 										}
 									]
 								}
@@ -580,7 +632,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{BASE_URL}}/product/category/:id?preload_fields=User,Products",
+									"raw": "{{BASE_URL}}/product/category/:id?with_user=false&with_products=false",
 									"host": [
 										"{{BASE_URL}}"
 									],
@@ -591,9 +643,14 @@
 									],
 									"query": [
 										{
-											"key": "preload_fields",
-											"value": "User,Products",
-											"description": "Accepted Value (seperated by comma): User, Products"
+											"key": "with_user",
+											"value": "false",
+											"description": "Will display the user who owns the category"
+										},
+										{
+											"key": "with_products",
+											"value": "false",
+											"description": "Will display all products in the category"
 										}
 									],
 									"variable": [
@@ -764,7 +821,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{BASE_URL}}/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21&preload_fields=Category,User,Stocks",
+									"raw": "{{BASE_URL}}/product/stock?page&limit=&offset&order=&sort=&product_id=4c057ef7-24ed-4cb3-a3a4-316780e62c21&with_user=false&with_product=false",
 									"host": [
 										"{{BASE_URL}}"
 									],
@@ -804,9 +861,14 @@
 											"description": "ID of product"
 										},
 										{
-											"key": "preload_fields",
-											"value": "Category,User,Stocks",
-											"description": "Accepted Value (seperated by comma): Category, User, Stocks"
+											"key": "with_user",
+											"value": "false",
+											"description": "Will display the user who owns the stock history"
+										},
+										{
+											"key": "with_product",
+											"value": "false",
+											"description": "Will display the product who owns the stock history"
 										}
 									]
 								}
@@ -1052,7 +1114,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status&preload_fields=Category,User,Stocks",
+							"raw": "{{BASE_URL}}/product?name=&page&search=&limit=&offset&order=&sort=&category_id&status&with_user=false&with_category=false&with_stocks=false",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -1106,9 +1168,19 @@
 									"description": "Status of data (true = active, false = inactive)"
 								},
 								{
-									"key": "preload_fields",
-									"value": "Category,User,Stocks",
-									"description": "Accepted Value (seperated by comma): Category, User, Stocks"
+									"key": "with_user",
+									"value": "false",
+									"description": "Will display the user who owns the category"
+								},
+								{
+									"key": "with_category",
+									"value": "false",
+									"description": "Will display product category details"
+								},
+								{
+									"key": "with_stocks",
+									"value": "false",
+									"description": "Will display all product stock history"
 								}
 							]
 						}
@@ -1137,7 +1209,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/product/:id?preload_fields=Category,User,Stocks",
+							"raw": "{{BASE_URL}}/product/:id?with_user=false&with_category=false&with_stocks=false",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -1147,9 +1219,19 @@
 							],
 							"query": [
 								{
-									"key": "preload_fields",
-									"value": "Category,User,Stocks",
-									"description": "Accepted Value (seperated by comma): Category, User, Stocks"
+									"key": "with_user",
+									"value": "false",
+									"description": "Will display the user who owns the category"
+								},
+								{
+									"key": "with_category",
+									"value": "false",
+									"description": "Will display product category details"
+								},
+								{
+									"key": "with_stocks",
+									"value": "false",
+									"description": "Will display all product stock history"
 								}
 							],
 							"variable": [
@@ -1452,7 +1534,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Sales",
+							"raw": "{{BASE_URL}}/customer?email=&phone&page&search=&limit=&offset&order=&sort=&status&with_user=false&with_sales=false",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -1506,9 +1588,14 @@
 									"description": "Status of data (true = active, false = inactive)"
 								},
 								{
-									"key": "preload_fields",
-									"value": "User,Sales",
-									"description": "Accepted Value (seperated by comma): User, Sales"
+									"key": "with_user",
+									"value": "false",
+									"description": "Will display the user who owns the customer"
+								},
+								{
+									"key": "with_sales",
+									"value": "false",
+									"description": "Will display all sales made by the customer"
 								}
 							]
 						}
@@ -1537,7 +1624,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/customer/:id?preload_fields=User,Sales",
+							"raw": "{{BASE_URL}}/customer/:id?with_user=false&with_sales=false",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -1547,9 +1634,14 @@
 							],
 							"query": [
 								{
-									"key": "preload_fields",
-									"value": "User,Sales",
-									"description": "Accepted Value (seperated by comma): User, Sales"
+									"key": "with_user",
+									"value": "false",
+									"description": "Will display the user who owns the customer"
+								},
+								{
+									"key": "with_sales",
+									"value": "false",
+									"description": "Will display all sales made by the customer"
 								}
 							],
 							"variable": [
@@ -1723,7 +1815,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/sale?invoice_id=&transaction_date_margin_top&transaction_date_margin_bottom&product_id&customer_id&page&search=&limit=&offset&order=&sort=&status&preload_fields=User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
+							"raw": "{{BASE_URL}}/sale?invoice_id=&transaction_date_margin_top&transaction_date_margin_bottom&product_id&customer_id&page&search=&limit=&offset&order=&sort=&status&with_user=false&with_customer=false&with_details=false&with_midtrans_transaction=false&with_ipaymu_transaction=false&with_xendit_transaction=false",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -1792,9 +1884,34 @@
 									"description": "Status of data (true = active, false = inactive)"
 								},
 								{
-									"key": "preload_fields",
-									"value": "User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
-									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product, Midtrans, Midtrans.PaymentMethod, IPaymu, IPaymu.PaymentMethod"
+									"key": "with_user",
+									"value": "false",
+									"description": "Will display the user who owns the sales"
+								},
+								{
+									"key": "with_customer",
+									"value": "false",
+									"description": "Will display customer details"
+								},
+								{
+									"key": "with_details",
+									"value": "false",
+									"description": "Will display all product details related to the sale"
+								},
+								{
+									"key": "with_midtrans_transaction",
+									"value": "false",
+									"description": "Will display midtrans transaction detail related to the sale"
+								},
+								{
+									"key": "with_ipaymu_transaction",
+									"value": "false",
+									"description": "Will display ipaymu transaction detail related to the sale"
+								},
+								{
+									"key": "with_xendit_transaction",
+									"value": "false",
+									"description": "Will display xendit transaction detail related to the sale"
 								}
 							]
 						}
@@ -1823,7 +1940,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/sale/:id?preload_fields=User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
+							"raw": "{{BASE_URL}}/sale/:id?with_user=false&with_customer=false&with_details=false&with_midtrans_transaction=false&with_ipaymu_transaction=false&with_xendit_transaction=false",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -1833,9 +1950,34 @@
 							],
 							"query": [
 								{
-									"key": "preload_fields",
-									"value": "User,Customer,Details,Details.Product,Midtrans,Midtrans.PaymentMethod,IPaymu,IPaymu.PaymentMethod",
-									"description": "Accepted Value (seperated by comma): User, Customer, Details, Details.Product, Payment, Payment.PaymentMethod, IPaymu, IPaymu.PaymentMethod"
+									"key": "with_user",
+									"value": "false",
+									"description": "Will display the user who owns the sales"
+								},
+								{
+									"key": "with_customer",
+									"value": "false",
+									"description": "Will display customer details"
+								},
+								{
+									"key": "with_details",
+									"value": "false",
+									"description": "Will display all product details related to the sale"
+								},
+								{
+									"key": "with_midtrans_transaction",
+									"value": "false",
+									"description": "Will display midtrans transaction detail related to the sale"
+								},
+								{
+									"key": "with_ipaymu_transaction",
+									"value": "false",
+									"description": "Will display ipaymu transaction detail related to the sale"
+								},
+								{
+									"key": "with_xendit_transaction",
+									"value": "false",
+									"description": "Will display xendit transaction detail related to the sale"
 								}
 							],
 							"variable": [

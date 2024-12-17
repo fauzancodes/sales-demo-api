@@ -17,7 +17,7 @@ func main() {
 
 	port := config.LoadConfig().Port
 
-	log.Printf("Server: " + config.LoadConfig().BaseUrl + ":" + port)
+	log.Println("Server: " + config.LoadConfig().BaseUrl + ":" + port)
 	app.Logger.Fatal(app.Start(":" + port))
 }
 

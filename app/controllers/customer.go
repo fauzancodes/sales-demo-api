@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/upload"
@@ -62,12 +63,22 @@ func CreateCustomer(c echo.Context) error {
 }
 
 func GetCustomers(c echo.Context) error {
+	withUser, _ := strconv.ParseBool(c.QueryParam("with_user"))
+	withSales, _ := strconv.ParseBool(c.QueryParam("with_sales"))
+
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
 	email := c.QueryParam("email")
 	phone := c.QueryParam("phone")
-	preloadFields := utils.GetBuildPreloadFields(c)
+
+	var preloadFields []string
+	if withSales {
+		preloadFields = append(preloadFields, "Sales")
+	}
+	if withUser {
+		preloadFields = append(preloadFields, "User")
+	}
 
 	param := utils.PopulatePaging(c, "status")
 	data, _, statusCode, err := service.GetCustomers(email, phone, userID, param, preloadFields)
@@ -86,8 +97,18 @@ func GetCustomers(c echo.Context) error {
 }
 
 func GetCustomerByID(c echo.Context) error {
+	withUser, _ := strconv.ParseBool(c.QueryParam("with_user"))
+	withSales, _ := strconv.ParseBool(c.QueryParam("with_sales"))
+
 	id := c.Param("id")
-	preloadFields := utils.GetBuildPreloadFields(c)
+
+	var preloadFields []string
+	if withSales {
+		preloadFields = append(preloadFields, "Sales")
+	}
+	if withUser {
+		preloadFields = append(preloadFields, "User")
+	}
 
 	data, statusCode, err := service.GetCustomerByID(id, preloadFields)
 	if err != nil {

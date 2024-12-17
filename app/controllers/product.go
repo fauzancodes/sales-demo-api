@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/upload"
@@ -62,12 +63,26 @@ func CreateProduct(c echo.Context) error {
 }
 
 func GetProducts(c echo.Context) error {
+	withUser, _ := strconv.ParseBool(c.QueryParam("with_user"))
+	withCategory, _ := strconv.ParseBool(c.QueryParam("with_category"))
+	withStocks, _ := strconv.ParseBool(c.QueryParam("with_stocks"))
+
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
 	name := c.QueryParam("name")
 	categoryID := c.QueryParam("category_id")
-	preloadFields := utils.GetBuildPreloadFields(c)
+
+	var preloadFields []string
+	if withCategory {
+		preloadFields = append(preloadFields, "Category")
+	}
+	if withStocks {
+		preloadFields = append(preloadFields, "Stocks")
+	}
+	if withUser {
+		preloadFields = append(preloadFields, "User")
+	}
 
 	param := utils.PopulatePaging(c, "status")
 	data, _, statusCode, err := service.GetProducts(name, userID, categoryID, param, preloadFields)
@@ -86,8 +101,22 @@ func GetProducts(c echo.Context) error {
 }
 
 func GetProductByID(c echo.Context) error {
+	withUser, _ := strconv.ParseBool(c.QueryParam("with_user"))
+	withCategory, _ := strconv.ParseBool(c.QueryParam("with_category"))
+	withStocks, _ := strconv.ParseBool(c.QueryParam("with_stocks"))
+
 	id := c.Param("id")
-	preloadFields := utils.GetBuildPreloadFields(c)
+
+	var preloadFields []string
+	if withCategory {
+		preloadFields = append(preloadFields, "Category")
+	}
+	if withStocks {
+		preloadFields = append(preloadFields, "Stocks")
+	}
+	if withUser {
+		preloadFields = append(preloadFields, "User")
+	}
 
 	data, statusCode, err := service.GetProductByID(id, preloadFields)
 	if err != nil {

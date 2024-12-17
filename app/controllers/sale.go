@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/pkg/utils"
@@ -62,6 +63,13 @@ func CreateSale(c echo.Context) error {
 }
 
 func GetSales(c echo.Context) error {
+	withUser, _ := strconv.ParseBool(c.QueryParam("with_user"))
+	withCustomer, _ := strconv.ParseBool(c.QueryParam("with_customer"))
+	withDetails, _ := strconv.ParseBool(c.QueryParam("with_details"))
+	withMidtransTransaction, _ := strconv.ParseBool(c.QueryParam("with_midtrans_transaction"))
+	withIPaymuTransaction, _ := strconv.ParseBool(c.QueryParam("with_ipaymu_transaction"))
+	withXenditTransaction, _ := strconv.ParseBool(c.QueryParam("with_xendit_transaction"))
+
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
@@ -70,7 +78,26 @@ func GetSales(c echo.Context) error {
 	transactionDateMarginBottom := c.QueryParam("transaction_date_margin_bottom")
 	productID := c.QueryParam("product_id")
 	customerID := c.QueryParam("customer_id")
-	preloadFields := utils.GetBuildPreloadFields(c)
+
+	var preloadFields []string
+	if withUser {
+		preloadFields = append(preloadFields, "User")
+	}
+	if withCustomer {
+		preloadFields = append(preloadFields, "Customer")
+	}
+	if withDetails {
+		preloadFields = append(preloadFields, "Details", "Details.Product")
+	}
+	if withMidtransTransaction {
+		preloadFields = append(preloadFields, "Midtrans", "Midtrans.PaymentMethod")
+	}
+	if withIPaymuTransaction {
+		preloadFields = append(preloadFields, "IPaymu", "IPaymu.PaymentMethod")
+	}
+	if withXenditTransaction {
+		preloadFields = append(preloadFields, "Xendit", "Xendit.PaymentMethod")
+	}
 
 	param := utils.PopulatePaging(c, "status")
 	data, _, statusCode, err := service.GetSales(invoiceID, userID, customerID, transactionDateMarginTop, transactionDateMarginBottom, productID, param, preloadFields)
@@ -89,8 +116,34 @@ func GetSales(c echo.Context) error {
 }
 
 func GetSaleByID(c echo.Context) error {
+	withUser, _ := strconv.ParseBool(c.QueryParam("with_user"))
+	withCustomer, _ := strconv.ParseBool(c.QueryParam("with_customer"))
+	withDetails, _ := strconv.ParseBool(c.QueryParam("with_details"))
+	withMidtransTransaction, _ := strconv.ParseBool(c.QueryParam("with_midtrans_transaction"))
+	withIPaymuTransaction, _ := strconv.ParseBool(c.QueryParam("with_ipaymu_transaction"))
+	withXenditTransaction, _ := strconv.ParseBool(c.QueryParam("with_xendit_transaction"))
+
 	id := c.Param("id")
-	preloadFields := utils.GetBuildPreloadFields(c)
+
+	var preloadFields []string
+	if withUser {
+		preloadFields = append(preloadFields, "User")
+	}
+	if withCustomer {
+		preloadFields = append(preloadFields, "Customer")
+	}
+	if withDetails {
+		preloadFields = append(preloadFields, "Details", "Details.Product")
+	}
+	if withMidtransTransaction {
+		preloadFields = append(preloadFields, "Midtrans", "Midtrans.PaymentMethod")
+	}
+	if withIPaymuTransaction {
+		preloadFields = append(preloadFields, "IPaymu", "IPaymu.PaymentMethod")
+	}
+	if withXenditTransaction {
+		preloadFields = append(preloadFields, "Xendit", "Xendit.PaymentMethod")
+	}
 
 	data, statusCode, err := service.GetSaleByID(id, preloadFields)
 	if err != nil {

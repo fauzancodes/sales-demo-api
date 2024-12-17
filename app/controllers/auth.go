@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
@@ -154,24 +155,49 @@ func Login(c echo.Context) error {
 }
 
 func GetCurrentUser(c echo.Context) error {
+	withProducts, _ := strconv.ParseBool(c.QueryParam("with_products"))
+	withProductCategories, _ := strconv.ParseBool(c.QueryParam("with_product_categories"))
+	withProductStocks, _ := strconv.ParseBool(c.QueryParam("with_product_stocks"))
+	withCustomers, _ := strconv.ParseBool(c.QueryParam("with_customers"))
+	withSales, _ := strconv.ParseBool(c.QueryParam("with_sales"))
+	withSaleDetails, _ := strconv.ParseBool(c.QueryParam("with_sale_details"))
+	withMidtransTransactions, _ := strconv.ParseBool(c.QueryParam("with_midtrans_transactions"))
+	withIPaymuTransactions, _ := strconv.ParseBool(c.QueryParam("with_ipaymu_transactions"))
+	withXenditTransactions, _ := strconv.ParseBool(c.QueryParam("with_xendit_transactions"))
+
 	userID := c.Get("currentUser").(jwt.MapClaims)["id"].(string)
 	log.Printf("Current user ID: %v", userID)
 
-	data, statusCode, err := service.GetUserByID(userID, []string{
-		"Products",
-		"ProductCategories",
-		"ProductStocks",
-		"Customers",
-		"Sales",
-		"SaleDetails",
-		"SaleDetails.Product",
-		"Midtrans",
-		"Midtrans.PaymentMethod",
-		"IPaymu",
-		"IPaymu.PaymentMethod",
-		"Xendit",
-		"Xendit.PaymentMethod",
-	})
+	var preloadFields []string
+	if withProducts {
+		preloadFields = append(preloadFields, "Products")
+	}
+	if withProductCategories {
+		preloadFields = append(preloadFields, "ProductCategories")
+	}
+	if withProductStocks {
+		preloadFields = append(preloadFields, "ProductStocks")
+	}
+	if withCustomers {
+		preloadFields = append(preloadFields, "Customers")
+	}
+	if withSales {
+		preloadFields = append(preloadFields, "Sales")
+	}
+	if withSaleDetails {
+		preloadFields = append(preloadFields, "SaleDetails", "SaleDetails.Product")
+	}
+	if withMidtransTransactions {
+		preloadFields = append(preloadFields, "Midtrans", "Midtrans.PaymentMethod")
+	}
+	if withIPaymuTransactions {
+		preloadFields = append(preloadFields, "IPaymu", "IPaymu.PaymentMethod")
+	}
+	if withXenditTransactions {
+		preloadFields = append(preloadFields, "Xendit", "Xendit.PaymentMethod")
+	}
+
+	data, statusCode, err := service.GetUserByID(userID, preloadFields)
 	if err != nil {
 		return c.JSON(
 			statusCode,
