@@ -1,5 +1,5 @@
-// package handler //for vercel
-package main
+package handler //for vercel
+// package main
 
 import (
 	"log"
