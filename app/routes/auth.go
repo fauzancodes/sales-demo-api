@@ -7,21 +7,21 @@ import (
 )
 
 func AuthRoute(app *echo.Echo) {
-	auth := app.Group("/auth", middlewares.CheckAPIKey)
+	auth := app.Group("/auth")
 	{
-		auth.POST("/register", controllers.Register)
-		auth.POST("/login", controllers.Login)
-		auth.GET("/user", controllers.GetCurrentUser, middlewares.Auth)
-		auth.PATCH("/update-profile", controllers.UpdateProfile, middlewares.Auth)
-		auth.DELETE("/remove-account", controllers.RemoveAccount, middlewares.Auth)
+		auth.POST("/register", controllers.Register, middlewares.CheckAPIKey)
+		auth.POST("/login", controllers.Login, middlewares.CheckAPIKey)
+		auth.GET("/user", controllers.GetCurrentUser, middlewares.CheckAPIKey, middlewares.Auth)
+		auth.PATCH("/update-profile", controllers.UpdateProfile, middlewares.CheckAPIKey, middlewares.Auth)
+		auth.DELETE("/remove-account", controllers.RemoveAccount, middlewares.CheckAPIKey, middlewares.Auth)
 
 		emailVerfication := auth.Group("/email-verification")
 		{
 			emailVerfication.GET("/:token", controllers.VerifyUser)
-			emailVerfication.POST("/resend", controllers.ResendEmailVerification)
+			emailVerfication.POST("/resend", controllers.ResendEmailVerification, middlewares.CheckAPIKey)
 		}
 
-		resetPassword := auth.Group("/reset-password")
+		resetPassword := auth.Group("/reset-password", middlewares.CheckAPIKey)
 		{
 			resetPassword.POST("/send", controllers.SendForgotPasswordRequest)
 			resetPassword.GET("/instruction/:token", controllers.SendResetPasswordRequestInstruction)
