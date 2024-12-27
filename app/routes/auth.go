@@ -21,11 +21,11 @@ func AuthRoute(app *echo.Echo) {
 			emailVerfication.POST("/resend", controllers.ResendEmailVerification, middlewares.CheckAPIKey)
 		}
 
-		resetPassword := auth.Group("/reset-password", middlewares.CheckAPIKey)
+		resetPassword := auth.Group("/reset-password")
 		{
-			resetPassword.POST("/send", controllers.SendForgotPasswordRequest)
+			resetPassword.POST("/send", controllers.SendForgotPasswordRequest, middlewares.CheckAPIKey)
 			resetPassword.GET("/instruction/:token", controllers.SendResetPasswordRequestInstruction)
-			resetPassword.POST("", controllers.ResetPassword)
+			resetPassword.POST("", controllers.ResetPassword, middlewares.CheckAPIKey)
 		}
 	}
 }
