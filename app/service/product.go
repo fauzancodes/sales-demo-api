@@ -28,7 +28,9 @@ func BuildProductResponse(data models.SDAProduct) (response dto.ProductResponse,
 	response.Description = data.Description
 	response.Status = data.Status
 	response.Price = data.Price
-	response.Category = *data.Category
+	if data.Category != nil {
+		response.Category = *data.Category
+	}
 
 	err = json.Unmarshal([]byte(data.Image), &response.Image)
 	if err != nil {
