@@ -46,7 +46,7 @@ func GetXenditPaymentMethods(code string, param utils.PagingRequest) (response u
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -75,7 +75,7 @@ func XenditChargePayment(userID, baseUrl string, request dto.XenditRequestPaymen
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -96,7 +96,7 @@ func XenditChargePayment(userID, baseUrl string, request dto.XenditRequestPaymen
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -183,7 +183,7 @@ func XenditChargePayment(userID, baseUrl string, request dto.XenditRequestPaymen
 		productCategory, err = repository.GetProductCategoryByID(data.Product.CategoryID, []string{})
 		if err != nil {
 			err = errors.New("failed to get data: " + err.Error())
-			if err == gorm.ErrRecordNotFound {
+			if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 				statusCode = http.StatusNotFound
 				return
 			}
@@ -472,7 +472,7 @@ func XenditChargeInvoice(userID, baseUrl string, request dto.XenditRequestInvoic
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -538,7 +538,7 @@ func XenditChargeInvoice(userID, baseUrl string, request dto.XenditRequestInvoic
 		productCategory, err = repository.GetProductCategoryByID(data.Product.CategoryID, []string{})
 		if err != nil {
 			err = errors.New("failed to get data: " + err.Error())
-			if err == gorm.ErrRecordNotFound {
+			if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 				statusCode = http.StatusNotFound
 				return
 			}

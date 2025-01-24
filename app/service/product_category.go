@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"mime/multipart"
 	"net/http"
+	"strings"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
@@ -58,7 +59,7 @@ func GetProductCategoryByID(id string, preloadFields []string) (data models.SDAP
 	data, err = repository.GetProductCategoryByID(parsedUUID, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -105,7 +106,7 @@ func GetProductCategories(name, userID string, param utils.PagingRequest, preloa
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -131,7 +132,7 @@ func UpdateProductCategory(id string, request dto.ProductCategoryRequest) (respo
 	data, err := repository.GetProductCategoryByID(parsedUUID, []string{})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -173,7 +174,7 @@ func DeleteProductCategory(id string) (statusCode int, err error) {
 	data, err := repository.GetProductCategoryByID(parsedUUID, []string{})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -260,7 +261,7 @@ func ExportProductCategory(userID, fileExtentison string) (remoteFile bytes.Buff
 		BaseFilterValues: []any{userID},
 	}, []string{})
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}

@@ -81,7 +81,7 @@ func GetProductStocks(productID, userID string, param utils.PagingRequest, prelo
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}

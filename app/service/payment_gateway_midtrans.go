@@ -48,7 +48,7 @@ func GetMidtransPaymentMethods(code string, param utils.PagingRequest) (response
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -77,7 +77,7 @@ func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore)
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -98,7 +98,7 @@ func MidtransChargeCore(userID, baseUrl string, request dto.MidtransRequestCore)
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -379,7 +379,7 @@ func MidtransChargeSnap(userID, baseUrl string, request dto.MidtransRequestSnap)
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}

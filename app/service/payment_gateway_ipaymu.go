@@ -53,7 +53,7 @@ func GetIPaymuPaymentMethods(code string, param utils.PagingRequest) (response u
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -153,7 +153,7 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 	})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -174,7 +174,7 @@ func IPaymuCharge(userID, baseUrl string, request dto.IPaymuSaleRequest) (respon
 	}, []string{"Details", "Details.Product", "Customer"})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}

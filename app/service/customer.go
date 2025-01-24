@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"mime/multipart"
 	"net/http"
+	"strings"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
@@ -61,7 +62,7 @@ func GetCustomerByID(id string, preloadFields []string) (data models.SDACustomer
 	data, err = repository.GetCustomerByID(parsedUUID, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -113,7 +114,7 @@ func GetCustomers(email, phone, userID string, param utils.PagingRequest, preloa
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -139,7 +140,7 @@ func UpdateCustomer(id string, request dto.CustomerRequest) (response models.SDA
 	data, err := repository.GetCustomerByID(parsedUUID, []string{})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -187,7 +188,7 @@ func DeleteCustomer(id string) (statusCode int, err error) {
 	data, err := repository.GetCustomerByID(parsedUUID, []string{})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -273,7 +274,7 @@ func ExportCustomer(userID, fileExtentison string) (remoteFile bytes.Buffer, fil
 		BaseFilter: "deleted_at IS NULL AND user_id = '" + userID + "'",
 	}, []string{})
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}

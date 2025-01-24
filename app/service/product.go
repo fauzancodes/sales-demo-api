@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/fauzancodes/sales-demo-api/app/dto"
 	"github.com/fauzancodes/sales-demo-api/app/models"
@@ -102,7 +103,7 @@ func GetProductByID(id string, preloadFields []string) (response dto.ProductResp
 	data, err := repository.GetProductByID(parsedUUID, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -160,7 +161,7 @@ func GetProducts(name, userID, categoryID string, param utils.PagingRequest, pre
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -198,7 +199,7 @@ func UpdateProduct(id string, request dto.ProductRequest) (response models.SDAPr
 	data, err := repository.GetProductByID(parsedUUID, []string{})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -266,7 +267,7 @@ func DeleteProduct(id string) (statusCode int, err error) {
 	data, err := repository.GetProductByID(parsedUUID, []string{})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -417,7 +418,7 @@ func ExportProduct(userID, fileExtentison string) (remoteFile bytes.Buffer, file
 		BaseFilterValues: []any{userID},
 	}, []string{})
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}

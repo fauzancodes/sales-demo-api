@@ -219,7 +219,7 @@ func GetSaleByID(id string, preloadFields []string) (response models.SDASale, st
 	response, err = repository.GetSaleByID(parsedUUID, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -288,7 +288,7 @@ func GetSales(invoiceID, userID, customerID, transactionDateMarginTop, transacti
 	}, preloadFields)
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -320,7 +320,7 @@ func UpdateSale(id string, request dto.SaleRequest) (response models.SDASale, st
 	data, err := repository.GetSaleByID(parsedUUID, []string{})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
@@ -438,7 +438,7 @@ func DeleteSale(id string) (statusCode int, err error) {
 	data, err := repository.GetSaleByID(parsedUUID, []string{})
 	if err != nil {
 		err = errors.New("failed to get data: " + err.Error())
-		if err == gorm.ErrRecordNotFound {
+		if strings.Contains(err.Error(), gorm.ErrRecordNotFound.Error()) {
 			statusCode = http.StatusNotFound
 			return
 		}
